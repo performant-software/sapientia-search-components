@@ -1,4 +1,3 @@
-import { SearchResult } from '../../../lib/supplique_types'
 import HitComponent from './Hit'
 import localizations from '../../../lib/localizations'
 import { useEffect, useState } from 'react'
@@ -11,13 +10,8 @@ interface Props extends UseInfiniteHitsProps {
 const CustomInfiniteHits: React.FC<Props> = (props) => {
     const {
         hits,
-        currentPageHits,
-        results,
-        isFirstPage,
         isLastPage,
-        showPrevious,
         showMore,
-        sendEvent,
       } = useInfiniteHits(props);
 
     const { locale } = props;
@@ -60,12 +54,10 @@ const CustomInfiniteHits: React.FC<Props> = (props) => {
         }
     }
 
-    console.log(hits)
-
     return (
         <>
             <ul className='hitList'>
-                {/* {hits.map((hit) => <HitComponent key={hit.id} locale={locale} hit={hit} />)} */}
+                {hits.map((hit) => <HitComponent locale={locale} hit={hit} />)}
             </ul>
             {handleButton()}
         </>

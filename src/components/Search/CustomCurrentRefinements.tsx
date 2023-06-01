@@ -1,13 +1,12 @@
-import { CurrentRefinementsProvided } from 'react-instantsearch-core'
-import { connectCurrentRefinements } from 'react-instantsearch-dom'
+import { useCurrentRefinements } from 'react-instantsearch-hooks'
 import availableFacets from './facets'
 import { X } from 'react-bootstrap-icons'
 import styles from '../../styles/Search.module.css'
-import { isNumberRefinement } from '../../helpers/typeGuards'
-import { Refinement as ISRefinement } from 'react-instantsearch-core'
+import { isNumberRefinement } from '../../lib/typeGuards'
 import { Refinement } from '../../lib/supplique_types'
+import { CurrentRefinementsConnectorParams } from 'instantsearch.js/es/connectors/current-refinements/connectCurrentRefinements'
 
-interface Props extends CurrentRefinementsProvided {
+interface Props extends CurrentRefinementsConnectorParams {
     locale: 'en' | 'fr'
 }
 
@@ -15,7 +14,15 @@ interface Props extends CurrentRefinementsProvided {
 // we have to use our own types. The built-in typing doesn't account for the min/max
 // obj that numeric refinements have.
 
-const CurrentRefinements: React.FC<Props> = ({ items, locale, refine }) => {
+const CustomCurrentRefinements: React.FC<Props> = (props) => {
+
+    const {
+        items,
+        refine
+    } = useCurrentRefinements(props)
+
+    const { locale } = props;
+
     // Format refinement names and values for display
     const getValues = (item: Refinement) => {
         const label = availableFacets.find(f => f.name === item.attribute)?.label[locale]
@@ -45,9 +52,9 @@ const CurrentRefinements: React.FC<Props> = ({ items, locale, refine }) => {
         return null
     }
 
-    const removeRefinement = (original: ISRefinement, value: string) => {
+    const removeRefinement = (original: any, value: string) => {
         if (Array.isArray(original.currentRefinement)) {
-            const query = original.items?.find(item => item.label === value)
+            const query = original.items?.find((item: any) => item.label === value)
             if (query) {
                 refine(query.value)
             }
@@ -90,7 +97,5 @@ const CurrentRefinements: React.FC<Props> = ({ items, locale, refine }) => {
         </ul>
     )
 }
-
-const CustomCurrentRefinements = connectCurrentRefinements(CurrentRefinements)
 
 export default CustomCurrentRefinements

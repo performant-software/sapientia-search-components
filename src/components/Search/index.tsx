@@ -15,12 +15,12 @@ import { InstantMeiliSearchInstance } from '@meilisearch/instant-meilisearch'
 
 interface Props {
     locale: 'en' | 'fr',
-    facets: ReactElement[],
+    children: ReactElement | ReactElement[],
     searchClient: InstantMeiliSearchInstance,
     indexName: string
 }
 
-const Search: React.FC<Props> = ({ indexName, locale, facets, searchClient }) => {
+const Search: React.FC<Props> = ({ indexName, locale, children, searchClient }) => {
     const [displayFilterMenu, setDisplayFilterMenu] = useState(false)
     const [isMobile, setMobile] = useState(true)
 
@@ -106,6 +106,7 @@ const Search: React.FC<Props> = ({ indexName, locale, facets, searchClient }) =>
                                 />
                             </Panel>
                         </div>
+                        {children}
                     </div>
                     <div className='mainPanel'>
                         {/* <CustomCurrentRefinements
