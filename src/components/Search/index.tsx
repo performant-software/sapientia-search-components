@@ -12,6 +12,7 @@ import Panel from './Panel'
 import { SearchDiv } from './Search.styled'
 import localizations from '../../lib/localizations'
 import { InstantMeiliSearchInstance } from '@meilisearch/instant-meilisearch'
+import CustomCurrentRefinements from './CustomCurrentRefinements'
 
 interface Props {
     locale: 'en' | 'fr',
@@ -71,7 +72,6 @@ const Search: React.FC<Props> = ({ indexName, locale, children, searchClient }) 
 
     return (
         <SearchDiv>
-            <h1>{localizations.search[locale]}</h1>
             <div className='search'>
                 <InstantSearch
                     indexName={indexName}
@@ -109,9 +109,9 @@ const Search: React.FC<Props> = ({ indexName, locale, children, searchClient }) 
                         {children}
                     </div>
                     <div className='mainPanel'>
-                        {/* <CustomCurrentRefinements
+                        <CustomCurrentRefinements
                             locale={locale}
-                        /> */}
+                        />
                         <CustomHits
                             locale={locale}
                         />

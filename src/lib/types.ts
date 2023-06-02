@@ -115,20 +115,3 @@ export interface NumberFacet extends StringFacet {
 export type Facet = StringFacet | NumberFacet
 
 export type CurrentPageProps = Document | Page | 'search'
-
-interface BaseRefinement {
-    attribute: string
-}
-
-export interface StringRefinement extends BaseRefinement {
-    currentRefinement: string[]
-}
-
-export interface NumberRefinement extends BaseRefinement {
-    currentRefinement: {
-        min: number,
-        max: number
-    }
-}
-
-export type Refinement = StringRefinement | NumberRefinement

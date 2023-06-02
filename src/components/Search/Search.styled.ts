@@ -12,10 +12,6 @@ padding: 10px;
   gap: 10px;
 }
 
-.mainPanel {
-  margin: 0 10px;
-}
-
 .currentRefinementList {
   list-style-type: none;
   display: flex;
@@ -128,7 +124,7 @@ padding: 10px;
 
 .box {
   background: #eee;
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   margin-bottom: 2rem;
   width: 100%;

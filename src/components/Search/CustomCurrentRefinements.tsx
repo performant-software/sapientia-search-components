@@ -1,10 +1,11 @@
 import { useCurrentRefinements } from 'react-instantsearch-hooks'
 import availableFacets from './facets'
 import { X } from 'react-bootstrap-icons'
-import styles from '../../styles/Search.module.css'
 import { isNumberRefinement } from '../../lib/typeGuards'
-import { Refinement } from '../../lib/supplique_types'
-import { CurrentRefinementsConnectorParams } from 'instantsearch.js/es/connectors/current-refinements/connectCurrentRefinements'
+import {
+    CurrentRefinementsConnectorParams,
+    CurrentRefinementsConnectorParamsItem
+} from 'instantsearch.js/es/connectors/current-refinements/connectCurrentRefinements'
 
 interface Props extends CurrentRefinementsConnectorParams {
     locale: 'en' | 'fr'
@@ -24,14 +25,23 @@ const CustomCurrentRefinements: React.FC<Props> = (props) => {
     const { locale } = props;
 
     // Format refinement names and values for display
-    const getValues = (item: Refinement) => {
+    const getValues = (item: CurrentRefinementsConnectorParamsItem) => {
         const label = availableFacets.find(f => f.name === item.attribute)?.label[locale]
-        let values: string[]
+        let values: Array<string | number>
 
         if (isNumberRefinement(item)) {
-            values = [`${item.currentRefinement.min} - ${item.currentRefinement.max}`]
+            const min = item.refinements[0]?.value
+            const max = item.refinements[1]?.value
+
+            if (min && max) {
+                values = [`${min} - ${max}`]
+            } else if (min) {
+                values = [`> ${min}`]
+            } else {
+                values = [`< ${max}`]
+            }
         } else {
-            values = item.currentRefinement
+            values = item.refinements.map(r => r.value as string)
         }
 
         return {
@@ -52,38 +62,31 @@ const CustomCurrentRefinements: React.FC<Props> = (props) => {
         return null
     }
 
-    const removeRefinement = (original: any, value: string) => {
-        if (Array.isArray(original.currentRefinement)) {
-            const query = original.items?.find((item: any) => item.label === value)
-            if (query) {
-                refine(query.value)
-            }
-        } else {
-            refine(original.value)
-        }
+    const removeRefinement = (original: CurrentRefinementsConnectorParamsItem) => {
+        refine(original.refinements[0])
     }
 
     return (
-        <ul className={styles.currentRefinementList}>
+        <ul className='currentRefinementList'>
             {displayItems.map(item => {
                 return (
                     <li
                         key={item.display.label}
-                        className={styles.currentRefinement}
+                        className='currentRefinement'
                     >
                         <span
-                            className={styles.currentRefinementLabel}
+                            className='currentRefinementLabel'
                         >
                             {item.display.label}:&nbsp;
                         </span>
                         {item.display.values.map(value => {
                             return (
                                 <button
-                                    onClick={() => removeRefinement(item.original, value)}
+                                    onClick={() => removeRefinement(item.original)}
                                     key={value}
                                 >
                                     <span
-                                        className={styles.currentRefinementValue}
+                                        className='currentRefinementValue'
                                     >
                                         {value}
                                     </span>

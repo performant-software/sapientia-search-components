@@ -1,9 +1,11 @@
 import {
     CurrentPageProps,
-    Document,
-    NumberRefinement,
-    Refinement
+    Document
 } from './types'
+
+import {
+    type CurrentRefinementsConnectorParamsItem
+} from 'instantsearch.js/es/connectors/current-refinements/connectCurrentRefinements'
 
 export const isDocument = (item: CurrentPageProps): item is Document => {
     if ((item as Document).number_order) {
@@ -13,8 +15,8 @@ export const isDocument = (item: CurrentPageProps): item is Document => {
     }
 }
 
-export const isNumberRefinement = (ref: Refinement): ref is NumberRefinement => {
-    if ((ref as NumberRefinement).currentRefinement.min) {
+export const isNumberRefinement = (ref: CurrentRefinementsConnectorParamsItem): boolean => {
+    if (ref.refinements[0].type === 'numeric') {
         return true
     } else {
         return false

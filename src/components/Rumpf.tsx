@@ -1,6 +1,13 @@
+import GlobalStyle from "./global.styled";
+import 'instantsearch.css/themes/reset.css'
+import 'instantsearch.css/themes/satellite.css'
+
 const Rumpf: React.FC = () => {
   return (
-    <p>coming soon!</p>
+    <div>
+      <GlobalStyle />
+      <p>coming soon!</p>
+    </div>
   )
 }
 

@@ -57,7 +57,7 @@ const CustomInfiniteHits: React.FC<Props> = (props) => {
     return (
         <>
             <ul className='hitList'>
-                {hits.map((hit) => <HitComponent locale={locale} hit={hit} />)}
+                {hits.map((hit) => <HitComponent key={hit.id as number} locale={locale} hit={hit} />)}
             </ul>
             {handleButton()}
         </>

@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@meilisearch/instant-meilisearch": "^0.13.1",
+    "instantsearch.css": "^8.0.0",
+    "rc-slider": "^10.2.0",
     "react-bootstrap-icons": "^1.10.3",
     "react-instantsearch-hooks": "^6.44.1",
     "react-instantsearch-hooks-web": "^6.44.1",

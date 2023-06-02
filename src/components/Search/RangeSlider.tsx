@@ -1,56 +1,96 @@
-import { Range } from 'rc-slider'
-import 'rc-slider/assets/index.css';
 import { useEffect, useState } from 'react';
-import { connectRange } from 'react-instantsearch-dom'
-import styles from '../../styles/Search.module.css'
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
-interface Props {
-    defaultValues: {
-        min: number,
-        max: number
-    },
-    currentRefinement: {
-        min?: number,
-        max?: number
-    },
-    refine: ({ min, max }: { min: number, max: number }) => void
+import { UseRangeProps, useRange } from 'react-instantsearch-hooks-web';
+
+const styles = {
+  sliderValues: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '5px',
+  },
+};
+
+interface Props extends UseRangeProps {
+    renderValue?: (arg: number) => string
 }
 
-const RangeSlider: React.FC<Props> = ({ defaultValues, currentRefinement, refine }) => {
-    const [value, setValue] = useState<null | number[]>(null)
-    const [valueDisplay, setValueDisplay] = useState<{ min: number, max: number }>({ min: defaultValues.min, max: defaultValues.max })
-
-    useEffect(() => {
-        if (value) {
-            const [min, max] = value
-            refine({ min, max })
-        }
-    }, [value, refine])
-
-    useEffect(() => {
-        if (!currentRefinement.min || !currentRefinement.max) {
-            setValueDisplay({ min: defaultValues.min, max: defaultValues.max })
-        }
-    }, [currentRefinement, defaultValues.min, defaultValues.max])
-
-    return (
-        <>
-            <div className={styles.sliderValues}>
-                <span>{valueDisplay.min}</span>
-                <span>{valueDisplay.max}</span>
-            </div>
-            <Range
-                defaultValue={ [defaultValues.min, defaultValues.max] }
-                onChange={v => setValueDisplay({ min: v[0], max: v[1] })}
-                onAfterChange={v => setValue(v)}
-                min={defaultValues.min}
-                max={defaultValues.max}
-                value={[valueDisplay.min, valueDisplay.max]}
-            />
-        </>
-    )
+interface Range {
+  min: number,
+  max: number
 }
 
-const CustomRangeSlider = connectRange(RangeSlider)
+const getRange = (range: { min: number | undefined, max: number | undefined }) => {
+  return {
+    min: range.min || 0,
+    max: range.max || 100
+  }
+}
 
-export default CustomRangeSlider
+const CustomRangeSlider = (props: Props) => {
+  const {
+    start,
+    range,
+    refine
+  } = useRange(props);
+
+  const [value, setValue] = useState<Range>(getRange(range));
+  const [valueDisplay, setValueDisplay] = useState({
+    min: range.min,
+    max: range.max
+  });
+
+  useEffect(() => {
+    if (value) {
+      refine([ value.min, value.max ]);
+    }
+  }, [value, refine]);
+
+  useEffect(() => {
+    if (
+      start[0] !== valueDisplay.min ||
+      start[1] !== valueDisplay.max
+    ) {
+      const newRange = getRange({ min: start[0], max: start[1]})
+      setValueDisplay({...newRange});
+      setValue({...newRange})
+    }
+  }, [range, start]);
+
+  const renderValue = (value: number | undefined, type: string) => {
+    let display;
+
+    if (value === Infinity || value === -Infinity) {
+      display = type === 'min' ? range.min : range.max;
+    } else {
+      display = value;
+    }
+
+    if (props.renderValue && display) {
+      display = props.renderValue(display)
+    }
+
+    return display;
+  }
+
+  return (
+    <>
+      <div style={styles.sliderValues}>
+        <span>{renderValue(valueDisplay.min, 'min')}</span>
+        <span>{renderValue(valueDisplay.max, 'max')}</span>
+      </div>
+      <Slider
+        range
+        defaultValue={[range.min || 0, range.max || 100]}
+        onChange={v => setValueDisplay({min: (v as number[])[0], max: (v as number[])[1]})}
+        onAfterChange={v => setValue({min: (v as number[])[0], max: (v as number[])[1]})}
+        min={range.min}
+        max={range.max}
+        value={[valueDisplay.min || range.min || 0, valueDisplay.max || range.max || 100]}
+      />
+    </>
+  );
+};
+
+export default CustomRangeSlider;
