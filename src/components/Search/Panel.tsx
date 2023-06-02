@@ -6,16 +6,10 @@ interface Props {
   children: ReactElement | ReactElement[]
 }
 
-const styles = {
-  header: {
-    fontSize: '0.75rem'
-  }
-}
-
 const Panel: React.FC<Props> = ({ header, children }) => {
   return (
     <PanelDiv>
-      { header ? <span style={styles.header}>{ header }</span> : null }
+      { header ? <span className='header'>{ header }</span> : null }
       { children }
     </PanelDiv>
   )

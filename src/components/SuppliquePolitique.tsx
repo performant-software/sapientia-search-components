@@ -17,10 +17,11 @@ const searchClient = instantMeiliSearch(
   }
 )
 
-const SuppliquePolitique: React.FC = () => {
-  // Will be dynamic later
-  const locale = 'fr'
+interface Props {
+  locale: 'fr' | 'en'
+}
 
+const SuppliquePolitique: React.FC<Props> = ({ locale }) => {
   return (
     <div>
       <GlobalStyle />
@@ -29,20 +30,56 @@ const SuppliquePolitique: React.FC = () => {
         locale='fr'
         indexName="textes"
       >
+        <Panel header={localizations.number_of_order[locale]}>
+          <CustomRangeSlider
+              attribute='number_order'
+          />
+        </Panel>
+        <Panel header={localizations.date[locale]}>
+          <div className='dateSlider'>
+            <p className='header'>{localizations.year[locale]}</p>
+            <CustomRangeSlider
+                attribute='year'
+            />
+          </div>
+          <div className='dateSlider'>
+            <p className='header'>{localizations.month[locale]}</p>
+            <CustomRangeSlider
+                attribute='month'
+            />
+          </div>
+          <div className='dateSlider'>
+            <p className='header'>{localizations.day[locale]}</p>
+            <CustomRangeSlider
+                attribute='day'
+            />
+          </div>
+        </Panel>
         <Panel header={localizations.city[locale]}>
           <RefinementList
-              attribute='town.name'
+            attribute='town.name'
           />
         </Panel>
         <Panel header={localizations.place_given[locale]}>
           <RefinementList
-              attribute='date_of_place.name'
+            attribute='date_of_place.name'
           />
         </Panel>
-        <Panel header={localizations.month[locale]}>
-          <CustomRangeSlider
-              attribute='month'
-            />
+        <Panel header={localizations.titulature[locale]}>
+          <RefinementList
+            attribute='titulature.full_name'
+          />
+          </Panel>
+        <Panel header={localizations.commandement[locale]}>
+          <RefinementList
+            attribute='commandement.full_name'
+          />
+        </Panel>
+        <Panel header={localizations.keywords[locale]}>
+          <RefinementList
+              attribute='keywords'
+              operator='or'
+          />
         </Panel>
       </Search>
     </div>

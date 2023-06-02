@@ -6,4 +6,4 @@ export default {
   title: 'SearchComponents/Supplique Politique',
 } as Meta;
 
-export const Default: React.FC = () => <SuppliquePolitique />;
+export const Default: React.FC = () => <SuppliquePolitique locale='fr' />;
