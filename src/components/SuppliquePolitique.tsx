@@ -7,6 +7,9 @@ import localizations from "../lib/localizations"
 import 'instantsearch.css/themes/reset.css'
 import 'instantsearch.css/themes/satellite.css'
 import CustomRangeSlider from "./Search/RangeSlider"
+import { HitConfig } from "../lib/types"
+import { Bank, Building, Calendar4Event, GeoAlt, Person } from "react-bootstrap-icons"
+import { displayAttribute, handleDate } from "../lib/react_helpers"
 
 const searchClient = instantMeiliSearch(
   import.meta.env.VITE_APP_MEILI_URL,
@@ -22,6 +25,45 @@ interface Props {
 }
 
 const SuppliquePolitique: React.FC<Props> = ({ locale }) => {
+  const hitConfig: HitConfig = {
+    leftColumnItems: [
+      // {
+      //   attribute: 'date',
+      //   icon: <Calendar4Event />,
+      //   caption: localizations.date[locale],
+      //   renderDisplay: (item) => handleDate(item)
+      // },
+      {
+        attribute: 'town',
+        icon: <Building />,
+        caption: localizations.city[locale],
+        renderDisplay: (item) => displayAttribute(item, 'town.name', locale)
+      },
+      {
+        attribute: 'place_given',
+        icon: <GeoAlt />,
+        caption: localizations.place_given[locale],
+        renderDisplay: (item) => displayAttribute(item, 'date_of_place.name', locale)
+      },
+      {
+        attribute: 'titulature',
+        icon: <Bank />,
+        caption: localizations.titulature[locale],
+        renderDisplay: (item) => displayAttribute(item, 'titulature.full_name', locale)
+      },
+      {
+        attribute: 'commandement',
+        icon: <Person />,
+        caption: localizations.commandement[locale],
+        renderDisplay: (item) => displayAttribute(item, 'commandement.full_name', locale)
+      }
+    ],
+    rightPanel: {
+      attribute: 'texte',
+      label: localizations.text[locale]
+    }
+  }
+
   return (
     <div>
       <GlobalStyle />
@@ -29,6 +71,7 @@ const SuppliquePolitique: React.FC<Props> = ({ locale }) => {
         searchClient={searchClient}
         locale='fr'
         indexName="textes"
+        hitConfig={hitConfig}
       >
         <Panel header={localizations.number_of_order[locale]}>
           <CustomRangeSlider

@@ -8,6 +8,7 @@ import {
     Person,
     Building
 } from 'react-bootstrap-icons'
+import { HitConfig } from '../../../lib/types'
 
 interface Props {
     // No idea how to type the Hit - importing the types that
@@ -15,32 +16,11 @@ interface Props {
     // code in this component works fine 🤷‍♂️
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     hit: any,
+    hitConfig: HitConfig,
     locale: 'en' | 'fr'
 }
 
-const Hit = ({ hit, locale }: Props) => {
-    // Display a note if the property is null.
-    const displayAttribute = (name: string) => {
-        if (hit[name as keyof SearchResult]) {
-            return (
-                <Highlight
-                    attribute={[name]}
-                    hit={hit}
-                />
-            )
-        } else {
-            return <span><em>{localizations.emptyField[locale]}</em></span>
-        }
-    }
-
-    const handleDate = () => {
-        if (hit.year && hit.month && hit.day) {
-            return <span>{new Date(hit.year, hit.month - 1, hit.day).toISOString().slice(0, 10)}</span>
-        } else {
-            return <span><em>?</em></span>
-        }
-    }
-
+const Hit = ({ hit, hitConfig, locale }: Props) => {
     return (
         <a className='hitLink'>
             <li className='hit'>
@@ -55,44 +35,19 @@ const Hit = ({ hit, locale }: Props) => {
                             />
                         </span>
                     </h2>
-                    <p className='hitData'>
-                        <span title={localizations.date[locale]}>
-                            <Calendar4Event />
-                        </span>
-                        <strong>{handleDate()}</strong>
-                    </p>
-                    <p className='hitData'>
-                        <span title={localizations.city[locale]}>
-                            <Building />
-                        </span>
-                        <strong>
-                            {displayAttribute('town.name')}
-                        </strong>
-                    </p>
-                    <p className='hitData'>
-                        <span title={localizations.place_given[locale]}>
-                            <GeoAlt />
-                        </span>
-                        <strong>
-                            {displayAttribute('date_of_place.name')}
-                        </strong>
-                    </p>
-                    <p className='hitData'>
-                        <span title={localizations.titulature[locale]}>
-                            <Bank />
-                        </span>
-                        <strong>
-                            {displayAttribute('titulature.full_name')}
-                        </strong>
-                    </p>
-                    <p className='hitData'>
-                        <span title={localizations.commandement[locale]}>
-                            <Person />
-                        </span>
-                        <strong>
-                            {displayAttribute('commandement.full_name')}
-                        </strong>
-                    </p>
+                    {hitConfig.leftColumnItems.map((configItem) => (
+                        <p className='hitData'>
+                            <span title={configItem.caption}>
+                                <Building />
+                            </span>
+                            <strong>
+                                {configItem.renderDisplay
+                                    ? configItem.renderDisplay(hit[configItem.attribute])
+                                    : hit[configItem.attribute]
+                                }
+                            </strong>
+                        </p> 
+                    ))}
                 </div>
                 <div className='right'>
                     <div className='summary'>

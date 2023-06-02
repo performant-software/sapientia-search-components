@@ -4,7 +4,7 @@ import {
     Configure,
     SortBy
 } from 'react-instantsearch-hooks-web'
-import CustomHits from './Hits'
+import CustomInfiniteHits from './Hits'
 // import CustomCurrentRefinements from './CustomCurrentRefinements'
 import { ReactElement, useEffect, useRef, useState } from 'react'
 import { Filter } from 'react-bootstrap-icons'
@@ -13,15 +13,24 @@ import { SearchDiv } from './Search.styled'
 import localizations from '../../lib/localizations'
 import { InstantMeiliSearchInstance } from '@meilisearch/instant-meilisearch'
 import CustomCurrentRefinements from './CustomCurrentRefinements'
+import { HitConfig } from '../../lib/types'
+
 
 interface Props {
     locale: 'en' | 'fr',
     children: ReactElement | ReactElement[],
     searchClient: InstantMeiliSearchInstance,
-    indexName: string
+    indexName: string,
+    hitConfig: HitConfig
 }
 
-const Search: React.FC<Props> = ({ indexName, locale, children, searchClient }) => {
+const Search: React.FC<Props> = ({
+    indexName,
+    locale,
+    children,
+    searchClient,
+    hitConfig
+}) => {
     const [displayFilterMenu, setDisplayFilterMenu] = useState(false)
     const [isMobile, setMobile] = useState(true)
 
@@ -112,8 +121,9 @@ const Search: React.FC<Props> = ({ indexName, locale, children, searchClient }) 
                         <CustomCurrentRefinements
                             locale={locale}
                         />
-                        <CustomHits
+                        <CustomInfiniteHits
                             locale={locale}
+                            hitConfig={hitConfig}
                         />
                     </div>
                 </InstantSearch>

@@ -2,9 +2,11 @@ import HitComponent from './Hit'
 import localizations from '../../../lib/localizations'
 import { useEffect, useState } from 'react'
 import { UseInfiniteHitsProps, useInfiniteHits } from 'react-instantsearch-hooks'
+import { HitConfig } from '../../../lib/types'
 
 interface Props extends UseInfiniteHitsProps {
-    locale: 'en' | 'fr'
+    locale: 'en' | 'fr',
+    hitConfig: HitConfig
 }
 
 const CustomInfiniteHits: React.FC<Props> = (props) => {
@@ -57,7 +59,14 @@ const CustomInfiniteHits: React.FC<Props> = (props) => {
     return (
         <>
             <ul className='hitList'>
-                {hits.map((hit) => <HitComponent key={hit.id as number} locale={locale} hit={hit} />)}
+                {hits.map((hit) => (
+                    <HitComponent
+                        key={hit.id as number}
+                        locale={locale}
+                        hit={hit}
+                        hitConfig={props.hitConfig}
+                    />
+                ))}
             </ul>
             {handleButton()}
         </>

@@ -1,4 +1,5 @@
 import { ParsedUrlQuery } from 'querystring'
+import { ReactElement } from 'react'
 
 export type Locale = 'en' | 'fr'
 
@@ -115,3 +116,19 @@ export interface NumberFacet extends StringFacet {
 export type Facet = StringFacet | NumberFacet
 
 export type CurrentPageProps = Document | Page | 'search'
+
+interface HitLeftColumnItem {
+    attribute: string,
+    icon: ReactElement,
+    caption: string,
+    renderDisplay?: (arg: any) => string | ReactElement
+  }
+  
+// TODO: For Monday!
+export interface HitConfig {
+    leftColumnItems: HitLeftColumnItem[],
+    rightPanel: {
+        attribute: string,
+        label: string
+    }
+}
