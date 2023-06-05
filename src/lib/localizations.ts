@@ -118,5 +118,9 @@ export default {
   keywords: {
     en: 'Keywords',
     fr: 'Mots-clé'
+  },
+  archive: {
+    en: 'Archive',
+    fr: 'Archive'
   }
 }

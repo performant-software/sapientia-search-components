@@ -1,5 +1,4 @@
 import { Highlight } from 'react-instantsearch-hooks-web'
-import localizations from '../../../lib/localizations'
 import { HitConfig } from '../../../lib/types'
 
 interface Props {
@@ -8,11 +7,11 @@ interface Props {
     // code in this component works fine 🤷‍♂️
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     hit: any,
-    hitConfig: HitConfig,
-    locale: 'en' | 'fr'
+    hitConfig: HitConfig
 }
 
-const Hit = ({ hit, hitConfig, locale }: Props) => {
+const Hit = ({ hit, hitConfig }: Props) => {
+    console.log(hitConfig)
     return (
         <a className='hitLink'>
             <li className='hit'>
@@ -38,10 +37,10 @@ const Hit = ({ hit, hitConfig, locale }: Props) => {
                 </div>
                 <div className='right'>
                     <div className='summary'>
-                        <h3>{localizations.text[locale]}</h3>
+                        <h3>{hitConfig.rightPanel.label}</h3>
                         <p>
                             <Highlight
-                                attribute='texte'
+                                attribute={hitConfig.rightPanel.attribute}
                                 hit={hit}
                                 highlightedTagName='mark'
                             />
