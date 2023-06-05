@@ -124,11 +124,12 @@ interface HitLeftColumnItem {
     renderDisplay?: (arg: any) => string | ReactElement
   }
   
-// TODO: For Monday!
 export interface HitConfig {
     leftColumnItems: HitLeftColumnItem[],
     rightPanel: {
         attribute: string,
         label: string
-    }
+    },
+    headlineAttribute: string,
+    renderHeadlineAttribute?: (arg: any) => string | ReactElement
 }

@@ -262,7 +262,7 @@ padding: 10px;
       padding: 0;
   }
 
-  .numberOrder {
+  .headline {
       font-size: 1.2rem;
       display: flex;
       flex-flow: row-reverse;

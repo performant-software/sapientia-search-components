@@ -1,7 +1,7 @@
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch"
 import Search from "./Search"
 import GlobalStyle from "./global.styled"
-import { RefinementList } from "react-instantsearch-hooks-web"
+import { Highlight, RefinementList } from "react-instantsearch-hooks-web"
 import Panel from "./Search/Panel"
 import localizations from "../lib/localizations"
 import 'instantsearch.css/themes/reset.css'
@@ -27,12 +27,12 @@ interface Props {
 const SuppliquePolitique: React.FC<Props> = ({ locale }) => {
   const hitConfig: HitConfig = {
     leftColumnItems: [
-      // {
-      //   attribute: 'date',
-      //   icon: <Calendar4Event />,
-      //   caption: localizations.date[locale],
-      //   renderDisplay: (item) => handleDate(item)
-      // },
+      {
+        attribute: 'date',
+        icon: <Calendar4Event />,
+        caption: localizations.date[locale],
+        renderDisplay: (item) => handleDate(item)
+      },
       {
         attribute: 'town',
         icon: <Building />,
@@ -61,7 +61,18 @@ const SuppliquePolitique: React.FC<Props> = ({ locale }) => {
     rightPanel: {
       attribute: 'texte',
       label: localizations.text[locale]
-    }
+    },
+    headlineAttribute: 'number_order',
+    renderHeadlineAttribute: (hit) => (
+      <span>
+        #
+        <Highlight
+          attribute='number_order'
+          hit={hit}
+          highlightedTagName='mark'
+        />
+      </span>
+    )
   }
 
   return (

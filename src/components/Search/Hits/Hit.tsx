@@ -1,13 +1,5 @@
 import { Highlight } from 'react-instantsearch-hooks-web'
-import type { SearchResult } from '../../../lib/supplique_types'
 import localizations from '../../../lib/localizations'
-import {
-    Calendar4Event,
-    GeoAlt,
-    Bank,
-    Person,
-    Building
-} from 'react-bootstrap-icons'
 import { HitConfig } from '../../../lib/types'
 
 interface Props {
@@ -25,24 +17,19 @@ const Hit = ({ hit, hitConfig, locale }: Props) => {
         <a className='hitLink'>
             <li className='hit'>
                 <div className='left'>
-                    <h2 className='numberOrder'>
-                        <span>
-                            #
-                            <Highlight
-                                attribute='number_order'
-                                hit={hit}
-                                highlightedTagName='mark'
-                            />
-                        </span>
+                    <h2 className='headline'>
+                        {hitConfig.renderHeadlineAttribute
+                            ? hitConfig.renderHeadlineAttribute(hit)
+                            : hit[hitConfig.headlineAttribute]}
                     </h2>
                     {hitConfig.leftColumnItems.map((configItem) => (
                         <p className='hitData'>
                             <span title={configItem.caption}>
-                                <Building />
+                                {configItem.icon}
                             </span>
                             <strong>
                                 {configItem.renderDisplay
-                                    ? configItem.renderDisplay(hit[configItem.attribute])
+                                    ? configItem.renderDisplay(hit)
                                     : hit[configItem.attribute]
                                 }
                             </strong>
