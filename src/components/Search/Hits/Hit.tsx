@@ -11,6 +11,7 @@ interface Props {
 }
 
 const Hit = ({ hit, hitConfig }: Props) => {
+    console.log(hit)
     return (
         <a className='hitLink'>
             <li className='hit'>

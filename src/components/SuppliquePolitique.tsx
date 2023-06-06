@@ -72,7 +72,14 @@ const SuppliquePolitique: React.FC<Props> = ({ locale }) => {
           highlightedTagName='mark'
         />
       </span>
-    )
+    ),
+    sortFields: [
+      { value: 'textes', label: localizations.relevance[locale] },
+      { value: 'textes:timestamp:asc', label: localizations.chronologicalAsc[locale] },
+      { value: 'textes:timestamp:desc', label: localizations.chronologicalDesc[locale] },
+      { value: 'textes:number_order:asc', label: localizations.numberOrderAsc[locale] },
+      { value: 'textes:number_order:desc', label: localizations.numberOrderDesc[locale] }
+    ]
   }
 
   return (

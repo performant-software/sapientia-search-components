@@ -30,7 +30,7 @@ const Bischoff: React.FC<Props> = ({ locale }) => {
         attribute: 'archive.name',
         icon: <Building />,
         caption: localizations.archive[locale],
-        renderDisplay: (item: any) => displayAttribute(item, 'archive.name', locale)
+        renderDisplay: (item: any) => displayAttribute(item, 'archive', locale)
       },
       {
         attribute: 'OrigDate',
@@ -80,6 +80,11 @@ const Bischoff: React.FC<Props> = ({ locale }) => {
         indexName="bischoff"
         hitConfig={hitConfig}
       >
+        <Panel header={localizations.works[locale]}>
+          <RefinementList
+            attribute="works.title"
+          />
+        </Panel>
         <Panel header={localizations.origDate[locale]}>
           <RefinementList
             attribute="OrigDate"
@@ -102,7 +107,7 @@ const Bischoff: React.FC<Props> = ({ locale }) => {
         </Panel>
         <Panel header={localizations.archive[locale]}>
           <RefinementList
-            attribute="archive.name"
+              attribute="archive"
             />
         </Panel>
         <Panel header={localizations.shelfmarks[locale]}>

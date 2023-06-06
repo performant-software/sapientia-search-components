@@ -21,6 +21,10 @@ padding: 10px;
   padding: 0;
 }
 
+.ais-RefinementList-labelText {
+  max-width: 260px;
+}
+
 .currentRefinement {
   background: #eee;
   border: none;

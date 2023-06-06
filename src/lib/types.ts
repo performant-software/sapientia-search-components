@@ -131,5 +131,9 @@ export interface HitConfig {
         label: string
     },
     headlineAttribute: string,
-    renderHeadlineAttribute?: (arg: any) => string | ReactElement
+    renderHeadlineAttribute?: (arg: any) => string | ReactElement,
+    sortFields?: {
+        value: string,
+        label: string
+    }[]
 }
