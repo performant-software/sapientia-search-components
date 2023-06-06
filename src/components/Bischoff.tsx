@@ -5,9 +5,10 @@ import 'instantsearch.css/themes/satellite.css'
 import { useMemo } from "react";
 import Search from './Search';
 import localizations from "../lib/localizations";
-import { Highlight } from "react-instantsearch-hooks-web";
-import { Building } from "react-bootstrap-icons";
+import { Highlight, RefinementList } from "react-instantsearch-hooks-web";
+import { Book, Building, Calendar, MapFill } from "react-bootstrap-icons";
 import { displayAttribute } from "../lib/react_helpers";
+import Panel from "./Search/Panel";
 
 const searchClient = instantMeiliSearch(
   import.meta.env.VITE_APP_MEILI_URL,
@@ -30,6 +31,22 @@ const Bischoff: React.FC<Props> = ({ locale }) => {
         icon: <Building />,
         caption: localizations.archive[locale],
         renderDisplay: (item: any) => displayAttribute(item, 'archive.name', locale)
+      },
+      {
+        attribute: 'OrigDate',
+        icon: <Calendar />,
+        caption: localizations.origDate[locale]
+      },
+      {
+        attribute: 'origPlace',
+        icon: <MapFill />,
+        caption: localizations.origPlace[locale]
+      },
+      {
+        attribute: 'works',
+        icon: <Book />,
+        caption: localizations.works[locale],
+        renderDisplay: (item) => item.works.map((w: { title: string }) => w.title).join(', ')
       }
     ],
     rightPanel: {
@@ -63,7 +80,41 @@ const Bischoff: React.FC<Props> = ({ locale }) => {
         indexName="bischoff"
         hitConfig={hitConfig}
       >
-        <p>hi</p>
+        <Panel header={localizations.origDate[locale]}>
+          <RefinementList
+            attribute="OrigDate"
+          />
+        </Panel>
+        <Panel header={localizations.origPlace[locale]}>
+          <RefinementList
+            attribute="origPlace"
+          />
+        </Panel>
+        <Panel header={localizations.sections[locale]}>
+          <RefinementList
+            attribute="sections.shelfmark_sections_id.name"
+          />
+        </Panel>
+        <Panel header={localizations.provenance[locale]}>
+          <RefinementList
+            attribute="provenance"
+          />
+        </Panel>
+        <Panel header={localizations.archive[locale]}>
+          <RefinementList
+            attribute="archive.name"
+            />
+        </Panel>
+        <Panel header={localizations.shelfmarks[locale]}>
+          <RefinementList
+            attribute="shelfmark"
+          />
+        </Panel>
+        <Panel header={localizations.formerShelfmarks[locale]}>
+          <RefinementList
+            attribute="former_shelfmark"
+          />
+        </Panel>
       </Search>
     </div>
   )

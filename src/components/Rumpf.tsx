@@ -2,7 +2,11 @@ import GlobalStyle from "./global.styled";
 import 'instantsearch.css/themes/reset.css'
 import 'instantsearch.css/themes/satellite.css'
 
-const Rumpf: React.FC = () => {
+interface Props {
+  locale: 'fr' | 'en'
+}
+
+const Rumpf: React.FC<Props> = ({ locale }) => {
   return (
     <div>
       <GlobalStyle />

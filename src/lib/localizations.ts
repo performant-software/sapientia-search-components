@@ -122,5 +122,37 @@ export default {
   archive: {
     en: 'Archive',
     fr: 'Archive'
+  },
+  origDate: {
+    en: 'Original Date',
+    fr: '???'
+  },
+  origPlace: {
+    en: 'Original Place',
+    fr: '???'
+  },
+  works: {
+    en: 'Works',
+    fr: '???'
+  },
+  formerShelfmarks: {
+    en: 'Former Shelfmarks',
+    fr: '???'
+  },
+  shelfmarks: {
+    en: 'Shelfmarks',
+    fr: '???'
+  },
+  shelfmarkSections: {
+    en: 'Shelfmark Sections',
+    fr: '???'
+  },
+  provenance: {
+    en: 'Provenance',
+    fr: '???'
+  },
+  sections: {
+    en: 'Section',
+    fr: '???'
   }
 }
