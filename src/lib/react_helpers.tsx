@@ -11,6 +11,32 @@ export const handleDate = (hit: any) => {
   }
 }
 
+export const displayNestedAttribute = (hit: any, name: string, locale: 'en' | 'fr') => {
+  const splitName = name.split('.')
+
+  let item = hit
+  while (splitName.length > 0) {
+    if (item[splitName[0]]) {
+      item = item[splitName[0]]
+      splitName.shift()
+    } else {
+      item = null
+      break
+    }
+  }
+
+  if (item) {
+    return (
+      <Highlight
+        attribute={[name]}
+        hit={hit}
+      />
+    )
+  } else {
+    return <span><em>{localizations.emptyField[locale]}</em></span>
+  }
+}
+
 export const displayAttribute = (hit: any, name: string, locale: 'en' | 'fr') => {
   if (hit[name]) {
     return (

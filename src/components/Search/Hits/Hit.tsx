@@ -11,16 +11,20 @@ interface Props {
 }
 
 const Hit = ({ hit, hitConfig }: Props) => {
-    console.log(hit)
     return (
         <a className='hitLink'>
             <li className='hit'>
                 <div className='left'>
-                    <h2 className='headline'>
-                        {hitConfig.renderHeadlineAttribute
-                            ? hitConfig.renderHeadlineAttribute(hit)
-                            : hit[hitConfig.headlineAttribute]}
-                    </h2>
+                    {hitConfig.headlineAttribute
+                        ? (
+                            <h2 className='headline'>
+                                {hitConfig.renderHeadlineAttribute
+                                    ? hitConfig.renderHeadlineAttribute(hit)
+                                    : hit[hitConfig.headlineAttribute]}
+                            </h2>
+                            )
+                        : null
+                        }
                     {hitConfig.leftColumnItems.map((configItem) => {
                         if (configItem.renderDisplay || hit[configItem.attribute])
                             return (

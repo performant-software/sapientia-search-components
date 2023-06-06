@@ -154,5 +154,21 @@ export default {
   sections: {
     en: 'Section',
     fr: '???'
+  },
+  title: {
+    en: 'Title',
+    fr: 'Titre'
+  },
+  genericTitle: {
+    en: 'Generic Title',
+    fr: '???'
+  },
+  publicationDate: {
+    en: 'Publication Date',
+    fr: '???'
+  },
+  publicationLocation: {
+    en: 'Publication Location',
+    fr: '???'
   }
 }

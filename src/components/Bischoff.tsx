@@ -76,7 +76,7 @@ const Bischoff: React.FC<Props> = ({ locale }) => {
       <GlobalStyle />
       <Search
         searchClient={searchClient}
-        locale='fr'
+        locale={locale}
         indexName="bischoff"
         hitConfig={hitConfig}
       >

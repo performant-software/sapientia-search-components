@@ -130,7 +130,7 @@ export interface HitConfig {
         attribute: string,
         label: string
     },
-    headlineAttribute: string,
+    headlineAttribute?: string,
     renderHeadlineAttribute?: (arg: any) => string | ReactElement,
     sortFields?: {
         value: string,
