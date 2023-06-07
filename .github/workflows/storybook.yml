@@ -3,7 +3,9 @@ name: Build and deploy to GitHub pages for testing
 on:
   push:
     branches:
-      - main # Trigger the action only on PR merges into main
+      - main
+permissions:
+  contents: write
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
