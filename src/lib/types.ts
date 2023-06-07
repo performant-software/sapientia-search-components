@@ -123,12 +123,12 @@ interface HitLeftColumnItem {
     caption: string,
     renderDisplay?: (arg: any) => string | ReactElement
   }
-  
+
 export interface HitConfig {
     leftColumnItems: HitLeftColumnItem[],
     rightPanel: {
         attribute: string,
-        label: string
+        label?: string
     },
     headlineAttribute?: string,
     renderHeadlineAttribute?: (arg: any) => string | ReactElement,

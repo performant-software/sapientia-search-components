@@ -170,5 +170,33 @@ export default {
   publicationLocation: {
     en: 'Publication Location',
     fr: '???'
+  },
+  parentEdition: {
+    en: 'Parent Edition',
+    fr: '???'
+  },
+  status: {
+    en: 'Status',
+    fr: '???'
+  },
+  line: {
+    en: 'Line',
+    fr: '???'
+  },
+  author: {
+    en: 'Author',
+    fr: '???'
+  },
+  format: {
+    en: 'Format',
+    fr: '???'
+  },
+  publisher: {
+    en: 'Publisher',
+    fr: '???'
+  },
+  type: {
+    en: 'Type',
+    fr: '???'
   }
 }

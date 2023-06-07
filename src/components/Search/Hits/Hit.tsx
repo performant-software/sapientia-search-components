@@ -10,6 +10,14 @@ interface Props {
     hitConfig: HitConfig
 }
 
+const handleArrays = (field: unknown) => {
+    if (Array.isArray(field)) {
+        return <span>{field.join(', ')}</span>
+    } else {
+        return <span>{field as string}</span>
+    }
+}
+
 const Hit = ({ hit, hitConfig }: Props) => {
     return (
         <a className='hitLink'>
@@ -35,7 +43,7 @@ const Hit = ({ hit, hitConfig }: Props) => {
                                     <strong>
                                         {configItem.renderDisplay
                                             ? configItem.renderDisplay(hit)
-                                            : hit[configItem.attribute]
+                                            : handleArrays(hit[configItem.attribute])
                                         }
                                     </strong>
                                 </p>
@@ -44,7 +52,9 @@ const Hit = ({ hit, hitConfig }: Props) => {
                 </div>
                 <div className='right'>
                     <div className='summary'>
-                        <h3>{hitConfig.rightPanel.label}</h3>
+                        {hitConfig.rightPanel.label
+                            ? <h3>{hitConfig.rightPanel.label}</h3>
+                            : null}
                         <p>
                             <Highlight
                                 attribute={hitConfig.rightPanel.attribute}

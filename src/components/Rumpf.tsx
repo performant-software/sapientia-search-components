@@ -4,9 +4,11 @@ import 'instantsearch.css/themes/satellite.css'
 import Search from "./Search";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import { useMemo } from "react";
-import { Calendar, Pin, TextParagraph } from "react-bootstrap-icons";
+import { ArrowBarUp, Bank, BarChart, Calendar, FileEarmarkTextFill, Folder, Person, Pin, TextParagraph } from "react-bootstrap-icons";
 import localizations from "../lib/localizations";
 import { displayAttribute, displayNestedAttribute, handleDate } from "../lib/react_helpers";
+import Panel from "./Search/Panel";
+import { RefinementList } from "react-instantsearch-hooks-web";
 
 const searchClient = instantMeiliSearch(
   import.meta.env.VITE_APP_MEILI_URL,
@@ -32,19 +34,53 @@ const Rumpf: React.FC<Props> = ({ locale }) => {
       {
         attribute: 'publication_date',
         icon: <Calendar />,
-        caption: localizations.publicationDate[locale],
-        render: (item: any) => handleDate(item)
+        caption: localizations.publicationDate[locale]
       },
       {
         attribute: 'publication_location.name',
         icon: <Pin />,
         caption: localizations.publicationLocation[locale],
-        render: (item: any) => displayNestedAttribute(item, 'publication_location.name', locale)
+        renderDisplay: (item: any) => displayNestedAttribute(item, 'publication_location.name', locale)
+      },
+      {
+        attribute: 'parent_edition.title',
+        icon: <ArrowBarUp />,
+        caption: localizations.parentEdition[locale],
+        renderDisplay: (item: any) => displayNestedAttribute(item, 'parent_edition.title', locale)
+      },
+      {
+        attribute: 'status',
+        icon: <BarChart />,
+        caption: localizations.status[locale],
+        renderDisplay: (item: any) => displayAttribute(item, 'status', locale)
+      },
+      {
+        attribute: 'line',
+        icon: <FileEarmarkTextFill />,
+        caption: localizations.line[locale],
+        renderDisplay: (item: any) => displayAttribute(item, 'line', locale)
+      },
+      {
+        attribute: 'format',
+        icon: <Folder />,
+        caption: localizations.format[locale],
+        renderDisplay: (item: any) => displayAttribute(item, 'format', locale)
+      },
+      {
+        attribute: 'author_id.full_name',
+        icon: <Person />,
+        caption: localizations.author[locale],
+        renderDisplay: (item: any) => displayNestedAttribute(item, 'author_id.full_name', locale)
+      },
+      {
+        attribute: 'archives',
+        icon: <Bank />,
+        caption: localizations.archive[locale],
+        render: (item: any) => item.archives.join(', ')
       }
     ],
     rightPanel: {
-      attribute: 'title',
-      label: localizations.title[locale]
+      attribute: 'title'
     }
   }), [locale])
 
@@ -57,7 +93,41 @@ const Rumpf: React.FC<Props> = ({ locale }) => {
         indexName="rumpf"
         hitConfig={hitConfig}
       >
-
+        <Panel header={localizations.status[locale]}>
+          <RefinementList
+            attribute="status"
+          />
+        </Panel>
+        <Panel header={localizations.author[locale]}>
+          <RefinementList
+            attribute="author_id.full_name"
+          />
+        </Panel>
+        <Panel header={localizations.format[locale]}>
+          <RefinementList
+            attribute="format"
+          />
+        </Panel>
+        <Panel header={localizations.type[locale]}>
+          <RefinementList
+            attribute="type"
+          />
+        </Panel>
+        <Panel header={localizations.publicationDate[locale]}>
+          <RefinementList
+            attribute="publication_date"
+          />
+        </Panel>
+        <Panel header={localizations.publicationLocation[locale]}>
+          <RefinementList
+            attribute="publication_location.name"
+          />
+        </Panel>
+        <Panel header={localizations.archive[locale]}>
+          <RefinementList
+            attribute="archives"
+          />
+        </Panel>
       </Search>
     </div>
   )
