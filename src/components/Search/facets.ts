@@ -53,6 +53,81 @@ const facets: Facet[] = [
         name: 'keywords',
         type: FacetTypes.String,
         label: locale.keywords
+    },
+    {
+        name: 'works.title',
+        type: FacetTypes.String,
+        label: locale.works
+    },
+    {
+        name: 'OrigDate',
+        type: FacetTypes.String,
+        label: locale.origDate
+    },
+    {
+        name: 'origPlace',
+        type: FacetTypes.String,
+        label: locale.origPlace
+    },
+    {
+        name: 'sections.shelfmark_sections_id.name',
+        type: FacetTypes.String,
+        label: locale.shelfmarkSections
+    },
+    {
+        name: 'provenance',
+        type: FacetTypes.String,
+        label: locale.provenance
+    },
+    {
+        name: 'archive',
+        type: FacetTypes.String,
+        label: locale.archive
+    },
+    {
+        name: 'shelfmark',
+        type: FacetTypes.String,
+        label: locale.shelfmarks
+    },
+    {
+        name: 'former_shelfmark',
+        type: FacetTypes.String,
+        label: locale.formerShelfmarks
+    },
+    {
+        name: 'status',
+        type: FacetTypes.String,
+        label: locale.status
+    },
+    {
+        name: 'author_id.full_name',
+        type: FacetTypes.String,
+        label: locale.author
+    },
+    {
+        name: 'format',
+        type: FacetTypes.String,
+        label: locale.format
+    },
+    {
+        name: 'type',
+        type: FacetTypes.String,
+        label: locale.type
+    },
+    {
+        name: 'publication_date',
+        type: FacetTypes.String,
+        label: locale.publicationDate
+    },
+    {
+        name: 'publication_location.name',
+        type: FacetTypes.String,
+        label: locale.publicationLocation
+    },
+    {
+        name: 'archives',
+        type: FacetTypes.String,
+        label: locale.archive
     }
 ]
 
