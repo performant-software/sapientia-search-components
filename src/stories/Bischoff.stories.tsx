@@ -6,4 +6,6 @@ export default {
   title: 'SearchComponents/Bischoff',
 } as Meta;
 
-export const Default: React.FC = () => <Bischoff locale='en' />;
+export const French: React.FC = () => <Bischoff locale='fr' />;
+
+export const English: React.FC = () => <Bischoff locale='en' />;

@@ -6,4 +6,6 @@ export default {
   title: 'SearchComponents/Rumpf',
 } as Meta;
 
-export const Default: React.FC = () => <Rumpf locale='en' />;
+export const French: React.FC = () => <Rumpf locale='fr' />;
+
+export const English: React.FC = () => <Rumpf locale='en' />;

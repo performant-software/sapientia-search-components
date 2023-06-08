@@ -5,7 +5,7 @@ import Search from "./Search";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import { useMemo } from "react";
 import { ArrowBarUp, Bank, BarChart, Calendar, FileEarmarkTextFill, Folder, Person, Pin, TextParagraph } from "react-bootstrap-icons";
-import localizations from "../lib/localizations";
+import localizations, { getLocalizedValues } from "../lib/localizations";
 import { displayAttribute, displayNestedAttribute, handleDate } from "../lib/react_helpers";
 import Panel from "./Search/Panel";
 import { RefinementList } from "react-instantsearch-hooks-web";
@@ -96,6 +96,7 @@ const Rumpf: React.FC<Props> = ({ locale }) => {
         <Panel header={localizations.status[locale]}>
           <RefinementList
             attribute="status"
+            transformItems={items => getLocalizedValues(items, locale)}
           />
         </Panel>
         <Panel header={localizations.author[locale]}>
@@ -106,11 +107,13 @@ const Rumpf: React.FC<Props> = ({ locale }) => {
         <Panel header={localizations.format[locale]}>
           <RefinementList
             attribute="format"
+            transformItems={items => getLocalizedValues(items, locale)}
           />
         </Panel>
         <Panel header={localizations.type[locale]}>
           <RefinementList
             attribute="type"
+            transformItems={items => getLocalizedValues(items, locale)}
           />
         </Panel>
         <Panel header={localizations.publicationDate[locale]}>

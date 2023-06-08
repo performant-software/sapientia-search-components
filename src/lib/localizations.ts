@@ -1,4 +1,4 @@
-export default {
+const localizations = {
   commandement: {
     en: 'Commandment',
     fr: 'Commandement'
@@ -198,5 +198,37 @@ export default {
   type: {
     en: 'Type',
     fr: '???'
+  },
+  draft: {
+    en: 'Draft',
+    fr: '???'
+  },
+  published: {
+    en: 'Published',
+    fr: '???'
+  },
+  archived: {
+    en: 'Archived',
+    fr: '???'
+  },
+  print: {
+    en: 'Print',
+    fr: '???'
+  },
+  manuscript: {
+    en: 'Manuscript',
+    fr: '???'
   }
 }
+
+// Helper function for transformItems prop on RefinementList
+export const getLocalizedValues = (items: any[], locale: 'en' | 'fr') => (
+  items.map(i => ({
+    ...i,
+    label: localizations[i.value.toLocaleLowerCase() as keyof typeof localizations]
+      ? localizations[i.value.toLocaleLowerCase() as keyof typeof localizations][locale]
+      : i.label
+  }))
+);
+
+export default localizations;
