@@ -41,7 +41,10 @@ const Hit = ({ hit, hitConfig, onHitClick }: Props) => {
                     {hitConfig.leftColumnItems.map((configItem) => {
                         if (configItem.renderDisplay || hit[configItem.attribute])
                             return (
-                                <p className='hitData'>
+                                <p
+                                    className='hitData'
+                                    key={configItem.attribute}
+                                >
                                     <span title={configItem.caption}>
                                         {configItem.icon}
                                     </span>
