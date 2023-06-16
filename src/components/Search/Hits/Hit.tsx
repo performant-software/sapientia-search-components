@@ -7,7 +7,8 @@ interface Props {
     // code in this component works fine 🤷‍♂️
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     hit: any,
-    hitConfig: HitConfig
+    hitConfig: HitConfig,
+    locale: 'en' | 'fr'
 }
 
 const handleArrays = (field: unknown) => {

@@ -6,7 +6,7 @@ import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import { useMemo } from "react";
 import { ArrowBarUp, Bank, BarChart, Calendar, FileEarmarkTextFill, Folder, Person, Pin, TextParagraph } from "react-bootstrap-icons";
 import localizations, { getLocalizedValues } from "../lib/localizations";
-import { displayAttribute, displayNestedAttribute, handleDate } from "../lib/react_helpers";
+import { displayAttribute, displayNestedAttribute } from "../lib/react_helpers";
 import Panel from "./Search/Panel";
 import { RefinementList } from "react-instantsearch-hooks-web";
 
