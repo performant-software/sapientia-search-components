@@ -15504,7 +15504,6 @@ const h1 = [
     refine: r
   } = zg(e), { locale: n } = e, i = (s) => {
     var l, f, h;
-    console.log(s);
     const c = (l = h1.find((d) => d.name === s.attribute)) == null ? void 0 : l.label[n];
     let u;
     if (p1(s)) {

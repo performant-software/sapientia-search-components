@@ -11,7 +11,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/main.ts'),
       name: 'SapientiaSearchComponents',
       // the proper extensions will be added
-      fileName: 'sapientia-search.js',
+      fileName: 'sapientia-search',
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
