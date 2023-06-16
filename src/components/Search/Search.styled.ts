@@ -74,7 +74,6 @@ padding: 10px;
 
 .hit {
   width: 100%;
-  max-height: 380px;
   padding: 16px;
   display: grid;
   grid-template-columns: 1fr 2fr;
