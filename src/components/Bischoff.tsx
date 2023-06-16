@@ -24,7 +24,7 @@ interface Props {
   onHitClick?: (arg: any) => void
 }
 
-const Bischoff: React.FC<Props> = ({ locale }) => {
+const Bischoff: React.FC<Props> = ({ locale, onHitClick }) => {
   const hitConfig = useMemo(() => ({
     leftColumnItems: [
       {
@@ -79,6 +79,7 @@ const Bischoff: React.FC<Props> = ({ locale }) => {
         locale={locale}
         indexName="bischoff"
         hitConfig={hitConfig}
+        onHitClick={onHitClick}
       >
         <Panel header={localizations.works[locale]}>
           <RefinementList

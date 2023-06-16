@@ -24,7 +24,7 @@ interface Props {
   onHitClick?: (arg: any) => void
 }
 
-const Rumpf: React.FC<Props> = ({ locale }) => {
+const Rumpf: React.FC<Props> = ({ locale, onHitClick }) => {
   const hitConfig = useMemo(() => ({
     leftColumnItems: [
       {
@@ -92,6 +92,7 @@ const Rumpf: React.FC<Props> = ({ locale }) => {
         locale={locale}
         indexName="rumpf"
         hitConfig={hitConfig}
+        onHitClick={onHitClick}
       >
         <Panel header={localizations.status[locale]}>
           <RefinementList

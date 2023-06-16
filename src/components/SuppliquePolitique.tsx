@@ -25,7 +25,7 @@ interface Props {
   onHitClick?: (arg: any) => void
 }
 
-const SuppliquePolitique: React.FC<Props> = ({ locale }) => {
+const SuppliquePolitique: React.FC<Props> = ({ locale, onHitClick }) => {
   const hitConfig: HitConfig = {
     leftColumnItems: [
       {
@@ -90,6 +90,7 @@ const SuppliquePolitique: React.FC<Props> = ({ locale }) => {
         locale='fr'
         indexName="textes"
         hitConfig={hitConfig}
+        onHitClick={onHitClick}
       >
         <Panel header={localizations.number_of_order[locale]}>
           <CustomRangeSlider

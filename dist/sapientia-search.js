@@ -15664,14 +15664,14 @@ const h1 = [
   {
     primaryKey: "id"
   }
-), y1 = ({ locale: e }) => {
-  const t = La(() => ({
+), y1 = ({ locale: e, onHitClick: t }) => {
+  const r = La(() => ({
     leftColumnItems: [
       {
         attribute: "archive.name",
         icon: /* @__PURE__ */ A.jsx(Xc, {}),
         caption: G.archive[e],
-        renderDisplay: (r) => Dt(r, "archive", e)
+        renderDisplay: (n) => Dt(n, "archive", e)
       },
       {
         attribute: "OrigDate",
@@ -15687,7 +15687,7 @@ const h1 = [
         attribute: "works",
         icon: /* @__PURE__ */ A.jsx(b0, {}),
         caption: G.works[e],
-        renderDisplay: (r) => r.works.map((n) => n.title).join(", ")
+        renderDisplay: (n) => n.works.map((i) => i.title).join(", ")
       }
     ],
     rightPanel: {
@@ -15695,13 +15695,13 @@ const h1 = [
       label: G.text[e]
     },
     headlineAttribute: "catalog_number",
-    renderHeadlineAttribute: (r) => r.catalog_number ? /* @__PURE__ */ A.jsxs("span", { children: [
+    renderHeadlineAttribute: (n) => n.catalog_number ? /* @__PURE__ */ A.jsxs("span", { children: [
       "#",
       /* @__PURE__ */ A.jsx(
         an,
         {
           attribute: "catalog_number",
-          hit: r,
+          hit: n,
           highlightedTagName: "mark"
         }
       )
@@ -15713,7 +15713,8 @@ const h1 = [
       searchClient: g1,
       locale: e,
       indexName: "bischoff",
-      hitConfig: t,
+      hitConfig: r,
+      onHitClick: t,
       children: [
         /* @__PURE__ */ A.jsx(Ne, { header: G.works[e], children: /* @__PURE__ */ A.jsx(
           We,
@@ -15773,8 +15774,8 @@ const h1 = [
   {
     primaryKey: "id"
   }
-), w1 = ({ locale: e }) => {
-  const t = La(() => ({
+), w1 = ({ locale: e, onHitClick: t }) => {
+  const r = La(() => ({
     leftColumnItems: [
       {
         attribute: "generic_title",
@@ -15790,43 +15791,43 @@ const h1 = [
         attribute: "publication_location.name",
         icon: /* @__PURE__ */ A.jsx(r1, {}),
         caption: G.publicationLocation[e],
-        renderDisplay: (r) => ji(r, "publication_location.name", e)
+        renderDisplay: (n) => ji(n, "publication_location.name", e)
       },
       {
         attribute: "parent_edition.title",
         icon: /* @__PURE__ */ A.jsx(u0, {}),
         caption: G.parentEdition[e],
-        renderDisplay: (r) => ji(r, "parent_edition.title", e)
+        renderDisplay: (n) => ji(n, "parent_edition.title", e)
       },
       {
         attribute: "status",
         icon: /* @__PURE__ */ A.jsx(v0, {}),
         caption: G.status[e],
-        renderDisplay: (r) => Dt(r, "status", e)
+        renderDisplay: (n) => Dt(n, "status", e)
       },
       {
         attribute: "line",
         icon: /* @__PURE__ */ A.jsx(F0, {}),
         caption: G.line[e],
-        renderDisplay: (r) => Dt(r, "line", e)
+        renderDisplay: (n) => Dt(n, "line", e)
       },
       {
         attribute: "format",
         icon: /* @__PURE__ */ A.jsx(W0, {}),
         caption: G.format[e],
-        renderDisplay: (r) => Dt(r, "format", e)
+        renderDisplay: (n) => Dt(n, "format", e)
       },
       {
         attribute: "author_id.full_name",
         icon: /* @__PURE__ */ A.jsx(Jc, {}),
         caption: G.author[e],
-        renderDisplay: (r) => ji(r, "author_id.full_name", e)
+        renderDisplay: (n) => ji(n, "author_id.full_name", e)
       },
       {
         attribute: "archives",
         icon: /* @__PURE__ */ A.jsx(Gc, {}),
         caption: G.archive[e],
-        render: (r) => r.archives.join(", ")
+        render: (n) => n.archives.join(", ")
       }
     ],
     rightPanel: {
@@ -15839,13 +15840,14 @@ const h1 = [
       searchClient: b1,
       locale: e,
       indexName: "rumpf",
-      hitConfig: t,
+      hitConfig: r,
+      onHitClick: t,
       children: [
         /* @__PURE__ */ A.jsx(Ne, { header: G.status[e], children: /* @__PURE__ */ A.jsx(
           We,
           {
             attribute: "status",
-            transformItems: (r) => Si(r, e)
+            transformItems: (n) => Si(n, e)
           }
         ) }),
         /* @__PURE__ */ A.jsx(Ne, { header: G.author[e], children: /* @__PURE__ */ A.jsx(
@@ -15858,14 +15860,14 @@ const h1 = [
           We,
           {
             attribute: "format",
-            transformItems: (r) => Si(r, e)
+            transformItems: (n) => Si(n, e)
           }
         ) }),
         /* @__PURE__ */ A.jsx(Ne, { header: G.type[e], children: /* @__PURE__ */ A.jsx(
           We,
           {
             attribute: "type",
-            transformItems: (r) => Si(r, e)
+            transformItems: (n) => Si(n, e)
           }
         ) }),
         /* @__PURE__ */ A.jsx(Ne, { header: G.publicationDate[e], children: /* @__PURE__ */ A.jsx(
@@ -17361,38 +17363,38 @@ const G1 = {
   {
     primaryKey: "id"
   }
-), Z1 = ({ locale: e }) => {
-  const t = {
+), Z1 = ({ locale: e, onHitClick: t }) => {
+  const r = {
     leftColumnItems: [
       {
         attribute: "date",
         icon: /* @__PURE__ */ A.jsx(T0, {}),
         caption: G.date[e],
-        renderDisplay: (r) => m1(r)
+        renderDisplay: (n) => m1(n)
       },
       {
         attribute: "town",
         icon: /* @__PURE__ */ A.jsx(Xc, {}),
         caption: G.city[e],
-        renderDisplay: (r) => Dt(r, "town.name", e)
+        renderDisplay: (n) => Dt(n, "town.name", e)
       },
       {
         attribute: "place_given",
         icon: /* @__PURE__ */ A.jsx(V0, {}),
         caption: G.place_given[e],
-        renderDisplay: (r) => Dt(r, "date_of_place.name", e)
+        renderDisplay: (n) => Dt(n, "date_of_place.name", e)
       },
       {
         attribute: "titulature",
         icon: /* @__PURE__ */ A.jsx(Gc, {}),
         caption: G.titulature[e],
-        renderDisplay: (r) => Dt(r, "titulature.full_name", e)
+        renderDisplay: (n) => Dt(n, "titulature.full_name", e)
       },
       {
         attribute: "commandement",
         icon: /* @__PURE__ */ A.jsx(Jc, {}),
         caption: G.commandement[e],
-        renderDisplay: (r) => Dt(r, "commandement.full_name", e)
+        renderDisplay: (n) => Dt(n, "commandement.full_name", e)
       }
     ],
     rightPanel: {
@@ -17400,13 +17402,13 @@ const G1 = {
       label: G.text[e]
     },
     headlineAttribute: "number_order",
-    renderHeadlineAttribute: (r) => /* @__PURE__ */ A.jsxs("span", { children: [
+    renderHeadlineAttribute: (n) => /* @__PURE__ */ A.jsxs("span", { children: [
       "#",
       /* @__PURE__ */ A.jsx(
         an,
         {
           attribute: "number_order",
-          hit: r,
+          hit: n,
           highlightedTagName: "mark"
         }
       )
@@ -17425,7 +17427,8 @@ const G1 = {
       searchClient: X1,
       locale: "fr",
       indexName: "textes",
-      hitConfig: t,
+      hitConfig: r,
+      onHitClick: t,
       children: [
         /* @__PURE__ */ A.jsx(Ne, { header: G.number_of_order[e], children: /* @__PURE__ */ A.jsx(
           Cn,
