@@ -26,7 +26,6 @@ const CustomCurrentRefinements: React.FC<Props> = (props) => {
 
     // Format refinement names and values for display
     const getValues = (item: CurrentRefinementsConnectorParamsItem) => {
-        console.log(item)
         const label = availableFacets.find(f => f.name === item.attribute)?.label[locale]
         let values: Array<string | number>
 
