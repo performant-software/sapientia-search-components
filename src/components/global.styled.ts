@@ -1,16 +1,13 @@
-import { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle = styled.div`
   @import url('https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer&family=Overpass&display=swap');
 
-  html,
-  body {
-    padding: 0;
-    margin: 0;
-    font-family: 'Overpass', sans-serif;
-    background: #f9f9f9;
-    text-rendering: optimizeLegibility;
-  }
+  padding: 0;
+  margin: 0;
+  font-family: 'Overpass', sans-serif;
+  background: #f9f9f9;
+  text-rendering: optimizeLegibility;
 
   h1, h2, h3, h4 {
     text-align: center;

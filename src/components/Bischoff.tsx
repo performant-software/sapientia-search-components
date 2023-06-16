@@ -73,8 +73,7 @@ const Bischoff: React.FC<Props> = ({ locale }) => {
   }}), [locale])
 
   return (
-    <div>
-      <GlobalStyle />
+    <GlobalStyle>
       <Search
         searchClient={searchClient}
         locale={locale}
@@ -122,7 +121,7 @@ const Bischoff: React.FC<Props> = ({ locale }) => {
           />
         </Panel>
       </Search>
-    </div>
+    </GlobalStyle>
   )
 }
 

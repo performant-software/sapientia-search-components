@@ -84,8 +84,7 @@ const SuppliquePolitique: React.FC<Props> = ({ locale }) => {
   }
 
   return (
-    <div>
-      <GlobalStyle />
+    <GlobalStyle>
       <Search
         searchClient={searchClient}
         locale='fr'
@@ -144,7 +143,7 @@ const SuppliquePolitique: React.FC<Props> = ({ locale }) => {
           />
         </Panel>
       </Search>
-    </div>
+    </GlobalStyle>
   )
 }
 
