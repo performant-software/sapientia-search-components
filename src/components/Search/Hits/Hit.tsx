@@ -8,7 +8,8 @@ interface Props {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     hit: any,
     hitConfig: HitConfig,
-    locale: 'en' | 'fr'
+    locale: 'en' | 'fr',
+    onHitClick?: (arg: any) => void
 }
 
 const handleArrays = (field: unknown) => {
@@ -19,9 +20,12 @@ const handleArrays = (field: unknown) => {
     }
 }
 
-const Hit = ({ hit, hitConfig }: Props) => {
+const Hit = ({ hit, hitConfig, onHitClick }: Props) => {
     return (
-        <a className='hitLink'>
+        <a
+            className='hitLink'
+            onClick={onHitClick ? () => onHitClick(hit) : () => null}
+        >
             <li className='hit'>
                 <div className='left'>
                     {hitConfig.headlineAttribute

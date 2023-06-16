@@ -21,7 +21,8 @@ const searchClient = instantMeiliSearch(
 )
 
 interface Props {
-  locale: 'fr' | 'en'
+  locale: 'fr' | 'en',
+  onHitClick?: (arg: any) => void
 }
 
 const SuppliquePolitique: React.FC<Props> = ({ locale }) => {

@@ -20,7 +20,8 @@ const searchClient = instantMeiliSearch(
 )
 
 interface Props {
-  locale: 'fr' | 'en'
+  locale: 'fr' | 'en',
+  onHitClick?: (arg: any) => void
 }
 
 const Bischoff: React.FC<Props> = ({ locale }) => {

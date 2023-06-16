@@ -6,7 +6,8 @@ import { HitConfig } from '../../../lib/types'
 
 interface Props extends UseInfiniteHitsProps {
     locale: 'en' | 'fr',
-    hitConfig: HitConfig
+    hitConfig: HitConfig,
+    onHitClick?: (arg: any) => void
 }
 
 const CustomInfiniteHits: React.FC<Props> = (props) => {
@@ -65,6 +66,7 @@ const CustomInfiniteHits: React.FC<Props> = (props) => {
                         locale={locale}
                         hit={hit}
                         hitConfig={props.hitConfig}
+                        onHitClick={props.onHitClick}
                     />
                 ))}
             </ul>

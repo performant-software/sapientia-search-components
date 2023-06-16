@@ -13293,29 +13293,36 @@ function Kb(e) {
   };
   return /* @__PURE__ */ W.createElement(Vb, ba({}, n, c));
 }
-const Gb = (e) => Array.isArray(e) ? /* @__PURE__ */ T.jsx("span", { children: e.join(", ") }) : /* @__PURE__ */ T.jsx("span", { children: e }), Xb = ({ hit: e, hitConfig: t }) => /* @__PURE__ */ T.jsx("a", { className: "hitLink", children: /* @__PURE__ */ T.jsxs("li", { className: "hit", children: [
-  /* @__PURE__ */ T.jsxs("div", { className: "left", children: [
-    t.headlineAttribute ? /* @__PURE__ */ T.jsx("h2", { className: "headline", children: t.renderHeadlineAttribute ? t.renderHeadlineAttribute(e) : e[t.headlineAttribute] }) : null,
-    t.leftColumnItems.map((r) => {
-      if (r.renderDisplay || e[r.attribute])
-        return /* @__PURE__ */ T.jsxs("p", { className: "hitData", children: [
-          /* @__PURE__ */ T.jsx("span", { title: r.caption, children: r.icon }),
-          /* @__PURE__ */ T.jsx("strong", { children: r.renderDisplay ? r.renderDisplay(e) : Gb(e[r.attribute]) })
-        ] });
-    })
-  ] }),
-  /* @__PURE__ */ T.jsx("div", { className: "right", children: /* @__PURE__ */ T.jsxs("div", { className: "summary", children: [
-    t.rightPanel.label ? /* @__PURE__ */ T.jsx("h3", { children: t.rightPanel.label }) : null,
-    /* @__PURE__ */ T.jsx("p", { children: /* @__PURE__ */ T.jsx(
-      an,
-      {
-        attribute: t.rightPanel.attribute,
-        hit: e,
-        highlightedTagName: "mark"
-      }
-    ) })
-  ] }) })
-] }) }), G = {
+const Gb = (e) => Array.isArray(e) ? /* @__PURE__ */ T.jsx("span", { children: e.join(", ") }) : /* @__PURE__ */ T.jsx("span", { children: e }), Xb = ({ hit: e, hitConfig: t, onHitClick: r }) => /* @__PURE__ */ T.jsx(
+  "a",
+  {
+    className: "hitLink",
+    onClick: r ? () => r(e) : () => null,
+    children: /* @__PURE__ */ T.jsxs("li", { className: "hit", children: [
+      /* @__PURE__ */ T.jsxs("div", { className: "left", children: [
+        t.headlineAttribute ? /* @__PURE__ */ T.jsx("h2", { className: "headline", children: t.renderHeadlineAttribute ? t.renderHeadlineAttribute(e) : e[t.headlineAttribute] }) : null,
+        t.leftColumnItems.map((n) => {
+          if (n.renderDisplay || e[n.attribute])
+            return /* @__PURE__ */ T.jsxs("p", { className: "hitData", children: [
+              /* @__PURE__ */ T.jsx("span", { title: n.caption, children: n.icon }),
+              /* @__PURE__ */ T.jsx("strong", { children: n.renderDisplay ? n.renderDisplay(e) : Gb(e[n.attribute]) })
+            ] });
+        })
+      ] }),
+      /* @__PURE__ */ T.jsx("div", { className: "right", children: /* @__PURE__ */ T.jsxs("div", { className: "summary", children: [
+        t.rightPanel.label ? /* @__PURE__ */ T.jsx("h3", { children: t.rightPanel.label }) : null,
+        /* @__PURE__ */ T.jsx("p", { children: /* @__PURE__ */ T.jsx(
+          an,
+          {
+            attribute: t.rightPanel.attribute,
+            hit: e,
+            highlightedTagName: "mark"
+          }
+        ) })
+      ] }) })
+    ] })
+  }
+), G = {
   commandement: {
     en: "Commandment",
     fr: "Commandement"
@@ -13572,7 +13579,8 @@ const Gb = (e) => Array.isArray(e) ? /* @__PURE__ */ T.jsx("span", { children: e
       {
         locale: i,
         hit: c,
-        hitConfig: e.hitConfig
+        hitConfig: e.hitConfig,
+        onHitClick: e.onHitClick
       },
       c.id
     )) }),
@@ -15593,19 +15601,20 @@ const m1 = [
   locale: t,
   children: r,
   searchClient: n,
-  hitConfig: i
+  hitConfig: i,
+  onHitClick: a
 }) => {
-  const [a, o] = Et(!1), [s, c] = Et(!0), u = at(null), l = () => {
-    u.current && s && o(!a);
+  const [o, s] = Et(!1), [c, u] = Et(!0), l = at(null), f = () => {
+    l.current && c && s(!o);
   };
   return Pt(() => {
-    const f = (d) => c(d.matches), h = window.matchMedia("(max-width: 800px)");
-    return h.addEventListener("change", f), c(h.matches), () => h.removeEventListener("change", f);
+    const h = (p) => u(p.matches), d = window.matchMedia("(max-width: 800px)");
+    return d.addEventListener("change", h), u(d.matches), () => d.removeEventListener("change", h);
   }, []), Pt(() => {
-    u.current && o(!s);
-  }, [s]), Pt(() => {
-    u.current && (a ? u.current.style.transform = "translateX(0)" : u.current.style.transform = "translateX(-120vw)");
-  }, [a]), /* @__PURE__ */ T.jsx(v1, { children: /* @__PURE__ */ T.jsx("div", { className: "search", children: /* @__PURE__ */ T.jsxs(
+    l.current && s(!c);
+  }, [c]), Pt(() => {
+    l.current && (o ? l.current.style.transform = "translateX(0)" : l.current.style.transform = "translateX(-120vw)");
+  }, [o]), /* @__PURE__ */ T.jsx(v1, { children: /* @__PURE__ */ T.jsx("div", { className: "search", children: /* @__PURE__ */ T.jsxs(
     Ng,
     {
       indexName: e,
@@ -15624,7 +15633,7 @@ const m1 = [
               "button",
               {
                 className: "filterButton",
-                onClick: () => l(),
+                onClick: () => f(),
                 children: /* @__PURE__ */ T.jsx(H0, {})
               }
             ),
@@ -15635,7 +15644,7 @@ const m1 = [
               }
             )
           ] }),
-          /* @__PURE__ */ T.jsx("div", { className: "filters", ref: u, children: i.sortFields ? /* @__PURE__ */ T.jsx(Ne, { header: G.sort[t], children: /* @__PURE__ */ T.jsx(
+          /* @__PURE__ */ T.jsx("div", { className: "filters", ref: l, children: i.sortFields ? /* @__PURE__ */ T.jsx(Ne, { header: G.sort[t], children: /* @__PURE__ */ T.jsx(
             Kb,
             {
               items: i.sortFields
@@ -15654,7 +15663,8 @@ const m1 = [
             Zb,
             {
               locale: t,
-              hitConfig: i
+              hitConfig: i,
+              onHitClick: a
             }
           )
         ] })
