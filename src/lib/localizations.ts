@@ -145,7 +145,7 @@ const localizations = {
   },
   shelfmarkSections: {
     en: 'Shelfmark Sections',
-    fr: '???'
+    fr: 'Sections de notation d\'étagère'
   },
   provenance: {
     en: 'Provenance',
