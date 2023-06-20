@@ -20,12 +20,12 @@ const searchClient = instantMeiliSearch(
   }
 )
 
-interface Props {
+export interface SuppliqueProps {
   locale: 'fr' | 'en',
   onHitClick?: (arg: any) => void
 }
 
-const SuppliquePolitique: React.FC<Props> = ({ locale, onHitClick }) => {
+const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick }) => {
   const hitConfig: HitConfig = {
     leftColumnItems: [
       {

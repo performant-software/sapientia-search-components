@@ -1,5 +1,6 @@
 import { Highlight } from 'react-instantsearch-hooks-web'
 import { HitConfig } from '../../../lib/types'
+import { ReactElement, useMemo } from 'react'
 
 interface Props {
     // No idea how to type the Hit - importing the types that
@@ -9,7 +10,9 @@ interface Props {
     hit: any,
     hitConfig: HitConfig,
     locale: 'en' | 'fr',
-    onHitClick?: (arg: any) => void
+    onHitClick?: (arg: any) => void,
+    hitWrapperComponent?: React.FC,
+    getHitWrapperProps?: (...args: any) => any
 }
 
 const handleArrays = (field: unknown) => {
@@ -20,12 +23,32 @@ const handleArrays = (field: unknown) => {
     }
 }
 
-const Hit = ({ hit, hitConfig, onHitClick }: Props) => {
+const LinkWrapper: React.FC<{
+    hit: any,
+    onHitClick?: (arg: any) => void,
+    children: ReactElement | ReactElement[]
+}> = ({ hit, onHitClick, children }) => (
+    <a
+        className='hitLink'
+        onClick={onHitClick ? () => onHitClick(hit) : () => null}
+    >
+        {children}
+    </a>
+)
+
+const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperProps }: Props) => {
+    const Wrapper = hitWrapperComponent || LinkWrapper
+
+    const wrapperProps = useMemo(() => {
+        if (getHitWrapperProps) {
+            return getHitWrapperProps(hit)
+        }
+
+        return { hit, onHitClick }
+    }, [getHitWrapperProps, hit, onHitClick])
+
     return (
-        <a
-            className='hitLink'
-            onClick={onHitClick ? () => onHitClick(hit) : () => null}
-        >
+        <Wrapper {...wrapperProps} className='hitLink'>
             <li className='hit'>
                 <div className='left'>
                     {hitConfig.headlineAttribute
@@ -73,7 +96,7 @@ const Hit = ({ hit, hitConfig, onHitClick }: Props) => {
                     </div>
                 </div>
             </li>
-        </a>
+        </Wrapper>
     )
 }
 

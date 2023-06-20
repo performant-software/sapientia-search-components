@@ -19,12 +19,12 @@ const searchClient = instantMeiliSearch(
   }
 )
 
-interface Props {
+export interface BischoffProps {
   locale: 'fr' | 'en',
   onHitClick?: (arg: any) => void
 }
 
-const Bischoff: React.FC<Props> = ({ locale, onHitClick }) => {
+const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick }) => {
   const hitConfig = useMemo(() => ({
     leftColumnItems: [
       {

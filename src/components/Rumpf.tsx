@@ -19,12 +19,12 @@ const searchClient = instantMeiliSearch(
   }
 )
 
-interface Props {
+export interface RumpfProps {
   locale: 'fr' | 'en',
   onHitClick?: (arg: any) => void
 }
 
-const Rumpf: React.FC<Props> = ({ locale, onHitClick }) => {
+const Rumpf: React.FC<RumpfProps> = ({ locale, onHitClick }) => {
   const hitConfig = useMemo(() => ({
     leftColumnItems: [
       {
