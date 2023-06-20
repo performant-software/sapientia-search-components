@@ -1,7 +1,7 @@
 /// <reference types="react" />
-interface Props {
+export interface RumpfProps {
     locale: 'fr' | 'en';
     onHitClick?: (arg: any) => void;
 }
-declare const Rumpf: React.FC<Props>;
+declare const Rumpf: React.FC<RumpfProps>;
 export default Rumpf;
