@@ -22,10 +22,12 @@ const searchClient = instantMeiliSearch(
 
 export interface SuppliqueProps {
   locale: 'fr' | 'en',
-  onHitClick?: (arg: any) => void
+  onHitClick?: (arg: any) => void,
+  hitWrapperComponent?: React.FC,
+  getHitWrapperProps?: (...args: any) => any
 }
 
-const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick }) => {
+const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick, hitWrapperComponent, getHitWrapperProps }) => {
   const hitConfig: HitConfig = {
     leftColumnItems: [
       {
@@ -91,6 +93,8 @@ const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick }) =>
         indexName="textes"
         hitConfig={hitConfig}
         onHitClick={onHitClick}
+        hitWrapperComponent={hitWrapperComponent}
+        getHitWrapperProps={getHitWrapperProps}
       >
         <Panel header={localizations.number_of_order[locale]}>
           <CustomRangeSlider

@@ -21,7 +21,9 @@ interface Props {
     searchClient: InstantMeiliSearchInstance,
     indexName: string,
     hitConfig: HitConfig
-    onHitClick?: (arg: any) => void
+    onHitClick?: (arg: any) => void,
+    hitWrapperComponent?: React.FC,
+    getHitWrapperProps?: (...args: any) => any
 }
 
 const Search: React.FC<Props> = ({
@@ -30,7 +32,9 @@ const Search: React.FC<Props> = ({
     children,
     searchClient,
     hitConfig,
-    onHitClick
+    onHitClick,
+    hitWrapperComponent,
+    getHitWrapperProps
 }) => {
     const [displayFilterMenu, setDisplayFilterMenu] = useState(false)
     const [isMobile, setMobile] = useState(true)
@@ -125,6 +129,8 @@ const Search: React.FC<Props> = ({
                             locale={locale}
                             hitConfig={hitConfig}
                             onHitClick={onHitClick}
+                            hitWrapperComponent={hitWrapperComponent}
+                            getHitWrapperProps={getHitWrapperProps}
                         />
                     </div>
                 </InstantSearch>

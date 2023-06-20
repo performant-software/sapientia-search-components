@@ -21,10 +21,12 @@ const searchClient = instantMeiliSearch(
 
 export interface BischoffProps {
   locale: 'fr' | 'en',
-  onHitClick?: (arg: any) => void
+  onHitClick?: (arg: any) => void,
+  hitWrapperComponent?: React.FC,
+  getHitWrapperProps?: (...args: any) => any
 }
 
-const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick }) => {
+const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperComponent, getHitWrapperProps }) => {
   const hitConfig = useMemo(() => ({
     leftColumnItems: [
       {
@@ -80,6 +82,8 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick }) => {
         indexName="bischoff"
         hitConfig={hitConfig}
         onHitClick={onHitClick}
+        hitWrapperComponent={hitWrapperComponent}
+        getHitWrapperProps={getHitWrapperProps}
       >
         <Panel header={localizations.works[locale]}>
           <RefinementList

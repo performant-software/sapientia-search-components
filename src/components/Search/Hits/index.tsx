@@ -7,7 +7,9 @@ import { HitConfig } from '../../../lib/types'
 interface Props extends UseInfiniteHitsProps {
     locale: 'en' | 'fr',
     hitConfig: HitConfig,
-    onHitClick?: (arg: any) => void
+    onHitClick?: (arg: any) => void,
+    hitWrapperComponent?: React.FC,
+    getHitWrapperProps?: (...args: any) => any
 }
 
 const CustomInfiniteHits: React.FC<Props> = (props) => {
@@ -67,6 +69,8 @@ const CustomInfiniteHits: React.FC<Props> = (props) => {
                         hit={hit}
                         hitConfig={props.hitConfig}
                         onHitClick={props.onHitClick}
+                        hitWrapperComponent={props.hitWrapperComponent}
+                        getHitWrapperProps={props.getHitWrapperProps}
                     />
                 ))}
             </ul>

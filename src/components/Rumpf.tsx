@@ -21,10 +21,12 @@ const searchClient = instantMeiliSearch(
 
 export interface RumpfProps {
   locale: 'fr' | 'en',
-  onHitClick?: (arg: any) => void
+  onHitClick?: (arg: any) => void,
+  hitWrapperComponent?: React.FC,
+  getHitWrapperProps?: (...args: any) => any
 }
 
-const Rumpf: React.FC<RumpfProps> = ({ locale, onHitClick }) => {
+const Rumpf: React.FC<RumpfProps> = ({ locale, onHitClick, hitWrapperComponent, getHitWrapperProps }) => {
   const hitConfig = useMemo(() => ({
     leftColumnItems: [
       {
@@ -93,6 +95,8 @@ const Rumpf: React.FC<RumpfProps> = ({ locale, onHitClick }) => {
         indexName="rumpf"
         hitConfig={hitConfig}
         onHitClick={onHitClick}
+        hitWrapperComponent={hitWrapperComponent}
+        getHitWrapperProps={getHitWrapperProps}
       >
         <Panel header={localizations.status[locale]}>
           <RefinementList

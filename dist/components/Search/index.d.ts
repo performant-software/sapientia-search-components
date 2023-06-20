@@ -8,6 +8,8 @@ interface Props {
     indexName: string;
     hitConfig: HitConfig;
     onHitClick?: (arg: any) => void;
+    hitWrapperComponent?: React.FC;
+    getHitWrapperProps?: (...args: any) => any;
 }
 declare const Search: React.FC<Props>;
 export default Search;
