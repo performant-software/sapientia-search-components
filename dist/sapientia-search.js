@@ -13417,35 +13417,35 @@ const Qb = (e) => Array.isArray(e) ? /* @__PURE__ */ T.jsx("span", { children: e
   },
   origDate: {
     en: "Original Date",
-    fr: "???"
+    fr: "Date Originale"
   },
   origPlace: {
     en: "Original Place",
-    fr: "???"
+    fr: "Lieu Originale"
   },
   works: {
     en: "Works",
-    fr: "???"
+    fr: "Oeuvres"
   },
   formerShelfmarks: {
     en: "Former Shelfmarks",
-    fr: "???"
+    fr: "Ancienne notation d'étagère"
   },
   shelfmarks: {
     en: "Shelfmarks",
-    fr: "???"
+    fr: "Notation d'étagère"
   },
   shelfmarkSections: {
     en: "Shelfmark Sections",
-    fr: "???"
+    fr: "Sections de notation d'étagère"
   },
   provenance: {
     en: "Provenance",
-    fr: "???"
+    fr: "Provenance"
   },
   sections: {
     en: "Section",
-    fr: "???"
+    fr: "Section"
   },
   title: {
     en: "Title",
@@ -13453,63 +13453,63 @@ const Qb = (e) => Array.isArray(e) ? /* @__PURE__ */ T.jsx("span", { children: e
   },
   genericTitle: {
     en: "Generic Title",
-    fr: "???"
+    fr: "Titre Générique"
   },
   publicationDate: {
     en: "Publication Date",
-    fr: "???"
+    fr: "Date d'édition"
   },
   publicationLocation: {
     en: "Publication Location",
-    fr: "???"
+    fr: "Lieu d'édition"
   },
   parentEdition: {
     en: "Parent Edition",
-    fr: "???"
+    fr: "Édition parente"
   },
   status: {
     en: "Status",
-    fr: "???"
+    fr: "Statut"
   },
   line: {
     en: "Line",
-    fr: "???"
+    fr: "Ligne"
   },
   author: {
     en: "Author",
-    fr: "???"
+    fr: "Auteur"
   },
   format: {
     en: "Format",
-    fr: "???"
+    fr: "Format"
   },
   publisher: {
     en: "Publisher",
-    fr: "???"
+    fr: "Éditeur"
   },
   type: {
     en: "Type",
-    fr: "???"
+    fr: "Type"
   },
   draft: {
     en: "Draft",
-    fr: "???"
+    fr: "Brouillon"
   },
   published: {
     en: "Published",
-    fr: "???"
+    fr: "Publié"
   },
   archived: {
     en: "Archived",
-    fr: "???"
+    fr: "Archivé"
   },
   print: {
     en: "Print",
-    fr: "???"
+    fr: "Imprimé"
   },
   manuscript: {
     en: "Manuscript",
-    fr: "???"
+    fr: "Manuscrit"
   }
 }, Oi = (e, t) => e.map((r) => ({
   ...r,
