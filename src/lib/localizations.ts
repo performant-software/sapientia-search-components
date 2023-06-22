@@ -139,13 +139,25 @@ const localizations = {
     en: 'Former Shelfmarks',
     fr: 'Ancienne notation d\'étagère'
   },
+  formerShelfmark: {
+    en: 'Former Shelfmark',
+    fr: 'Ancienne notation d\'étagère'
+  },
   shelfmarks: {
     en: 'Shelfmarks',
+    fr: 'Notation d\'étagère'
+  },
+  shelfmark: {
+    en: 'Shelfmark',
     fr: 'Notation d\'étagère'
   },
   shelfmarkSections: {
     en: 'Shelfmark Sections',
     fr: 'Sections de notation d\'étagère'
+  },
+  shelfmarkSection: {
+    en: 'Shelfmark Section',
+    fr: 'Section de notation d\'étagère'
   },
   provenance: {
     en: 'Provenance',
@@ -218,6 +230,38 @@ const localizations = {
   manuscript: {
     en: 'Manuscript',
     fr: 'Manuscrit'
+  },
+  catalogNumber: {
+    en: 'Catalog number',
+    fr: '???'
+  },
+  numberOfFolios: {
+    en: 'Number of folios',
+    fr: '???'
+  },
+  pageSize: {
+    en: 'Page size',
+    fr: '???'
+  },
+  textBlockSize: {
+    en: 'Text block size',
+    fr: '???'
+  },
+  numberOfLines: {
+    en: 'Number of lines',
+    fr: '???'
+  },
+  places: {
+    en: 'Places',
+    fr: '???'
+  },
+  dates: {
+    en: 'Dates',
+    fr: '???'
+  },
+  measures: {
+    en: 'Measures',
+    fr: '???'
   }
 }
 
