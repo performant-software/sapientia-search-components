@@ -13415,8 +13415,8 @@ const Qb = (e) => Array.isArray(e) ? /* @__PURE__ */ T.jsx("span", { children: e
     en: "Archive",
     fr: "Archive"
   },
-  archivePlace: {
-    en: "Archive Place",
+  archiveLocation: {
+    en: "Archive Location",
     fr: "???"
   },
   origDate: {
@@ -15508,7 +15508,7 @@ const p1 = [
   {
     name: "archive_place",
     type: Ce.String,
-    label: G.archivePlace
+    label: G.archiveLocation
   },
   {
     name: "shelfmark",
@@ -15736,14 +15736,14 @@ const p1 = [
         renderDisplay: (a) => Dt(a, "archive", e)
       },
       {
+        attribute: "archive_place",
+        icon: /* @__PURE__ */ T.jsx(G0, {}),
+        caption: G.archiveLocation[e]
+      },
+      {
         attribute: "OrigDate",
         icon: /* @__PURE__ */ T.jsx(Zc, {}),
         caption: G.origDate[e]
-      },
-      {
-        attribute: "archive_place",
-        icon: /* @__PURE__ */ T.jsx(G0, {}),
-        caption: G.archivePlace[e]
       },
       {
         attribute: "works",
@@ -15816,7 +15816,7 @@ const p1 = [
             attribute: "archive"
           }
         ) }),
-        /* @__PURE__ */ T.jsx(Ie, { header: G.archivePlace[e], children: /* @__PURE__ */ T.jsx(
+        /* @__PURE__ */ T.jsx(Ie, { header: G.archiveLocation[e], children: /* @__PURE__ */ T.jsx(
           We,
           {
             attribute: "archive_place"

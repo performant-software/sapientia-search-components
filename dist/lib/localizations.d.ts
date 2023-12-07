@@ -123,7 +123,7 @@ declare const localizations: {
         en: string;
         fr: string;
     };
-    archivePlace: {
+    archiveLocation: {
         en: string;
         fr: string;
     };

@@ -36,14 +36,14 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperCompo
         renderDisplay: (item: any) => displayAttribute(item, 'archive', locale)
       },
       {
+        attribute: 'archive_place',
+        icon: <MapFill />,
+        caption: localizations.archiveLocation[locale]
+      },
+      {
         attribute: 'OrigDate',
         icon: <Calendar />,
         caption: localizations.origDate[locale]
-      },
-      {
-        attribute: 'archive_place',
-        icon: <MapFill />,
-        caption: localizations.archivePlace[locale]
       },
       {
         attribute: 'works',
@@ -115,7 +115,7 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperCompo
               attribute="archive"
             />
         </Panel>
-        <Panel header={localizations.archivePlace[locale]}>
+        <Panel header={localizations.archiveLocation[locale]}>
           <RefinementList
             attribute="archive_place"
           />
