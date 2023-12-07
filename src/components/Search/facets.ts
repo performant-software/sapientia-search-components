@@ -85,6 +85,11 @@ const facets: Facet[] = [
         label: locale.archive
     },
     {
+        name: 'archive_place',
+        type: FacetTypes.String,
+        label: locale.archivePlace
+    },
+    {
         name: 'shelfmark',
         type: FacetTypes.String,
         label: locale.shelfmarks

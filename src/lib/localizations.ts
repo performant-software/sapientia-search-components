@@ -123,6 +123,10 @@ const localizations = {
     en: 'Archive',
     fr: 'Archive'
   },
+  archivePlace: {
+    en: 'Archive Place',
+    fr: '???'
+  },
   origDate: {
     en: 'Original Date',
     fr: 'Date Originale'

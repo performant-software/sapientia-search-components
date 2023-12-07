@@ -123,6 +123,10 @@ declare const localizations: {
         en: string;
         fr: string;
     };
+    archivePlace: {
+        en: string;
+        fr: string;
+    };
     origDate: {
         en: string;
         fr: string;
@@ -139,11 +143,23 @@ declare const localizations: {
         en: string;
         fr: string;
     };
+    formerShelfmark: {
+        en: string;
+        fr: string;
+    };
     shelfmarks: {
         en: string;
         fr: string;
     };
+    shelfmark: {
+        en: string;
+        fr: string;
+    };
     shelfmarkSections: {
+        en: string;
+        fr: string;
+    };
+    shelfmarkSection: {
         en: string;
         fr: string;
     };
@@ -216,6 +232,38 @@ declare const localizations: {
         fr: string;
     };
     manuscript: {
+        en: string;
+        fr: string;
+    };
+    catalogNumber: {
+        en: string;
+        fr: string;
+    };
+    numberOfFolios: {
+        en: string;
+        fr: string;
+    };
+    pageSize: {
+        en: string;
+        fr: string;
+    };
+    textBlockSize: {
+        en: string;
+        fr: string;
+    };
+    numberOfLines: {
+        en: string;
+        fr: string;
+    };
+    places: {
+        en: string;
+        fr: string;
+    };
+    dates: {
+        en: string;
+        fr: string;
+    };
+    measures: {
         en: string;
         fr: string;
     };
