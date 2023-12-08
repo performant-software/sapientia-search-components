@@ -13417,7 +13417,7 @@ const Qb = (e) => Array.isArray(e) ? /* @__PURE__ */ T.jsx("span", { children: e
   },
   archiveLocation: {
     en: "Archive Location",
-    fr: "???"
+    fr: "Lieu d'archive"
   },
   origDate: {
     en: "Original Date",
