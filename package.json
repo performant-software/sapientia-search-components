@@ -1,7 +1,7 @@
 {
   "name": "sapientia-search-components",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.7",
   "type": "module",
   "main": "./dist/sapientia-search.js",
   "files": [
