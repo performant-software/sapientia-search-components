@@ -237,35 +237,35 @@ const localizations = {
   },
   catalogNumber: {
     en: 'Catalog number',
-    fr: '???'
+    fr: 'Numéro de catalogue'
   },
   numberOfFolios: {
     en: 'Number of folios',
-    fr: '???'
+    fr: 'Nombre de folios'
   },
   pageSize: {
     en: 'Page size',
-    fr: '???'
+    fr: 'Taille de la page'
   },
   textBlockSize: {
     en: 'Text block size',
-    fr: '???'
+    fr: 'Taille du bloc de texte'
   },
   numberOfLines: {
     en: 'Number of lines',
-    fr: '???'
+    fr: 'Nombre de lignes'
   },
   places: {
     en: 'Places',
-    fr: '???'
+    fr: 'Lieux'
   },
   dates: {
     en: 'Dates',
-    fr: '???'
+    fr: 'Dates'
   },
   measures: {
     en: 'Measures',
-    fr: '???'
+    fr: 'Mesures'
   }
 }
 
