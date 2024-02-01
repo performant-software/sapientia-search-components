@@ -2,22 +2,12 @@ import GlobalStyle from "./global.styled";
 import 'instantsearch.css/themes/reset.css'
 import 'instantsearch.css/themes/satellite.css'
 import Search from "./Search";
-import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import { useMemo } from "react";
 import { ArrowBarUp, Bank, BarChart, Calendar, FileEarmarkTextFill, Folder, Person, Pin, TextParagraph } from "react-bootstrap-icons";
-import localizations, { getLocalizedValues } from "../lib/localizations";
-import { displayAttribute, displayNestedAttribute } from "../lib/react_helpers";
-import Panel from "./Search/Panel";
-import { RefinementList } from "react-instantsearch-hooks-web";
-
-const searchClient = instantMeiliSearch(
-  import.meta.env.VITE_APP_MEILI_URL,
-  // This is a search-only key that is meant to be used in production
-  import.meta.env.VITE_APP_MEILI_KEY,
-  {
-      primaryKey: 'id'
-  }
-)
+import localizations from "../lib/localizations";
+import { displayAttribute, displayNestedAttribute } from "../lib/reactHelpers";
+import { InstantSearch } from "react-instantsearch";
+import searchClient from "../lib/searchClient";
 
 export interface RumpfProps {
   locale: 'fr' | 'en',
@@ -89,54 +79,18 @@ const Rumpf: React.FC<RumpfProps> = ({ locale, onHitClick, hitWrapperComponent, 
 
   return (
     <GlobalStyle>
-      <Search
+      <InstantSearch
+        indexName={import.meta.env.VITE_APP_TYPESENSE_RUMPF_INDEX_NAME}
         searchClient={searchClient}
-        locale={locale}
-        indexName="rumpf"
-        hitConfig={hitConfig}
-        onHitClick={onHitClick}
-        hitWrapperComponent={hitWrapperComponent}
-        getHitWrapperProps={getHitWrapperProps}
       >
-        <Panel header={localizations.status[locale]}>
-          <RefinementList
-            attribute="status"
-            transformItems={items => getLocalizedValues(items, locale)}
-          />
-        </Panel>
-        <Panel header={localizations.author[locale]}>
-          <RefinementList
-            attribute="author_id.full_name"
-          />
-        </Panel>
-        <Panel header={localizations.format[locale]}>
-          <RefinementList
-            attribute="format"
-            transformItems={items => getLocalizedValues(items, locale)}
-          />
-        </Panel>
-        <Panel header={localizations.type[locale]}>
-          <RefinementList
-            attribute="type"
-            transformItems={items => getLocalizedValues(items, locale)}
-          />
-        </Panel>
-        <Panel header={localizations.publicationDate[locale]}>
-          <RefinementList
-            attribute="publication_date"
-          />
-        </Panel>
-        <Panel header={localizations.publicationLocation[locale]}>
-          <RefinementList
-            attribute="publication_location.name"
-          />
-        </Panel>
-        <Panel header={localizations.archive[locale]}>
-          <RefinementList
-            attribute="archives"
-          />
-        </Panel>
-      </Search>
+        <Search
+          locale={locale}
+          hitConfig={hitConfig}
+          onHitClick={onHitClick}
+          hitWrapperComponent={hitWrapperComponent}
+          getHitWrapperProps={getHitWrapperProps}
+        />
+      </InstantSearch>
     </GlobalStyle>
   )
 }

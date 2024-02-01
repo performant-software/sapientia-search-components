@@ -1,6 +1,6 @@
 // For helpers that return React elements
 
-import { Highlight } from "react-instantsearch-hooks-web"
+import { Highlight } from "react-instantsearch"
 import localizations from "./localizations"
 
 export const handleDate = (hit: any) => {

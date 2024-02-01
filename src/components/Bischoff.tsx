@@ -1,23 +1,13 @@
-import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import GlobalStyle from "./global.styled";
 import 'instantsearch.css/themes/reset.css'
 import 'instantsearch.css/themes/satellite.css'
 import { useMemo } from "react";
 import Search from './Search';
 import localizations from "../lib/localizations";
-import { Highlight, RefinementList } from "react-instantsearch-hooks-web";
+import { Highlight, InstantSearch } from "react-instantsearch";
 import { Book, Building, Calendar, MapFill } from "react-bootstrap-icons";
-import { displayAttribute } from "../lib/react_helpers";
-import Panel from "./Search/Panel";
-
-const searchClient = instantMeiliSearch(
-  import.meta.env.VITE_APP_MEILI_URL,
-  // This is a search-only key that is meant to be used in production
-  import.meta.env.VITE_APP_MEILI_KEY,
-  {
-      primaryKey: 'id'
-  }
-)
+import { displayAttribute } from "../lib/reactHelpers";
+import searchClient from "../lib/searchClient";
 
 export interface BischoffProps {
   locale: 'fr' | 'en',
@@ -49,7 +39,7 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperCompo
         attribute: 'works',
         icon: <Book />,
         caption: localizations.works[locale],
-        renderDisplay: (item) => item.works.map((w: { title: string }) => w.title).join(', ')
+        renderDisplay: (item) => item?.works ? item.works.map((w: { title: string }) => w.title).join(', ') : ''
       }
     ],
     rightPanel: {
@@ -72,65 +62,23 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperCompo
       } else {
         return <></>
       }
-  }}), [locale])
+    }
+  }), [locale])
 
   return (
     <GlobalStyle>
-      <Search
+      <InstantSearch
+        indexName={import.meta.env.VITE_APP_TYPESENSE_BISCHOFF_INDEX_NAME}
         searchClient={searchClient}
-        locale={locale}
-        indexName="bischoff"
-        hitConfig={hitConfig}
-        onHitClick={onHitClick}
-        hitWrapperComponent={hitWrapperComponent}
-        getHitWrapperProps={getHitWrapperProps}
       >
-        <Panel header={localizations.works[locale]}>
-          <RefinementList
-            attribute="works.title"
-          />
-        </Panel>
-        <Panel header={localizations.origDate[locale]}>
-          <RefinementList
-            attribute="OrigDate"
-          />
-        </Panel>
-        <Panel header={localizations.origPlace[locale]}>
-          <RefinementList
-            attribute="origPlace"
-          />
-        </Panel>
-        <Panel header={localizations.sections[locale]}>
-          <RefinementList
-            attribute="sections.shelfmark_sections_id.name"
-          />
-        </Panel>
-        <Panel header={localizations.provenance[locale]}>
-          <RefinementList
-            attribute="provenance"
-          />
-        </Panel>
-        <Panel header={localizations.archive[locale]}>
-          <RefinementList
-              attribute="archive"
-            />
-        </Panel>
-        <Panel header={localizations.archiveLocation[locale]}>
-          <RefinementList
-            attribute="archive_place"
-          />
-        </Panel>
-        <Panel header={localizations.shelfmarks[locale]}>
-          <RefinementList
-            attribute="shelfmark"
-          />
-        </Panel>
-        <Panel header={localizations.formerShelfmarks[locale]}>
-          <RefinementList
-            attribute="former_shelfmark"
-          />
-        </Panel>
-      </Search>
+        <Search
+          locale={locale}
+          hitConfig={hitConfig}
+          onHitClick={onHitClick}
+          hitWrapperComponent={hitWrapperComponent}
+          getHitWrapperProps={getHitWrapperProps}
+        />
+      </InstantSearch>
     </GlobalStyle>
   )
 }

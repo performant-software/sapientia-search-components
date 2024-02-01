@@ -1,4 +1,4 @@
-import { Highlight } from 'react-instantsearch-hooks-web'
+import { Highlight } from 'react-instantsearch'
 import { HitConfig } from '../../../lib/types'
 import { ReactElement, useMemo } from 'react'
 
@@ -58,9 +58,9 @@ const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperPro
                                     ? hitConfig.renderHeadlineAttribute(hit)
                                     : hit[hitConfig.headlineAttribute]}
                             </h2>
-                            )
+                        )
                         : null
-                        }
+                    }
                     {hitConfig.leftColumnItems.map((configItem) => {
                         if (configItem.renderDisplay || hit[configItem.attribute])
                             return (

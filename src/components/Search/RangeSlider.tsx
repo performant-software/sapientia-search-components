@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
-import { UseRangeProps, useRange } from 'react-instantsearch-hooks-web';
+import { UseRangeProps, useRange } from 'react-instantsearch-core';
 
 const styles = {
   sliderValues: {
@@ -13,7 +13,7 @@ const styles = {
 };
 
 interface Props extends UseRangeProps {
-    renderValue?: (arg: number) => string
+  renderValue?: (arg: number) => string
 }
 
 interface Range {
@@ -43,7 +43,7 @@ const CustomRangeSlider = (props: Props) => {
 
   useEffect(() => {
     if (value) {
-      refine([ value.min, value.max ]);
+      refine([value.min, value.max]);
     }
   }, [value, refine]);
 
@@ -52,9 +52,9 @@ const CustomRangeSlider = (props: Props) => {
       start[0] !== valueDisplay.min ||
       start[1] !== valueDisplay.max
     ) {
-      const newRange = getRange({ min: start[0], max: start[1]})
-      setValueDisplay({...newRange});
-      setValue({...newRange})
+      const newRange = getRange({ min: start[0], max: start[1] })
+      setValueDisplay({ ...newRange });
+      setValue({ ...newRange })
     }
   }, [range, start]);
 
@@ -83,8 +83,8 @@ const CustomRangeSlider = (props: Props) => {
       <Slider
         range
         defaultValue={[range.min || 0, range.max || 100]}
-        onChange={v => setValueDisplay({min: (v as number[])[0], max: (v as number[])[1]})}
-        onAfterChange={v => setValue({min: (v as number[])[0], max: (v as number[])[1]})}
+        onChange={v => setValueDisplay({ min: (v as number[])[0], max: (v as number[])[1] })}
+        onAfterChange={v => setValue({ min: (v as number[])[0], max: (v as number[])[1] })}
         min={range.min}
         max={range.max}
         value={[valueDisplay.min || range.min || 0, valueDisplay.max || range.max || 100]}

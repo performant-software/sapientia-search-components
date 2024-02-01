@@ -1,7 +1,7 @@
 import HitComponent from './Hit'
 import localizations from '../../../lib/localizations'
 import { useEffect, useState } from 'react'
-import { UseInfiniteHitsProps, useInfiniteHits } from 'react-instantsearch-hooks'
+import { UseInfiniteHitsProps, useInfiniteHits } from 'react-instantsearch-core'
 import { HitConfig } from '../../../lib/types'
 
 interface Props extends UseInfiniteHitsProps {
@@ -17,7 +17,7 @@ const CustomInfiniteHits: React.FC<Props> = (props) => {
         hits,
         isLastPage,
         showMore,
-      } = useInfiniteHits(props);
+    } = useInfiniteHits(props);
 
     const { locale } = props;
 
