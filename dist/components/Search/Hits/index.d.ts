@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { UseInfiniteHitsProps } from 'react-instantsearch-hooks';
+import { UseInfiniteHitsProps } from 'react-instantsearch-core';
 import { HitConfig } from '../../../lib/types';
 interface Props extends UseInfiniteHitsProps {
     locale: 'en' | 'fr';

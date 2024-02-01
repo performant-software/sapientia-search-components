@@ -1,5 +1,4 @@
 import { useCurrentRefinements } from 'react-instantsearch-core'
-import availableFacets from './facets'
 import { X } from 'react-bootstrap-icons'
 import { isNumberRefinement } from '../../lib/typeGuards'
 import {
@@ -22,8 +21,6 @@ const CustomCurrentRefinements: React.FC<Props> = (props) => {
     items,
     refine
   } = useCurrentRefinements(props)
-
-  const { locale } = props;
 
   const { facets } = useContext(SearchContext);
 

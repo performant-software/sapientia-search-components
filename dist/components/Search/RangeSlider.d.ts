@@ -1,4 +1,4 @@
-import { UseRangeProps } from 'react-instantsearch-hooks-web';
+import { UseRangeProps } from 'react-instantsearch-core';
 interface Props extends UseRangeProps {
     renderValue?: (arg: number) => string;
 }
