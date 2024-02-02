@@ -1,8 +1,7 @@
 import { Highlight } from 'react-instantsearch'
-import { HitConfig } from '../../../lib/types'
+import { HitConfig, HitLeftColumnItem } from '../../../lib/types'
 import { ReactElement, useCallback, useContext, useMemo } from 'react'
 import SearchContext from '../SearchContext'
-import { Facet } from '../../../lib/search'
 
 interface Props {
   // No idea how to type the Hit - importing the types that
@@ -61,9 +60,21 @@ const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperPro
     return null;
   }, [facets, hit])
 
-  const highlightKey = useMemo(() => {
-    return facets.find(f => f.uuid === hitConfig.rightPanel.uuid)?.value || '';
-  }, [facets, hitConfig.rightPanel.uuid])
+  const highlightKey = useMemo(() => (
+    facets.find(f => f.uuid === hitConfig.rightPanel.uuid)?.value || ''
+  ), [facets, hitConfig.rightPanel.uuid])
+
+  const getFieldValue = useCallback((configItem: HitLeftColumnItem) => {
+    let value: string | ReactElement = <></>
+
+    if (configItem.renderDisplay) {
+      value = configItem.renderDisplay(hit)
+    } else if (configItem.uuid) {
+      value = <span>{getFacetValue(configItem.uuid)}</span>
+    }
+
+    return value;
+  }, [getFacetValue, hit])
 
   return (
     <Wrapper {...wrapperProps} className='hitLink'>
@@ -80,7 +91,7 @@ const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperPro
             : null
           }
           {hitConfig.leftColumnItems.map((configItem) => {
-            if (configItem.renderDisplay || hit[configItem.uuid])
+            if (configItem.renderDisplay || configItem.uuid)
               return (
                 <p
                   className='hitData'
@@ -90,10 +101,7 @@ const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperPro
                     {configItem.icon}
                   </span>
                   <strong>
-                    {configItem.renderDisplay
-                      ? configItem.renderDisplay(hit)
-                      : handleArrays(getFacetValue(hit[configItem.uuid]))
-                    }
+                    {getFieldValue(configItem)}
                   </strong>
                 </p>
               )

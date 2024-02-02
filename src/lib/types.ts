@@ -17,8 +17,8 @@ export interface NumberFacet extends StringFacet {
 
 export type Facet = StringFacet | NumberFacet;
 
-interface HitLeftColumnItem {
-  uuid: string;
+export interface HitLeftColumnItem {
+  uuid?: string;
   icon: ReactElement;
   caption: string;
   renderDisplay?: (arg: any) => string | ReactElement;
@@ -27,7 +27,7 @@ interface HitLeftColumnItem {
 export interface HitConfig {
   leftColumnItems: HitLeftColumnItem[];
   rightPanel: {
-    uuid: string;
+    uuid?: string;
     label?: string;
   };
   headlineUuid?: string;

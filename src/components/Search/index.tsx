@@ -45,6 +45,8 @@ const Search: React.FC<SearchProps> = ({
     }
   }
 
+  console.log(facets)
+
   // This hook keeps track of whether the user is on a mobile device.
   useEffect(() => {
     const handler = (e: { matches: boolean | ((prevState: boolean) => boolean) }) => setMobile(e.matches)

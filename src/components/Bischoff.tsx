@@ -30,6 +30,7 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperCompo
       {
         icon: <MapFill />,
         caption: localizations.archiveLocation[locale],
+        // Uh oh. Only one layer of relations is indexed and archive location requires two layers.
         renderDisplay: () => 'WIP'
       },
       {
@@ -47,14 +48,15 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperCompo
       uuid: 'eyJhbGciOiJub25lIn0.eyJ1dWlkIjoiZTQwYzAyNGEtOTg1OS00MDVmLTg2YjktMzA4ZTg5M2ZhYTM3IiwibGFiZWwiOiJUZXh0IiwiZmFjZXQiOmZhbHNlfQ.',
       label: localizations.text[locale]
     },
-    headlineAttribute: 'catalog_number',
+    headlineUuid: 'e839b342-d5d9-4142-8310-697525d18229',
     renderHeadlineAttribute: (hit: any) => {
+      // WIP: need UUID logic here too
       if (hit.catalog_number) {
         return (
           <span>
             #
             <Highlight
-              attribute='catalog_number'
+              attribute='e839b342-d5d9-4142-8310-697525d18229'
               hit={hit}
               highlightedTagName='mark'
             />
