@@ -20,30 +20,31 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperCompo
   const hitConfig = useMemo(() => ({
     leftColumnItems: [
       {
-        attribute: 'archive.name',
         icon: <Building />,
         caption: localizations.archive[locale],
-        renderDisplay: (item: any) => displayAttribute(item, 'archive', locale)
+        renderDisplay: (item: any) => {
+          const archiveName = item?.related_organizations.find((o: any) => o.type === 'Archives').name
+          return displayAttribute(archiveName, locale)
+        }
       },
       {
-        attribute: 'archive_place',
         icon: <MapFill />,
-        caption: localizations.archiveLocation[locale]
+        caption: localizations.archiveLocation[locale],
+        renderDisplay: () => 'WIP'
       },
       {
-        attribute: 'OrigDate',
+        uuid: 'eyJhbGciOiJub25lIn0.eyJ1dWlkIjoiNzgzNmIwNGQtYjdhOC00NDNhLWE5MjAtMWNjNzZmMzBlNmVhIiwibGFiZWwiOiJPcmlnaW5hbCBEYXRlIiwiZmFjZXQiOmZhbHNlfQ.',
         icon: <Calendar />,
         caption: localizations.origDate[locale]
       },
       {
-        attribute: 'works',
         icon: <Book />,
         caption: localizations.works[locale],
-        renderDisplay: (item) => item?.works ? item.works.map((w: { title: string }) => w.title).join(', ') : ''
+        renderDisplay: (item) => item?.related_works ? item.related_works.map((w: { name: string }) => w.name).join(', ') : ''
       }
     ],
     rightPanel: {
-      attribute: 'text',
+      uuid: 'eyJhbGciOiJub25lIn0.eyJ1dWlkIjoiZTQwYzAyNGEtOTg1OS00MDVmLTg2YjktMzA4ZTg5M2ZhYTM3IiwibGFiZWwiOiJUZXh0IiwiZmFjZXQiOmZhbHNlfQ.',
       label: localizations.text[locale]
     },
     headlineAttribute: 'catalog_number',

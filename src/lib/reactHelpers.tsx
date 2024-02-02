@@ -37,15 +37,6 @@ export const displayNestedAttribute = (hit: any, name: string, locale: 'en' | 'f
   }
 }
 
-export const displayAttribute = (hit: any, name: string, locale: 'en' | 'fr') => {
-  if (hit[name]) {
-    return (
-      <Highlight
-        attribute={[name]}
-        hit={hit}
-      />
-    )
-  } else {
-    return <span><em>{localizations.emptyField[locale]}</em></span>
-  }
-}
+export const displayAttribute = (value: string | undefined, locale: 'en' | 'fr') => (
+  value || <span><em>{localizations.emptyField[locale]}</em></span>
+)
