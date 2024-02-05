@@ -3,11 +3,11 @@
 import { Highlight } from "react-instantsearch"
 import localizations from "./localizations"
 
-export const handleDate = (hit: any) => {
+export const handleDate = (hit: any): string => {
   if (hit.year && hit.month && hit.day) {
-    return <span>{new Date(hit.year, hit.month - 1, hit.day).toISOString().slice(0, 10)}</span>
+    return new Date(hit.year, hit.month - 1, hit.day).toISOString().slice(0, 10)
   } else {
-    return <span><em>?</em></span>
+    return '?'
   }
 }
 

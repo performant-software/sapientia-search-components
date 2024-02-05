@@ -18,10 +18,10 @@ export interface NumberFacet extends StringFacet {
 export type Facet = StringFacet | NumberFacet;
 
 export interface HitLeftColumnItem {
-  uuid?: string;
-  icon: ReactElement;
   caption: string;
-  renderDisplay?: (arg: any) => string | ReactElement;
+  icon: ReactElement;
+  uuid?: string;
+  render?: (item: any) => string | undefined;
 }
 
 export interface HitConfig {
@@ -30,8 +30,7 @@ export interface HitConfig {
     uuid?: string;
     label?: string;
   };
-  headlineUuid?: string;
-  renderHeadlineAttribute?: (arg: any) => string | ReactElement;
+  identifierUuid?: string;
   sortFields?: {
     value: string;
     label: string;

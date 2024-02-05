@@ -13,7 +13,7 @@ import { SearchDiv } from './Search.styled'
 import localizations from '../../lib/localizations'
 import CustomCurrentRefinements from './CustomCurrentRefinements'
 import { HitConfig } from '../../lib/types'
-import { Facet, parseFacet } from '../../lib/search'
+import { Field, parseFacet } from '../../lib/search'
 import SearchContext from './SearchContext'
 
 interface SearchProps {
@@ -33,7 +33,8 @@ const Search: React.FC<SearchProps> = ({
 }) => {
   const [displayFilterMenu, setDisplayFilterMenu] = useState(false)
   const [isMobile, setMobile] = useState(true)
-  const [facets, setFacets] = useState<Facet[]>([]);
+  const [facets, setFacets] = useState<Field[]>([]);
+  const [fields, setFields] = useState<Field[]>([]);
 
   const filterRef = useRef<HTMLDivElement>(null)
 
@@ -44,8 +45,6 @@ const Search: React.FC<SearchProps> = ({
       }
     }
   }
-
-  console.log(facets)
 
   // This hook keeps track of whether the user is on a mobile device.
   useEffect(() => {
@@ -84,7 +83,7 @@ const Search: React.FC<SearchProps> = ({
 
 
   const { attributesToRender } = useDynamicWidgets({
-    facets: ["*"],
+    facets: ["*"]
   });
 
   useEffect(() => {

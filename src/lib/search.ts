@@ -2,7 +2,7 @@
 
 import { jwtDecode } from "jwt-decode";
 
-export interface Facet {
+export interface Field {
   value: string;
   displayLabel: string;
   show: boolean;
@@ -23,7 +23,7 @@ const splitAndCapitalize = (str: string) =>
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
-export const parseFacet = (value: string): Facet => {
+export const parseFacet = (value: string): Field => {
   const normalized = value.endsWith("_facet")
     ? value.substring(0, value.lastIndexOf("_facet"))
     : value;

@@ -4,7 +4,7 @@ import 'instantsearch.css/themes/satellite.css'
 import { useMemo } from "react";
 import Search from './Search';
 import localizations from "../lib/localizations";
-import { Highlight, InstantSearch } from "react-instantsearch";
+import { InstantSearch } from "react-instantsearch";
 import { Book, Building, Calendar, MapFill } from "react-bootstrap-icons";
 import { displayAttribute } from "../lib/reactHelpers";
 import searchClient from "../lib/searchClient";
@@ -22,50 +22,30 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperCompo
       {
         icon: <Building />,
         caption: localizations.archive[locale],
-        renderDisplay: (item: any) => {
-          const archiveName = item?.related_organizations.find((o: any) => o.type === 'Archives').name
-          return displayAttribute(archiveName, locale)
-        }
+        render: (item: any) => item?.related_organizations.find((o: any) => o.type === 'Archives')?.name
       },
       {
         icon: <MapFill />,
         caption: localizations.archiveLocation[locale],
         // Uh oh. Only one layer of relations is indexed and archive location requires two layers.
-        renderDisplay: () => 'WIP'
+        render: () => 'TODO'
       },
       {
-        uuid: 'eyJhbGciOiJub25lIn0.eyJ1dWlkIjoiNzgzNmIwNGQtYjdhOC00NDNhLWE5MjAtMWNjNzZmMzBlNmVhIiwibGFiZWwiOiJPcmlnaW5hbCBEYXRlIiwiZmFjZXQiOmZhbHNlfQ.',
+        uuid: '7836b04d-b7a8-443a-a920-1cc76f30e6ea',
         icon: <Calendar />,
         caption: localizations.origDate[locale]
       },
       {
         icon: <Book />,
         caption: localizations.works[locale],
-        renderDisplay: (item) => item?.related_works ? item.related_works.map((w: { name: string }) => w.name).join(', ') : ''
+        render: (item: any) => item?.related_works ? item.related_works.map((w: { name: string }) => w.name) : undefined
       }
     ],
     rightPanel: {
-      uuid: 'eyJhbGciOiJub25lIn0.eyJ1dWlkIjoiZTQwYzAyNGEtOTg1OS00MDVmLTg2YjktMzA4ZTg5M2ZhYTM3IiwibGFiZWwiOiJUZXh0IiwiZmFjZXQiOmZhbHNlfQ.',
+      uuid: 'e40c024a-9859-405f-86b9-308e893faa37',
       label: localizations.text[locale]
     },
-    headlineUuid: 'e839b342-d5d9-4142-8310-697525d18229',
-    renderHeadlineAttribute: (hit: any) => {
-      // WIP: need UUID logic here too
-      if (hit.catalog_number) {
-        return (
-          <span>
-            #
-            <Highlight
-              attribute='e839b342-d5d9-4142-8310-697525d18229'
-              hit={hit}
-              highlightedTagName='mark'
-            />
-          </span>
-        )
-      } else {
-        return <></>
-      }
-    }
+    identifierUuid: 'e839b342-d5d9-4142-8310-697525d18229'
   }), [locale])
 
   return (

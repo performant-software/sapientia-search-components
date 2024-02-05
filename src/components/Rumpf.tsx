@@ -3,11 +3,11 @@ import 'instantsearch.css/themes/reset.css'
 import 'instantsearch.css/themes/satellite.css'
 import Search from "./Search";
 import { useMemo } from "react";
-import { ArrowBarUp, Bank, BarChart, Calendar, FileEarmarkTextFill, Folder, Person, Pin, TextParagraph } from "react-bootstrap-icons";
+import { ArrowBarUp, Bank, BarChart, Calendar, FileEarmarkTextFill, Folder, Person, Pin } from "react-bootstrap-icons";
 import localizations from "../lib/localizations";
-import { displayAttribute, displayNestedAttribute } from "../lib/reactHelpers";
 import { InstantSearch } from "react-instantsearch";
 import searchClient from "../lib/searchClient";
+import { HitConfig } from "../lib/types";
 
 export interface RumpfProps {
   locale: 'fr' | 'en',
@@ -17,63 +17,47 @@ export interface RumpfProps {
 }
 
 const Rumpf: React.FC<RumpfProps> = ({ locale, onHitClick, hitWrapperComponent, getHitWrapperProps }) => {
-  const hitConfig = useMemo(() => ({
+  const hitConfig: HitConfig = useMemo(() => ({
     leftColumnItems: [
       {
-        attribute: 'generic_title',
-        icon: <TextParagraph />,
-        caption: localizations.genericTitle[locale]
-      },
-      {
-        attribute: 'publication_date',
+        uuid: 'fda80804-8753-4b15-8e11-3d291585cc79',
         icon: <Calendar />,
         caption: localizations.publicationDate[locale]
       },
       {
-        attribute: 'publication_location.name',
         icon: <Pin />,
         caption: localizations.publicationLocation[locale],
-        renderDisplay: (item: any) => displayNestedAttribute(item, 'publication_location.name', locale)
+        // TODO
       },
       {
-        attribute: 'parent_edition.title',
         icon: <ArrowBarUp />,
-        caption: localizations.parentEdition[locale],
-        renderDisplay: (item: any) => displayNestedAttribute(item, 'parent_edition.title', locale)
+        caption: localizations.parentEdition[locale]
+        // TODO
       },
       {
-        attribute: 'status',
-        icon: <BarChart />,
-        caption: localizations.status[locale],
-        renderDisplay: (item: any) => displayAttribute(item, 'status', locale)
-      },
-      {
-        attribute: 'line',
+        uuid: '21adc2bf-6970-4927-91de-cc476ab2e352',
         icon: <FileEarmarkTextFill />,
-        caption: localizations.line[locale],
-        renderDisplay: (item: any) => displayAttribute(item, 'line', locale)
+        caption: localizations.line[locale]
       },
       {
-        attribute: 'format',
-        icon: <Folder />,
         caption: localizations.format[locale],
-        renderDisplay: (item: any) => displayAttribute(item, 'format', locale)
+        icon: <Folder />,
+        uuid: '4de71c17-308a-41ed-bc0e-19f4f7aee55c'
       },
       {
-        attribute: 'author_id.full_name',
         icon: <Person />,
         caption: localizations.author[locale],
-        renderDisplay: (item: any) => displayNestedAttribute(item, 'author_id.full_name', locale)
+        render: (item: any) => item?.related_people?.find((p: { type: string }) => p.type === 'Authors')?.name
       },
       {
         attribute: 'archives',
         icon: <Bank />,
         caption: localizations.archive[locale],
-        render: (item: any) => item.archives.join(', ')
+        render: (item: any) => item?.related_organizations?.find((p: { type: string }) => p.type === 'Archives')?.name
       }
     ],
     rightPanel: {
-      attribute: 'title'
+      uuid: 'title'
     }
   }), [locale])
 

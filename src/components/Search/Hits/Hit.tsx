@@ -1,7 +1,7 @@
 import { Highlight } from 'react-instantsearch'
 import { HitConfig, HitLeftColumnItem } from '../../../lib/types'
-import { ReactElement, useCallback, useContext, useMemo } from 'react'
-import SearchContext from '../SearchContext'
+import { ReactElement, useCallback, useMemo } from 'react'
+import { Field, parseFacet } from '../../../lib/search'
 
 interface Props {
   // No idea how to type the Hit - importing the types that
@@ -14,14 +14,6 @@ interface Props {
   onHitClick?: (arg: any) => void,
   hitWrapperComponent?: React.FC,
   getHitWrapperProps?: (...args: any) => any
-}
-
-const handleArrays = (field: unknown) => {
-  if (Array.isArray(field)) {
-    return <span>{field.join(', ')}</span>
-  } else {
-    return <span>{field as string}</span>
-  }
 }
 
 const LinkWrapper: React.FC<{
@@ -37,6 +29,16 @@ const LinkWrapper: React.FC<{
   </a>
 )
 
+const displayUdf = (uuid: string, hit: any, udfs: Field[]) => {
+  const match = udfs.find(udf => udf.uuid === uuid)
+
+  if (match && hit[match.value]) {
+    return hit[match.value]
+  }
+
+  return ''
+}
+
 const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperProps }: Props) => {
   const Wrapper = hitWrapperComponent || LinkWrapper
 
@@ -48,54 +50,61 @@ const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperPro
     return { hit, onHitClick }
   }, [getHitWrapperProps, hit, onHitClick])
 
-  const { facets } = useContext(SearchContext);
+  const udfs: Field[] = useMemo(() => (
+    Object.keys(hit)
+      .filter(k => k.startsWith('ey'))
+      .map(k => parseFacet(k))
+  ), [hit])
 
-  const getFacetValue = useCallback((uuid: string) => {
-    const facet = facets.find(f => f.uuid === uuid);
-
-    if (facet && facet.uuid) {
-      return hit[facet.uuid]
-    }
-
-    return null;
-  }, [facets, hit])
+  console.log(udfs)
 
   const highlightKey = useMemo(() => (
-    facets.find(f => f.uuid === hitConfig.rightPanel.uuid)?.value || ''
-  ), [facets, hitConfig.rightPanel.uuid])
+    udfs.find(f => f.uuid === hitConfig.rightPanel.uuid)?.value || ''
+  ), [hitConfig.rightPanel.uuid, udfs])
+
+  const identifierKey = useMemo(() => (
+    udfs.find(f => f.uuid === hitConfig.identifierUuid)?.value || ''
+  ), [hitConfig.identifierUuid, udfs])
 
   const getFieldValue = useCallback((configItem: HitLeftColumnItem) => {
     let value: string | ReactElement = <></>
 
-    if (configItem.renderDisplay) {
-      value = configItem.renderDisplay(hit)
-    } else if (configItem.uuid) {
-      value = <span>{getFacetValue(configItem.uuid)}</span>
+    if (configItem.uuid) {
+      value = <span>{displayUdf(configItem.uuid, hit, udfs)}</span>
+    } else if (configItem.render) {
+      value = <span>{configItem.render(hit)}</span>
     }
 
     return value;
-  }, [getFacetValue, hit])
+  }, [hit, udfs])
+
+  console.log(identifierKey)
 
   return (
     <Wrapper {...wrapperProps} className='hitLink'>
       <li className='hit'>
         <div className='left'>
-          {hitConfig.headlineUuid
+          {hitConfig.identifierUuid
             ? (
               <h2 className='headline'>
-                {hitConfig.renderHeadlineAttribute
-                  ? hitConfig.renderHeadlineAttribute(hit)
-                  : hit[hitConfig.headlineUuid]}
+                <span>
+                  #
+                  <Highlight
+                    attribute={[identifierKey]}
+                    hit={hit}
+                    highlightedTagName='mark'
+                  />
+                </span>
               </h2>
             )
             : null
           }
-          {hitConfig.leftColumnItems.map((configItem) => {
-            if (configItem.renderDisplay || configItem.uuid)
+          {hitConfig.leftColumnItems.map((configItem, idx) => {
+            if (configItem.uuid || configItem.render)
               return (
                 <p
                   className='hitData'
-                  key={configItem.uuid}
+                  key={idx}
                 >
                   <span title={configItem.caption}>
                     {configItem.icon}
@@ -114,7 +123,7 @@ const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperPro
               : null}
             <p>
               <Highlight
-                attribute={highlightKey}
+                attribute={[highlightKey]}
                 hit={hit}
                 highlightedTagName='mark'
               />
