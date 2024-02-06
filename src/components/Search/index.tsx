@@ -6,21 +6,24 @@ import {
   RefinementList
 } from 'react-instantsearch'
 import CustomInfiniteHits from './Hits'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import { Filter } from 'react-bootstrap-icons'
 import Panel from './Panel'
 import { SearchDiv } from './Search.styled'
 import localizations from '../../lib/localizations'
 import CustomCurrentRefinements from './CustomCurrentRefinements'
-import { HitConfig } from '../../lib/types'
-import { Field, parseFacet } from '../../lib/search'
+import { Field, HitConfig, HitField } from '../../lib/types'
+import { parseFacet } from '../../lib/search'
 import SearchContext from './SearchContext'
+import fieldData from '../../lib/fields'
+import fieldsReducer from './fieldsReducer'
 
 interface SearchProps {
   locale: 'en' | 'fr',
   hitConfig: HitConfig
   onHitClick?: (arg: any) => void,
   hitWrapperComponent?: React.FC,
+  project: 'bischoff' | 'rumpf' | 'supplique'
   getHitWrapperProps?: (...args: any) => any
 }
 
@@ -29,12 +32,13 @@ const Search: React.FC<SearchProps> = ({
   hitConfig,
   onHitClick,
   hitWrapperComponent,
+  project,
   getHitWrapperProps
 }) => {
   const [displayFilterMenu, setDisplayFilterMenu] = useState(false)
   const [isMobile, setMobile] = useState(true)
   const [facets, setFacets] = useState<Field[]>([]);
-  const [fields, setFields] = useState<Field[]>([]);
+  const [fields, fieldsDispatch] = useReducer(fieldsReducer, fieldData[project]);
 
   const filterRef = useRef<HTMLDivElement>(null)
 
@@ -91,7 +95,7 @@ const Search: React.FC<SearchProps> = ({
   }, [attributesToRender]);
 
   return (
-    <SearchContext.Provider value={{ facets, setFacets }}>
+    <SearchContext.Provider value={{ facets, setFacets, fields, fieldsDispatch }}>
       <SearchDiv>
         <div className='search'>
           <Configure

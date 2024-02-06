@@ -1,7 +1,8 @@
 import { Highlight } from 'react-instantsearch'
-import { HitConfig, HitLeftColumnItem } from '../../../lib/types'
-import { ReactElement, useCallback, useMemo } from 'react'
-import { Field, parseFacet } from '../../../lib/search'
+import { Field, HitConfig, HitField } from '../../../lib/types'
+import { ReactElement, useCallback, useContext, useEffect, useMemo } from 'react'
+import { parseFacet } from '../../../lib/search'
+import SearchContext from '../SearchContext'
 
 interface Props {
   // No idea how to type the Hit - importing the types that
@@ -29,17 +30,26 @@ const LinkWrapper: React.FC<{
   </a>
 )
 
-const displayUdf = (uuid: string, hit: any, udfs: Field[]) => {
-  const match = udfs.find(udf => udf.uuid === uuid)
-
-  if (match && hit[match.value]) {
-    return hit[match.value]
-  }
-
-  return ''
+const getFieldObjByAttribute = (fields: HitField[], att: string) => {
+  return fields.find(f => f.attribute === att)
 }
 
-const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperProps }: Props) => {
+// This is somewhat inefficient, but it shouldn't have
+// to run too many times before all the fields have been
+// memoized within the `fields` table.
+const getAttributeMatch = (fields: any, hit: any, attribute: string) => {
+  const parsedJwts = Object.keys(hit)
+    .filter(k => k.startsWith('ey'))
+    .map(k => parseFacet(k))
+
+  const fieldObj = getFieldObjByAttribute(fields, attribute)
+
+  if (fieldObj) {
+    return parsedJwts.find(f => f.uuid === fieldObj.uuid)
+  }
+}
+
+const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale }: Props) => {
   const Wrapper = hitWrapperComponent || LinkWrapper
 
   const wrapperProps = useMemo(() => {
@@ -50,84 +60,115 @@ const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperPro
     return { hit, onHitClick }
   }, [getHitWrapperProps, hit, onHitClick])
 
-  const udfs: Field[] = useMemo(() => (
-    Object.keys(hit)
-      .filter(k => k.startsWith('ey'))
-      .map(k => parseFacet(k))
-  ), [hit])
+  const { fields, fieldsDispatch } = useContext(SearchContext);
 
-  console.log(udfs)
-
-  const highlightKey = useMemo(() => (
-    udfs.find(f => f.uuid === hitConfig.rightPanel.uuid)?.value || ''
-  ), [hitConfig.rightPanel.uuid, udfs])
-
-  const identifierKey = useMemo(() => (
-    udfs.find(f => f.uuid === hitConfig.identifierUuid)?.value || ''
-  ), [hitConfig.identifierUuid, udfs])
-
-  const getFieldValue = useCallback((configItem: HitLeftColumnItem) => {
-    let value: string | ReactElement = <></>
-
-    if (configItem.uuid) {
-      value = <span>{displayUdf(configItem.uuid, hit, udfs)}</span>
-    } else if (configItem.render) {
-      value = <span>{configItem.render(hit)}</span>
+  const getField = useCallback((attribute: string) => {
+    // Name is the one hard-coded field that we
+    // can always assume is present.
+    if (attribute === 'name') {
+      return hit.name
     }
 
-    return value;
-  }, [hit, udfs])
+    const attributeMatch = getAttributeMatch(fields, hit, attribute)
 
-  console.log(identifierKey)
+    if (attributeMatch?.value) {
+      console.log('match for existing field found')
+      return hit[attributeMatch.value]
+    } else if (attributeMatch) {
+      console.log('match for new field found')
+      fieldsDispatch(attributeMatch)
+      return hit[attributeMatch.value]
+    }
+
+    return ''
+  }, [fields, fieldsDispatch, hit])
+
+  // Cycle through field names and parse the JWTs to connect them
+  // with our UUID map if they haven't been mapped already. We have
+  // to do this on each hit because not every hit has every field,
+  // i.e. if a hit doesn't contain a value for a field, the field
+  // isn't sent with that hit.
+  useEffect(() => {
+    const jwtFieldNames = Object.keys(hit).filter(k => k.startsWith('ey'))
+
+    const newFields: Field[] = []
+
+    jwtFieldNames.forEach(jwt => {
+      const cached = fields.find(field => field?.value === jwt)
+      if (!cached) {
+        console.log('not cached')
+        const parsed = parseFacet(jwt)
+        newFields.push(parsed)
+      }
+    })
+
+    console.log(newFields)
+
+    if (newFields.length > 0) {
+      fieldsDispatch(newFields)
+    }
+  }, [fieldsDispatch, hit])
+
+  const showcaseField = useMemo(() => fields.find(f => f.type === 'showcase'), [fields])
+
+  const identifierField = useMemo(() => fields.find(f => f.type === 'identifier'), [fields])
+
+  const regularFields = useMemo(() => fields.filter(f => !f.type), [fields])
 
   return (
     <Wrapper {...wrapperProps} className='hitLink'>
       <li className='hit'>
         <div className='left'>
-          {hitConfig.identifierUuid
+          {identifierField?.value
+            && hit[identifierField.value]
             ? (
               <h2 className='headline'>
                 <span>
                   #
                   <Highlight
-                    attribute={[identifierKey]}
+                    attribute={[identifierField.value]}
                     hit={hit}
                     highlightedTagName='mark'
+
                   />
                 </span>
               </h2>
             )
             : null
           }
-          {hitConfig.leftColumnItems.map((configItem, idx) => {
-            if (configItem.uuid || configItem.render)
-              return (
-                <p
-                  className='hitData'
-                  key={idx}
-                >
-                  <span title={configItem.caption}>
-                    {configItem.icon}
-                  </span>
-                  <strong>
-                    {getFieldValue(configItem)}
-                  </strong>
-                </p>
-              )
-          })}
+          {regularFields.filter(field => field.value).map(field => (
+            <p
+              className='hitData'
+              key={field.uuid}
+            >
+              {field.caption
+                ? <span title={field?.caption[locale]}>
+                  {field.caption[locale]}
+                </span>
+                : <></>}
+              <strong>
+                {hit[field.value as string]}
+              </strong>
+            </p>
+          ))}
         </div>
         <div className='right'>
           <div className='summary'>
-            {hitConfig.rightPanel.label
-              ? <h3>{hitConfig.rightPanel.label}</h3>
+            {showcaseField?.caption
+              ? <h3>{showcaseField?.caption[locale]}</h3>
               : null}
-            <p>
-              <Highlight
-                attribute={[highlightKey]}
-                hit={hit}
-                highlightedTagName='mark'
-              />
-            </p>
+            {showcaseField?.value
+              && hit[showcaseField.value]
+              ?
+              (<p>
+                <Highlight
+                  attribute={[showcaseField.value]}
+                  hit={hit}
+                  highlightedTagName='mark'
+                />
+              </p>)
+              : <></>
+            }
           </div>
         </div>
       </li>

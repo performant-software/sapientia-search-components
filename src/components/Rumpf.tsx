@@ -3,7 +3,7 @@ import 'instantsearch.css/themes/reset.css'
 import 'instantsearch.css/themes/satellite.css'
 import Search from "./Search";
 import { useMemo } from "react";
-import { ArrowBarUp, Bank, BarChart, Calendar, FileEarmarkTextFill, Folder, Person, Pin } from "react-bootstrap-icons";
+import { ArrowBarUp, Bank, Calendar, FileEarmarkTextFill, Folder, Person, Pin } from "react-bootstrap-icons";
 import localizations from "../lib/localizations";
 import { InstantSearch } from "react-instantsearch";
 import searchClient from "../lib/searchClient";
@@ -20,31 +20,34 @@ const Rumpf: React.FC<RumpfProps> = ({ locale, onHitClick, hitWrapperComponent, 
   const hitConfig: HitConfig = useMemo(() => ({
     leftColumnItems: [
       {
-        uuid: 'fda80804-8753-4b15-8e11-3d291585cc79',
+        attribute: 'publicationDate',
         icon: <Calendar />,
         caption: localizations.publicationDate[locale]
       },
       {
+        attribute: 'publication_location',
         icon: <Pin />,
         caption: localizations.publicationLocation[locale],
-        // TODO
+        render: () => 'todo'
       },
       {
+        attribute: 'parent_edition',
         icon: <ArrowBarUp />,
-        caption: localizations.parentEdition[locale]
-        // TODO
+        caption: localizations.parentEdition[locale],
+        render: () => 'todo'
       },
       {
-        uuid: '21adc2bf-6970-4927-91de-cc476ab2e352',
+        attribute: 'line',
         icon: <FileEarmarkTextFill />,
         caption: localizations.line[locale]
       },
       {
+        attribute: 'format',
         caption: localizations.format[locale],
-        icon: <Folder />,
-        uuid: '4de71c17-308a-41ed-bc0e-19f4f7aee55c'
+        icon: <Folder />
       },
       {
+        attribute: 'author',
         icon: <Person />,
         caption: localizations.author[locale],
         render: (item: any) => item?.related_people?.find((p: { type: string }) => p.type === 'Authors')?.name
@@ -57,7 +60,7 @@ const Rumpf: React.FC<RumpfProps> = ({ locale, onHitClick, hitWrapperComponent, 
       }
     ],
     rightPanel: {
-      uuid: 'title'
+      attribute: 'name'
     }
   }), [locale])
 
@@ -71,6 +74,7 @@ const Rumpf: React.FC<RumpfProps> = ({ locale, onHitClick, hitWrapperComponent, 
           locale={locale}
           hitConfig={hitConfig}
           onHitClick={onHitClick}
+          project='rumpf'
           hitWrapperComponent={hitWrapperComponent}
           getHitWrapperProps={getHitWrapperProps}
         />

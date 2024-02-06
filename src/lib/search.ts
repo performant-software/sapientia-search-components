@@ -1,14 +1,7 @@
 // Taken straight from https://github.com/peripleo/peripleo/blob/main/packages/core-data/src/components/SearchFilterSettings/facetUtils.ts
 
 import { jwtDecode } from "jwt-decode";
-
-export interface Field {
-  value: string;
-  displayLabel: string;
-  show: boolean;
-  uuid?: string;
-  isUserDefined: boolean;
-}
+import { Field } from "./types";
 
 /**
  * Facet label formatting utility: replaces underscores with whitespace

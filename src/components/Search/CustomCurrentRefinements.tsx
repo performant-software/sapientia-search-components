@@ -24,8 +24,6 @@ const CustomCurrentRefinements: React.FC<Props> = (props) => {
 
   const { facets } = useContext(SearchContext);
 
-  console.log(facets)
-
   // Format refinement names and values for display
   const getValues = (item: CurrentRefinementsConnectorParamsItem) => {
     const label = facets.find(f => f.value === item.attribute)?.displayLabel

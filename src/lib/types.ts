@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import { Icon } from "react-bootstrap-icons";
 
 export enum FacetTypes {
   Number = "number",
@@ -17,20 +18,40 @@ export interface NumberFacet extends StringFacet {
 
 export type Facet = StringFacet | NumberFacet;
 
+export interface Field {
+  value: string;
+  displayLabel: string;
+  show: boolean;
+  uuid?: string;
+  isUserDefined: boolean;
+}
+
+export interface HitField {
+  attribute: string;
+  caption?: { en: string; fr: string };
+  icon?: Icon;
+  uuid: string;
+  value?: string;
+  displayLabel?: string;
+  show?: boolean;
+  isUserDefined?: boolean;
+  type?: "identifier" | "showcase";
+}
+
 export interface HitLeftColumnItem {
   caption: string;
   icon: ReactElement;
-  uuid?: string;
+  attribute: string;
   render?: (item: any) => string | undefined;
 }
 
 export interface HitConfig {
   leftColumnItems: HitLeftColumnItem[];
   rightPanel: {
-    uuid?: string;
+    attribute: string;
     label?: string;
   };
-  identifierUuid?: string;
+  identifierAttribute?: string;
   sortFields?: {
     value: string;
     label: string;

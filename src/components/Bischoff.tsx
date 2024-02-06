@@ -6,7 +6,6 @@ import Search from './Search';
 import localizations from "../lib/localizations";
 import { InstantSearch } from "react-instantsearch";
 import { Book, Building, Calendar, MapFill } from "react-bootstrap-icons";
-import { displayAttribute } from "../lib/reactHelpers";
 import searchClient from "../lib/searchClient";
 
 export interface BischoffProps {
@@ -20,32 +19,35 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperCompo
   const hitConfig = useMemo(() => ({
     leftColumnItems: [
       {
+        attribute: 'relatedOrganizations',
         icon: <Building />,
         caption: localizations.archive[locale],
         render: (item: any) => item?.related_organizations.find((o: any) => o.type === 'Archives')?.name
       },
       {
+        attribute: 'archiveLocation',
         icon: <MapFill />,
         caption: localizations.archiveLocation[locale],
         // Uh oh. Only one layer of relations is indexed and archive location requires two layers.
         render: () => 'TODO'
       },
       {
-        uuid: '7836b04d-b7a8-443a-a920-1cc76f30e6ea',
+        attribute: 'originalDate',
         icon: <Calendar />,
         caption: localizations.origDate[locale]
       },
       {
+        attribute: 'relatedWorks',
         icon: <Book />,
         caption: localizations.works[locale],
         render: (item: any) => item?.related_works ? item.related_works.map((w: { name: string }) => w.name) : undefined
       }
     ],
     rightPanel: {
-      uuid: 'e40c024a-9859-405f-86b9-308e893faa37',
+      attribute: 'text',
       label: localizations.text[locale]
     },
-    identifierUuid: 'e839b342-d5d9-4142-8310-697525d18229'
+    identifierAttribute: 'catalogNumber'
   }), [locale])
 
   return (
@@ -58,6 +60,7 @@ const Bischoff: React.FC<BischoffProps> = ({ locale, onHitClick, hitWrapperCompo
           locale={locale}
           hitConfig={hitConfig}
           onHitClick={onHitClick}
+          project='bischoff'
           hitWrapperComponent={hitWrapperComponent}
           getHitWrapperProps={getHitWrapperProps}
         />

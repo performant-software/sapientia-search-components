@@ -20,26 +20,31 @@ const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick, hitW
   const hitConfig: HitConfig = {
     leftColumnItems: [
       {
+        attribute: 'date',
         icon: <Calendar4Event />,
         caption: localizations.date[locale],
         render: (item) => handleDate(item)
       },
       {
+        attribute: 'city',
         icon: <Building />,
         caption: localizations.city[locale],
         render: (item: any) => item?.related_places?.find((pl: { type: string }) => pl.type === 'Ville')?.name
       },
       {
+        attribute: 'date_of_place',
         icon: <GeoAlt />,
         caption: localizations.place_given[locale],
         render: (item: any) => item?.related_places?.find((pl: { type: string }) => pl.type === 'Date de place')?.name
       },
       {
+        attribute: 'titulature',
         icon: <Bank />,
         caption: localizations.titulature[locale],
         render: (item: any) => item?.related_people?.find((p: { type: string }) => p.type === 'Titulature')?.name
       },
       {
+        attribute: 'commandement',
         icon: <Person />,
         caption: localizations.commandement[locale],
         render: (item: any) => item?.related_people?.find((p: { type: string }) => p.type === 'Commandement')?.name
@@ -47,9 +52,9 @@ const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick, hitW
     ],
     rightPanel: {
       label: localizations.text[locale],
-      uuid: '0ce611e4-4622-4160-8857-28ee7c915a8e'
+      attribute: 'text'
     },
-    identifierUuid: 'e247c848-08af-4bbd-bdd1-eed94b776c12',
+    identifierAttribute: 'numberOrder',
     sortFields: [
       { value: 'textes', label: localizations.relevance[locale] },
       { value: 'textes:timestamp:asc', label: localizations.chronologicalAsc[locale] },
@@ -69,6 +74,7 @@ const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick, hitW
           locale={locale}
           hitConfig={hitConfig}
           onHitClick={onHitClick}
+          project='supplique'
           hitWrapperComponent={hitWrapperComponent}
           getHitWrapperProps={getHitWrapperProps}
         />
