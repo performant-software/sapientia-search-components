@@ -28,14 +28,15 @@ export interface Field {
 export interface HitField {
   attribute: string;
   caption?: { en: string; fr: string };
+  displayLabel?: string;
   icon?: Icon;
+  isUserDefined?: boolean;
+  show?: boolean;
+  snippet?: number;
+  render?: (hit: any) => string;
+  type?: "identifier" | "showcase";
   uuid?: string;
   value?: string;
-  displayLabel?: string;
-  show?: boolean;
-  isUserDefined?: boolean;
-  type?: "identifier" | "showcase";
-  render?: (hit: any) => string;
 }
 
 export interface SortField {

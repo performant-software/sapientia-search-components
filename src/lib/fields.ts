@@ -127,6 +127,7 @@ const fields: { [key: string]: HitField[] } = {
       uuid: "0ce611e4-4622-4160-8857-28ee7c915a8e",
       type: "showcase",
       caption: localizations.text,
+      snippet: 75,
     },
     {
       attribute: "numberOrder",

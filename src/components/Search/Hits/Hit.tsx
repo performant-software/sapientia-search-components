@@ -63,6 +63,7 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
     if (newFields.length > 0) {
       fieldsDispatch(newFields)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fieldsDispatch, hit])
 
   const showcaseField = useMemo(() => fields.find(f => f.type === 'showcase'), [fields])
@@ -72,7 +73,7 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
   const regularFields = useMemo(() =>
     fields
       .filter(f => f.uuid && !f.type && hit[f.value as string])
-      .map(field => ((
+      .map(field => (
         <p
           className='hitData'
           key={field.uuid}
@@ -86,29 +87,32 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
             {hit[field.value as string]}
           </strong>
         </p>
-      )
       )), [fields, hit, locale])
 
   const renderedFields = useMemo(() =>
     fields
       .filter(f => f.render)
-      .map((field, idx) => (
-        (
-          <p
-            className='hitData'
-            key={idx}
-          >
-            {field.icon
-              ? <span title={field?.caption ? field.caption[locale] : undefined}>
-                <field.icon />
-              </span>
-              : <></>}
-            <strong>
-              {(field.render as (hit: any) => string)(hit)}
-            </strong>
-          </p>
-        )
-      )), [fields, hit, locale])
+      .map((field, idx) => {
+        const result = (field.render as (hit: any) => string)(hit)
+
+        if (result) {
+          return (
+            <p
+              className='hitData'
+              key={idx}
+            >
+              {field.icon
+                ? <span title={field?.caption ? field.caption[locale] : undefined}>
+                  <field.icon />
+                </span>
+                : <></>}
+              <strong>
+                {result}
+              </strong>
+            </p>
+          )
+        }
+      }), [fields, hit, locale])
 
   return (
     <Wrapper {...wrapperProps} className='hitLink'>

@@ -111,13 +111,21 @@ const Search: React.FC<SearchProps> = (props) => {
     }
   }, [fields, props.sortFields])
 
+  // TODO: this calculates the correct result,
+  // but the snippeting feature doesn't seem to work.
+  const attributesToSnippet = useMemo(() => (
+    fields
+      .filter(field => field.snippet && field.value)
+      .map(field => `${field.value}:${field.snippet}`)
+  ), [fields])
+
   return (
     <SearchContext.Provider value={{ facets, setFacets, fields, fieldsDispatch }}>
       <SearchDiv>
         <div className='search'>
           <Configure
-            attributesToSnippet={['texte:75']}
-            hitsPerPage={20}
+            attributesToSnippet={attributesToSnippet}
+            hitsPerPage={40}
           />
           <div className='leftPanel'>
             <Panel header={localizations.search[props.locale]}>
