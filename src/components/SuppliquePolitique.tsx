@@ -18,10 +18,10 @@ export interface SuppliqueProps {
 const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick, hitWrapperComponent, getHitWrapperProps }) => {
   const sortFields: SortField[] = useMemo(() => ([
     { value: 'supplique', label: localizations.relevance[locale] },
-    { value: 'supplique:year:asc', label: localizations.chronologicalAsc[locale] },
-    { value: 'supplique:year:desc', label: localizations.chronologicalDesc[locale] },
-    { value: 'supplique:numberOrder:asc', label: localizations.numberOrderAsc[locale] },
-    { value: 'supplique:numberOrder:desc', label: localizations.numberOrderDesc[locale] }
+    { value: 'supplique/sort/year:asc', label: localizations.chronologicalAsc[locale] },
+    { value: 'supplique/sort/year:desc', label: localizations.chronologicalDesc[locale] },
+    { value: 'supplique/sort/numberOrder:asc', label: localizations.numberOrderAsc[locale] },
+    { value: 'supplique/sort/numberOrder:desc', label: localizations.numberOrderDesc[locale] }
   ]), [locale])
 
   return (

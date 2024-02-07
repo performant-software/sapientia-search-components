@@ -92,14 +92,14 @@ const Search: React.FC<SearchProps> = (props) => {
       const result: SortField[] = []
 
       props.sortFields.forEach(sf => {
-        const split = sf.value.split(':')
-        if (split.length === 3) {
-          const attribute = split[1]
+        const split = sf.value.replace('supplique/sort/', '').split(':')
+        if (split.length === 2) {
+          const attribute = split[0]
           const match = fields.find(f => f.attribute === attribute)
           if (match) {
             result.push({
               label: sf.label,
-              value: [split[0], match.value, split[1]].join(':')
+              value: `supplique/sort/${match.value}:${split[1]}`
             })
           }
         } else {

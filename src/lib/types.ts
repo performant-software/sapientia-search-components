@@ -1,4 +1,3 @@
-import { ReactElement } from "react";
 import { Icon } from "react-bootstrap-icons";
 
 export enum FacetTypes {

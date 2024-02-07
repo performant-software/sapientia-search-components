@@ -114,11 +114,17 @@ const fields: { [key: string]: HitField[] } = {
           (p: { type: string }) => p.type === "Archives"
         )?.name,
     },
+    {
+      attribute: "name",
+      caption: localizations.title,
+      type: "showcase",
+      value: "name",
+    },
   ],
   supplique: [
     {
       attribute: "text",
-      uuid: "e40c024a-9859-405f-86b9-308e893faa37",
+      uuid: "0ce611e4-4622-4160-8857-28ee7c915a8e",
       type: "showcase",
       caption: localizations.text,
     },

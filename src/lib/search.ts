@@ -73,20 +73,3 @@ export const parseFacet = (value: string): Field => {
     };
   }
 };
-
-export const filterFacets = (
-  facets: string[],
-  options: { include?: string[]; exclude?: string[] }
-): string[] => {
-  const { include, exclude } = options;
-
-  if (include) {
-    // If there's an include config, ignore the exclude list
-    return facets.filter((f) => include.includes(f));
-  } else if (exclude) {
-    return facets.filter((f) => !exclude.includes(f));
-  } else {
-    // No filtering
-    return facets;
-  }
-};
