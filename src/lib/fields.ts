@@ -59,10 +59,7 @@ const fields: { [key: string]: HitField[] } = {
       attribute: "relatedWorks",
       icon: Book,
       caption: localizations.works,
-      render: (item: any) =>
-        item?.related_works
-          ? item.related_works.map((w: { name: string }) => w.name)
-          : undefined,
+      render: () => "todo",
     },
   ],
   rumpf: [
