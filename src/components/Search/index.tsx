@@ -6,13 +6,13 @@ import {
   RefinementList
 } from 'react-instantsearch'
 import CustomInfiniteHits from './Hits'
-import { useEffect, useReducer, useRef, useState } from 'react'
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { Filter } from 'react-bootstrap-icons'
 import Panel from './Panel'
 import { SearchDiv } from './Search.styled'
 import localizations from '../../lib/localizations'
 import CustomCurrentRefinements from './CustomCurrentRefinements'
-import { Field, HitConfig, HitField } from '../../lib/types'
+import { Field, SortField } from '../../lib/types'
 import { parseFacet } from '../../lib/search'
 import SearchContext from './SearchContext'
 import fieldData from '../../lib/fields'
@@ -20,25 +20,18 @@ import fieldsReducer from './fieldsReducer'
 
 interface SearchProps {
   locale: 'en' | 'fr',
-  hitConfig: HitConfig
   onHitClick?: (arg: any) => void,
   hitWrapperComponent?: React.FC,
   project: 'bischoff' | 'rumpf' | 'supplique'
   getHitWrapperProps?: (...args: any) => any
+  sortFields?: SortField[]
 }
 
-const Search: React.FC<SearchProps> = ({
-  locale,
-  hitConfig,
-  onHitClick,
-  hitWrapperComponent,
-  project,
-  getHitWrapperProps
-}) => {
+const Search: React.FC<SearchProps> = (props) => {
   const [displayFilterMenu, setDisplayFilterMenu] = useState(false)
   const [isMobile, setMobile] = useState(true)
   const [facets, setFacets] = useState<Field[]>([]);
-  const [fields, fieldsDispatch] = useReducer(fieldsReducer, fieldData[project]);
+  const [fields, fieldsDispatch] = useReducer(fieldsReducer, fieldData[props.project]);
 
   const filterRef = useRef<HTMLDivElement>(null)
 
@@ -94,6 +87,30 @@ const Search: React.FC<SearchProps> = ({
     setFacets(attributesToRender.map((att) => parseFacet(att)));
   }, [attributesToRender]);
 
+  const sortFields = useMemo(() => {
+    if (props.sortFields) {
+      const result: SortField[] = []
+
+      props.sortFields.forEach(sf => {
+        const split = sf.value.split(':')
+        if (split.length === 3) {
+          const attribute = split[1]
+          const match = fields.find(f => f.attribute === attribute)
+          if (match) {
+            result.push({
+              label: sf.label,
+              value: [split[0], match.value, split[1]].join(':')
+            })
+          }
+        } else {
+          result.push(sf)
+        }
+      })
+
+      return result.length > 0 ? result : undefined
+    }
+  }, [fields, props.sortFields])
+
   return (
     <SearchContext.Provider value={{ facets, setFacets, fields, fieldsDispatch }}>
       <SearchDiv>
@@ -103,7 +120,7 @@ const Search: React.FC<SearchProps> = ({
             hitsPerPage={20}
           />
           <div className='leftPanel'>
-            <Panel header={localizations.search[locale]}>
+            <Panel header={localizations.search[props.locale]}>
               <button
                 className='filterButton'
                 onClick={() => toggleFilters()}
@@ -111,7 +128,7 @@ const Search: React.FC<SearchProps> = ({
                 <Filter />
               </button>
               <SearchBox
-                translations={{ submitButtonTitle: localizations.searchHere[locale] }}
+                translations={{ submitButtonTitle: localizations.searchHere[props.locale] }}
               />
             </Panel>
             {facets.map(f => (
@@ -122,11 +139,11 @@ const Search: React.FC<SearchProps> = ({
               </Panel>
             ))}
             <div className='filters' ref={filterRef}>
-              {hitConfig.sortFields
+              {sortFields
                 ? (
-                  <Panel header={localizations.sort[locale]}>
+                  <Panel header={localizations.sort[props.locale]}>
                     <SortBy
-                      items={hitConfig.sortFields}
+                      items={sortFields}
                     />
                   </Panel>
                 )
@@ -136,14 +153,13 @@ const Search: React.FC<SearchProps> = ({
           </div>
           <div className='mainPanel'>
             <CustomCurrentRefinements
-              locale={locale}
+              locale={props.locale}
             />
             <CustomInfiniteHits
-              locale={locale}
-              hitConfig={hitConfig}
-              onHitClick={onHitClick}
-              hitWrapperComponent={hitWrapperComponent}
-              getHitWrapperProps={getHitWrapperProps}
+              locale={props.locale}
+              onHitClick={props.onHitClick}
+              hitWrapperComponent={props.hitWrapperComponent}
+              getHitWrapperProps={props.getHitWrapperProps}
             />
           </div>
         </div>

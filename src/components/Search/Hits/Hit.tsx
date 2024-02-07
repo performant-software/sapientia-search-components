@@ -1,6 +1,6 @@
 import { Highlight } from 'react-instantsearch'
-import { Field, HitConfig, HitField } from '../../../lib/types'
-import { ReactElement, useCallback, useContext, useEffect, useMemo } from 'react'
+import { Field } from '../../../lib/types'
+import { ReactElement, useContext, useEffect, useMemo } from 'react'
 import { parseFacet } from '../../../lib/search'
 import SearchContext from '../SearchContext'
 
@@ -10,7 +10,6 @@ interface Props {
   // code in this component works fine 🤷‍♂️
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   hit: any,
-  hitConfig: HitConfig,
   locale: 'en' | 'fr',
   onHitClick?: (arg: any) => void,
   hitWrapperComponent?: React.FC,
@@ -30,25 +29,6 @@ const LinkWrapper: React.FC<{
   </a>
 )
 
-const getFieldObjByAttribute = (fields: HitField[], att: string) => {
-  return fields.find(f => f.attribute === att)
-}
-
-// This is somewhat inefficient, but it shouldn't have
-// to run too many times before all the fields have been
-// memoized within the `fields` table.
-const getAttributeMatch = (fields: any, hit: any, attribute: string) => {
-  const parsedJwts = Object.keys(hit)
-    .filter(k => k.startsWith('ey'))
-    .map(k => parseFacet(k))
-
-  const fieldObj = getFieldObjByAttribute(fields, attribute)
-
-  if (fieldObj) {
-    return parsedJwts.find(f => f.uuid === fieldObj.uuid)
-  }
-}
-
 const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale }: Props) => {
   const Wrapper = hitWrapperComponent || LinkWrapper
 
@@ -61,27 +41,6 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
   }, [getHitWrapperProps, hit, onHitClick])
 
   const { fields, fieldsDispatch } = useContext(SearchContext);
-
-  const getField = useCallback((attribute: string) => {
-    // Name is the one hard-coded field that we
-    // can always assume is present.
-    if (attribute === 'name') {
-      return hit.name
-    }
-
-    const attributeMatch = getAttributeMatch(fields, hit, attribute)
-
-    if (attributeMatch?.value) {
-      console.log('match for existing field found')
-      return hit[attributeMatch.value]
-    } else if (attributeMatch) {
-      console.log('match for new field found')
-      fieldsDispatch(attributeMatch)
-      return hit[attributeMatch.value]
-    }
-
-    return ''
-  }, [fields, fieldsDispatch, hit])
 
   // Cycle through field names and parse the JWTs to connect them
   // with our UUID map if they haven't been mapped already. We have
@@ -96,13 +55,10 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
     jwtFieldNames.forEach(jwt => {
       const cached = fields.find(field => field?.value === jwt)
       if (!cached) {
-        console.log('not cached')
         const parsed = parseFacet(jwt)
         newFields.push(parsed)
       }
     })
-
-    console.log(newFields)
 
     if (newFields.length > 0) {
       fieldsDispatch(newFields)
@@ -113,7 +69,46 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
 
   const identifierField = useMemo(() => fields.find(f => f.type === 'identifier'), [fields])
 
-  const regularFields = useMemo(() => fields.filter(f => !f.type), [fields])
+  const regularFields = useMemo(() =>
+    fields
+      .filter(f => f.uuid && !f.type && hit[f.value as string])
+      .map(field => ((
+        <p
+          className='hitData'
+          key={field.uuid}
+        >
+          {field.icon
+            ? <span title={field?.caption ? field.caption[locale] : undefined}>
+              <field.icon />
+            </span>
+            : <></>}
+          <strong>
+            {hit[field.value as string]}
+          </strong>
+        </p>
+      )
+      )), [fields, hit, locale])
+
+  const renderedFields = useMemo(() =>
+    fields
+      .filter(f => f.render)
+      .map((field, idx) => (
+        (
+          <p
+            className='hitData'
+            key={idx}
+          >
+            {field.icon
+              ? <span title={field?.caption ? field.caption[locale] : undefined}>
+                <field.icon />
+              </span>
+              : <></>}
+            <strong>
+              {(field.render as (hit: any) => string)(hit)}
+            </strong>
+          </p>
+        )
+      )), [fields, hit, locale])
 
   return (
     <Wrapper {...wrapperProps} className='hitLink'>
@@ -136,21 +131,8 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
             )
             : null
           }
-          {regularFields.filter(field => field.value).map(field => (
-            <p
-              className='hitData'
-              key={field.uuid}
-            >
-              {field.caption
-                ? <span title={field?.caption[locale]}>
-                  {field.caption[locale]}
-                </span>
-                : <></>}
-              <strong>
-                {hit[field.value as string]}
-              </strong>
-            </p>
-          ))}
+          {regularFields}
+          {renderedFields}
         </div>
         <div className='right'>
           <div className='summary'>
@@ -171,8 +153,8 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
             }
           </div>
         </div>
-      </li>
-    </Wrapper>
+      </li >
+    </Wrapper >
   )
 }
 

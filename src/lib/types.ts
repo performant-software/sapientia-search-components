@@ -30,30 +30,16 @@ export interface HitField {
   attribute: string;
   caption?: { en: string; fr: string };
   icon?: Icon;
-  uuid: string;
+  uuid?: string;
   value?: string;
   displayLabel?: string;
   show?: boolean;
   isUserDefined?: boolean;
   type?: "identifier" | "showcase";
+  render?: (hit: any) => string;
 }
 
-export interface HitLeftColumnItem {
-  caption: string;
-  icon: ReactElement;
-  attribute: string;
-  render?: (item: any) => string | undefined;
-}
-
-export interface HitConfig {
-  leftColumnItems: HitLeftColumnItem[];
-  rightPanel: {
-    attribute: string;
-    label?: string;
-  };
-  identifierAttribute?: string;
-  sortFields?: {
-    value: string;
-    label: string;
-  }[];
+export interface SortField {
+  label: string;
+  value: string;
 }
