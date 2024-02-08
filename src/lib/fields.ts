@@ -85,7 +85,10 @@ const fields: { [key: string]: HitField[] } = {
       attribute: "publication_location",
       icon: Pin,
       caption: localizations.publicationLocation,
-      render: () => "todo",
+      render: (item: any) =>
+        item?.related_places?.find(
+          (pl: { type: string }) => pl.type === "Publication Location"
+        )?.name,
     },
     {
       attribute: "parent_edition",
