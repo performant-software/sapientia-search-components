@@ -2,21 +2,19 @@ import {
   SearchBox,
   Configure,
   SortBy,
-  useDynamicWidgets,
   RefinementList
 } from 'react-instantsearch'
 import CustomInfiniteHits from './Hits'
-import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Filter } from 'react-bootstrap-icons'
 import Panel from './Panel'
 import { SearchDiv } from './Search.styled'
 import localizations from '../../lib/localizations'
 import CustomCurrentRefinements from './CustomCurrentRefinements'
-import { Field, SortField } from '../../lib/types'
-import { parseFacet } from '../../lib/search'
+import { Field, HitField, SortField } from '../../lib/types'
+import { getFacets } from '../../lib/search'
 import SearchContext from './SearchContext'
-import fieldData from '../../lib/fields'
-import fieldsReducer from './fieldsReducer'
+import fieldConfig from '../../lib/fields'
 
 interface SearchProps {
   locale: 'en' | 'fr',
@@ -30,8 +28,7 @@ interface SearchProps {
 const Search: React.FC<SearchProps> = (props) => {
   const [displayFilterMenu, setDisplayFilterMenu] = useState(false)
   const [isMobile, setMobile] = useState(true)
-  const [facets, setFacets] = useState<Field[]>([]);
-  const [fields, fieldsDispatch] = useReducer(fieldsReducer, fieldData[props.project]);
+  const [fields, setFields] = useState<{ [key: string]: HitField }>({});
 
   const filterRef = useRef<HTMLDivElement>(null)
 
@@ -78,14 +75,33 @@ const Search: React.FC<SearchProps> = (props) => {
     }
   }, [displayFilterMenu])
 
-
-  const { attributesToRender } = useDynamicWidgets({
-    facets: ["*"]
-  });
-
+  // Fetch the schema on first render so we can parse all facets at once.
   useEffect(() => {
-    setFacets(attributesToRender.map((att) => parseFacet(att)));
-  }, [attributesToRender]);
+    const setup = async () => {
+      const results: Field[] = await getFacets(props.project)
+
+      const merged: { [key: string]: HitField } = {}
+
+      Object.keys(fieldConfig[props.project]).forEach(att => {
+        // The first check is for whether the attribute names match - as related
+        // fields don't have UUIDs, we need to make sure we use the correct
+        // attribute name as a key in `fields.ts`.
+        // The second check is, more straightforwardly, seeing if there's a field
+        // with a matching UUID.
+        const matching = results.find(r =>
+          (r.uuid && r.uuid === fieldConfig[props.project][att].uuid)
+          || r.value === att)
+
+        if (matching) {
+          merged[att] = { ...fieldConfig[props.project][att], ...matching }
+        }
+      })
+
+      setFields(merged)
+    }
+
+    setup()
+  }, [props.project])
 
   const sortFields = useMemo(() => {
     if (props.sortFields) {
@@ -95,7 +111,7 @@ const Search: React.FC<SearchProps> = (props) => {
         const split = sf.value.replace('supplique/sort/', '').split(':')
         if (split.length === 2) {
           const attribute = split[0]
-          const match = fields.find(f => f.attribute === attribute)
+          const match = fields[attribute]
           if (match) {
             result.push({
               label: sf.label,
@@ -114,13 +130,25 @@ const Search: React.FC<SearchProps> = (props) => {
   // TODO: this calculates the correct result,
   // but the snippeting feature doesn't seem to work.
   const attributesToSnippet = useMemo(() => (
-    fields
+    Object.values(fields)
       .filter(field => field.snippet && field.value)
       .map(field => `${field.value}:${field.snippet}`)
   ), [fields])
 
+  const refinementLists = useMemo(() => (
+    Object.values(fields)
+      .filter(field => field.facet && field.displayLabel)
+      .map(field => (
+        <Panel header={field.displayLabel as string} key={field.value}>
+          <RefinementList
+            attribute={field.value as string}
+          />
+        </Panel>
+      ))
+  ), [fields])
+
   return (
-    <SearchContext.Provider value={{ facets, setFacets, fields, fieldsDispatch }}>
+    <SearchContext.Provider value={{ fields }}>
       <SearchDiv>
         <div className='search'>
           <Configure
@@ -139,13 +167,7 @@ const Search: React.FC<SearchProps> = (props) => {
                 translations={{ submitButtonTitle: localizations.searchHere[props.locale] }}
               />
             </Panel>
-            {facets.map(f => (
-              <Panel header={f.displayLabel} key={f.value}>
-                <RefinementList
-                  attribute={f.value}
-                />
-              </Panel>
-            ))}
+            {refinementLists}
             <div className='filters' ref={filterRef}>
               {sortFields
                 ? (

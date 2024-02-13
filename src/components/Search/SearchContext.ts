@@ -1,18 +1,12 @@
 import { createContext } from "react";
-import { Field, HitField } from "../../lib/types";
+import { HitField } from "../../lib/types";
 
 interface SearchContextValue {
-  facets: Field[];
-  setFacets: (arg: Field[]) => void;
-  fields: Array<HitField>;
-  fieldsDispatch: (arg: any) => void;
+  fields: { [key: string]: HitField };
 }
 
 const SearchContext = createContext<SearchContextValue>({
-  facets: [],
-  setFacets: () => null,
-  fields: [],
-  fieldsDispatch: () => null,
+  fields: {},
 });
 
 export default SearchContext;

@@ -26,9 +26,9 @@ export interface Field {
 }
 
 export interface HitField {
-  attribute: string;
   caption?: { en: string; fr: string };
   displayLabel?: string;
+  facet?: boolean;
   icon?: Icon;
   isUserDefined?: boolean;
   show?: boolean;

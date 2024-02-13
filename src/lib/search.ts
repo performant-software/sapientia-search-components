@@ -2,6 +2,31 @@
 
 import { jwtDecode } from "jwt-decode";
 import { Field } from "./types";
+import axios from "axios";
+
+export const getFacets = async (
+  project: "bischoff" | "rumpf" | "supplique"
+) => {
+  const baseUrl = `https://${
+    import.meta.env.VITE_APP_TYPESENSE_HOST
+  }/collections`;
+  const key = import.meta.env.VITE_APP_TYPESENSE_SEARCH_KEY;
+  const url = `${baseUrl}/${
+    import.meta.env[`VITE_APP_TYPESENSE_${project.toUpperCase()}_INDEX_NAME`]
+  }`;
+
+  const res = await axios.get(url, {
+    headers: {
+      "X-TYPESENSE-API-KEY": key,
+    },
+  });
+
+  if (res.data.fields) {
+    return res.data.fields.map((f: any) => parseFacet(f.name));
+  }
+
+  return [];
+};
 
 /**
  * Facet label formatting utility: replaces underscores with whitespace

@@ -22,11 +22,11 @@ const CustomCurrentRefinements: React.FC<Props> = (props) => {
     refine
   } = useCurrentRefinements(props)
 
-  const { facets } = useContext(SearchContext);
+  const { fields } = useContext(SearchContext);
 
   // Format refinement names and values for display
   const getValues = (item: CurrentRefinementsConnectorParamsItem) => {
-    const label = facets.find(f => f.value === item.attribute)?.displayLabel
+    const label = fields[item.attribute]?.displayLabel
     let values: Array<string | number>
 
     if (isNumberRefinement(item)) {

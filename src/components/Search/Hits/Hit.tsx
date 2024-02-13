@@ -40,38 +40,14 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
     return { hit, onHitClick }
   }, [getHitWrapperProps, hit, onHitClick])
 
-  const { fields, fieldsDispatch } = useContext(SearchContext);
+  const { fields } = useContext(SearchContext);
 
-  // Cycle through field names and parse the JWTs to connect them
-  // with our UUID map if they haven't been mapped already. We have
-  // to do this on each hit because not every hit has every field,
-  // i.e. if a hit doesn't contain a value for a field, the field
-  // isn't sent with that hit.
-  useEffect(() => {
-    const jwtFieldNames = Object.keys(hit).filter(k => k.startsWith('ey'))
+  const showcaseField = useMemo(() => Object.values(fields).find(f => f.type === 'showcase'), [fields])
 
-    const newFields: Field[] = []
-
-    jwtFieldNames.forEach(jwt => {
-      const cached = fields.find(field => field?.value === jwt)
-      if (!cached) {
-        const parsed = parseFacet(jwt)
-        newFields.push(parsed)
-      }
-    })
-
-    if (newFields.length > 0) {
-      fieldsDispatch(newFields)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fieldsDispatch, hit])
-
-  const showcaseField = useMemo(() => fields.find(f => f.type === 'showcase'), [fields])
-
-  const identifierField = useMemo(() => fields.find(f => f.type === 'identifier'), [fields])
+  const identifierField = useMemo(() => Object.values(fields).find(f => f.type === 'identifier'), [fields])
 
   const regularFields = useMemo(() =>
-    fields
+    Object.values(fields)
       .filter(f => f.uuid && !f.type && hit[f.value as string])
       .map(field => (
         <p
@@ -90,7 +66,7 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
       )), [fields, hit, locale])
 
   const renderedFields = useMemo(() =>
-    fields
+    Object.values(fields)
       .filter(f => f.render)
       .map((field, idx) => {
         const result = (field.render as (hit: any) => string)(hit)
