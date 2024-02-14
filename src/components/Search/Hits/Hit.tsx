@@ -1,7 +1,5 @@
-import { Highlight } from 'react-instantsearch'
-import { Field } from '../../../lib/types'
-import { ReactElement, useContext, useEffect, useMemo } from 'react'
-import { parseFacet } from '../../../lib/search'
+import { Highlight, Snippet } from 'react-instantsearch'
+import { ReactElement, useContext, useMemo } from 'react'
 import SearchContext from '../SearchContext'
 
 interface Props {
@@ -43,6 +41,8 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
   const { fields } = useContext(SearchContext);
 
   const showcaseField = useMemo(() => Object.values(fields).find(f => f.type === 'showcase'), [fields])
+
+  const ShowcaseComponent = useMemo(() => showcaseField?.snippet ? Snippet : Highlight, [showcaseField])
 
   const identifierField = useMemo(() => Object.values(fields).find(f => f.type === 'identifier'), [fields])
 
@@ -104,7 +104,6 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
                     attribute={[identifierField.value]}
                     hit={hit}
                     highlightedTagName='mark'
-
                   />
                 </span>
               </h2>
@@ -123,7 +122,7 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
               && hit[showcaseField.value]
               ?
               (<p>
-                <Highlight
+                <ShowcaseComponent
                   attribute={[showcaseField.value]}
                   hit={hit}
                   highlightedTagName='mark'

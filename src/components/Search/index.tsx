@@ -127,14 +127,6 @@ const Search: React.FC<SearchProps> = (props) => {
     }
   }, [fields, props.sortFields])
 
-  // TODO: this calculates the correct result,
-  // but the snippeting feature doesn't seem to work.
-  const attributesToSnippet = useMemo(() => (
-    Object.values(fields)
-      .filter(field => field.snippet && field.value)
-      .map(field => `${field.value}:${field.snippet}`)
-  ), [fields])
-
   const refinementLists = useMemo(() => (
     Object.values(fields)
       .filter(field => field.facet && field.displayLabel)
@@ -152,7 +144,6 @@ const Search: React.FC<SearchProps> = (props) => {
       <SearchDiv>
         <div className='search'>
           <Configure
-            attributesToSnippet={attributesToSnippet}
             hitsPerPage={20}
           />
           <div className='leftPanel'>
