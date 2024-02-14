@@ -153,7 +153,7 @@ const Search: React.FC<SearchProps> = (props) => {
         <div className='search'>
           <Configure
             attributesToSnippet={attributesToSnippet}
-            hitsPerPage={40}
+            hitsPerPage={20}
           />
           <div className='leftPanel'>
             <Panel header={localizations.search[props.locale]}>

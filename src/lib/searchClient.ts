@@ -11,8 +11,12 @@ const searchAdapter = new TypesenseInstantsearchAdapter({
       },
     ],
   },
+  // We might not want to search by all fields, but the
+  // alternative was to figure out a way to set this
+  // after the UUIDs are mapped to JWTs, which
+  // sounds pretty complex!
   additionalSearchParameters: {
-    query_by: "name",
+    query_by: "*",
   },
 });
 
