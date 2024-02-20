@@ -50,7 +50,8 @@ const fields: { [key: string]: { [key: string]: HitField } } = {
       icon: Book,
       facet: true,
       caption: localizations.works,
-      render: () => "todo",
+      render: (item: any) =>
+        item?.related_works?.length ? item.related_works[0].name : null,
     },
   },
   rumpf: {
@@ -80,10 +81,14 @@ const fields: { [key: string]: { [key: string]: HitField } } = {
           (pl: { type: string }) => pl.type === "Publication Location"
         )?.name,
     },
-    parentEdition: {
+    "related_items.names": {
       icon: ArrowBarUp,
       caption: localizations.parentEdition,
-      render: () => "todo",
+      facet: true,
+      render: (item: any) =>
+        item?.related_items?.find(
+          (item: { type: string }) => item.type === "Parent Edition"
+        )?.name,
     },
     "related_people.names": {
       icon: Person,
