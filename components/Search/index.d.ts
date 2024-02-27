@@ -1,15 +1,12 @@
-import { ReactElement } from 'react';
-import { InstantMeiliSearchInstance } from '@meilisearch/instant-meilisearch';
-import { HitConfig } from '../../lib/types';
-interface Props {
+/// <reference types="react" />
+import { SortField } from '../../lib/types';
+interface SearchProps {
     locale: 'en' | 'fr';
-    children: ReactElement | ReactElement[];
-    searchClient: InstantMeiliSearchInstance;
-    indexName: string;
-    hitConfig: HitConfig;
     onHitClick?: (arg: any) => void;
     hitWrapperComponent?: React.FC;
+    project: 'bischoff' | 'rumpf' | 'supplique';
     getHitWrapperProps?: (...args: any) => any;
+    sortFields?: SortField[];
 }
-declare const Search: React.FC<Props>;
+declare const Search: React.FC<SearchProps>;
 export default Search;

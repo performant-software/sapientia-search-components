@@ -1,9 +1,7 @@
 /// <reference types="react" />
-import { UseInfiniteHitsProps } from 'react-instantsearch-hooks';
-import { HitConfig } from '../../../lib/types';
+import { UseInfiniteHitsProps } from 'react-instantsearch-core';
 interface Props extends UseInfiniteHitsProps {
     locale: 'en' | 'fr';
-    hitConfig: HitConfig;
     onHitClick?: (arg: any) => void;
     hitWrapperComponent?: React.FC;
     getHitWrapperProps?: (...args: any) => any;
