@@ -1,103 +1,140 @@
-import { Highlight } from 'react-instantsearch-hooks-web'
-import { HitConfig } from '../../../lib/types'
-import { ReactElement, useMemo } from 'react'
+import { Highlight, Snippet } from 'react-instantsearch'
+import { ReactElement, useContext, useMemo } from 'react'
+import SearchContext from '../SearchContext'
 
 interface Props {
-    // No idea how to type the Hit - importing the types that
-    // instantsearch uses causes type errors, even though the
-    // code in this component works fine 🤷‍♂️
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    hit: any,
-    hitConfig: HitConfig,
-    locale: 'en' | 'fr',
-    onHitClick?: (arg: any) => void,
-    hitWrapperComponent?: React.FC,
-    getHitWrapperProps?: (...args: any) => any
-}
-
-const handleArrays = (field: unknown) => {
-    if (Array.isArray(field)) {
-        return <span>{field.join(', ')}</span>
-    } else {
-        return <span>{field as string}</span>
-    }
+  // No idea how to type the Hit - importing the types that
+  // instantsearch uses causes type errors, even though the
+  // code in this component works fine 🤷‍♂️
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  hit: any,
+  locale: 'en' | 'fr',
+  onHitClick?: (arg: any) => void,
+  hitWrapperComponent?: React.FC,
+  getHitWrapperProps?: (...args: any) => any
 }
 
 const LinkWrapper: React.FC<{
-    hit: any,
-    onHitClick?: (arg: any) => void,
-    children: ReactElement | ReactElement[]
+  hit: any,
+  onHitClick?: (arg: any) => void,
+  children: ReactElement | ReactElement[]
 }> = ({ hit, onHitClick, children }) => (
-    <a
-        className='hitLink'
-        onClick={onHitClick ? () => onHitClick(hit) : () => null}
-    >
-        {children}
-    </a>
+  <a
+    className='hitLink'
+    onClick={onHitClick ? () => onHitClick(hit) : () => null}
+  >
+    {children}
+  </a>
 )
 
-const Hit = ({ hit, hitConfig, onHitClick, hitWrapperComponent, getHitWrapperProps }: Props) => {
-    const Wrapper = hitWrapperComponent || LinkWrapper
+const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale }: Props) => {
+  const Wrapper = hitWrapperComponent || LinkWrapper
 
-    const wrapperProps = useMemo(() => {
-        if (getHitWrapperProps) {
-            return getHitWrapperProps(hit)
+  const wrapperProps = useMemo(() => {
+    if (getHitWrapperProps) {
+      return getHitWrapperProps(hit)
+    }
+
+    return { hit, onHitClick }
+  }, [getHitWrapperProps, hit, onHitClick])
+
+  const { fields } = useContext(SearchContext);
+
+  const showcaseField = useMemo(() => Object.values(fields).find(f => f.type === 'showcase'), [fields])
+
+  const ShowcaseComponent = useMemo(() => showcaseField?.snippet ? Snippet : Highlight, [showcaseField])
+
+  const identifierField = useMemo(() => Object.values(fields).find(f => f.type === 'identifier'), [fields])
+
+  const regularFields = useMemo(() =>
+    Object.values(fields)
+      .filter(f => f.uuid && !f.type && hit[f.value as string])
+      .map(field => (
+        <p
+          className='hitData'
+          key={field.uuid}
+        >
+          {field.icon
+            ? <span title={field?.caption ? field.caption[locale] : undefined}>
+              <field.icon />
+            </span>
+            : <></>}
+          <strong>
+            {hit[field.value as string]}
+          </strong>
+        </p>
+      )), [fields, hit, locale])
+
+  const renderedFields = useMemo(() =>
+    Object.values(fields)
+      .filter(f => f.render)
+      .map((field, idx) => {
+        const result = (field.render as (hit: any) => string)(hit)
+
+        if (result) {
+          return (
+            <p
+              className='hitData'
+              key={idx}
+            >
+              {field.icon
+                ? <span title={field?.caption ? field.caption[locale] : undefined}>
+                  <field.icon />
+                </span>
+                : <></>}
+              <strong>
+                {result}
+              </strong>
+            </p>
+          )
         }
+      }), [fields, hit, locale])
 
-        return { hit, onHitClick }
-    }, [getHitWrapperProps, hit, onHitClick])
-
-    return (
-        <Wrapper {...wrapperProps} className='hitLink'>
-            <li className='hit'>
-                <div className='left'>
-                    {hitConfig.headlineAttribute
-                        ? (
-                            <h2 className='headline'>
-                                {hitConfig.renderHeadlineAttribute
-                                    ? hitConfig.renderHeadlineAttribute(hit)
-                                    : hit[hitConfig.headlineAttribute]}
-                            </h2>
-                            )
-                        : null
-                        }
-                    {hitConfig.leftColumnItems.map((configItem) => {
-                        if (configItem.renderDisplay || hit[configItem.attribute])
-                            return (
-                                <p
-                                    className='hitData'
-                                    key={configItem.attribute}
-                                >
-                                    <span title={configItem.caption}>
-                                        {configItem.icon}
-                                    </span>
-                                    <strong>
-                                        {configItem.renderDisplay
-                                            ? configItem.renderDisplay(hit)
-                                            : handleArrays(hit[configItem.attribute])
-                                        }
-                                    </strong>
-                                </p>
-                            )
-                    })}
-                </div>
-                <div className='right'>
-                    <div className='summary'>
-                        {hitConfig.rightPanel.label
-                            ? <h3>{hitConfig.rightPanel.label}</h3>
-                            : null}
-                        <p>
-                            <Highlight
-                                attribute={hitConfig.rightPanel.attribute}
-                                hit={hit}
-                                highlightedTagName='mark'
-                            />
-                        </p>
-                    </div>
-                </div>
-            </li>
-        </Wrapper>
-    )
+  return (
+    <Wrapper {...wrapperProps} className='hitLink'>
+      <li className='hit'>
+        <div className='left'>
+          {identifierField?.value
+            && hit[identifierField.value]
+            ? (
+              <h2 className='headline'>
+                <span>
+                  #
+                  <Highlight
+                    attribute={[identifierField.value]}
+                    hit={hit}
+                    highlightedTagName='mark'
+                  />
+                </span>
+              </h2>
+            )
+            : null
+          }
+          {regularFields}
+          {renderedFields}
+        </div>
+        <div className='right'>
+          <div className='summary'>
+            {showcaseField?.caption
+              ? <h3>{showcaseField?.caption[locale]}</h3>
+              : null}
+            {showcaseField?.value
+              && hit[showcaseField.value]
+              ?
+              (<p>
+                <ShowcaseComponent
+                  attribute={[showcaseField.value]}
+                  hit={hit}
+                  highlightedTagName='mark'
+                />
+              </p>)
+              : <></>
+            }
+          </div>
+        </div>
+      </li >
+    </Wrapper >
+  )
 }
 
 export default Hit

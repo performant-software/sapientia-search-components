@@ -1,15 +1,18 @@
 import styled from "styled-components";
 
 const GlobalStyle = styled.div`
-  @import url('https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer&family=Overpass&display=swap');
+  @import url("https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer&family=Overpass&display=swap");
 
   padding: 0;
   margin: 0;
-  font-family: 'Overpass', sans-serif;
+  font-family: "Overpass", sans-serif;
   background: #f9f9f9;
   text-rendering: optimizeLegibility;
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     text-align: center;
   }
 
@@ -18,7 +21,9 @@ const GlobalStyle = styled.div`
     text-decoration: none;
   }
 
-  p, li, ul {
+  p,
+  li,
+  ul {
     line-height: 1.5;
     font-size: 1.1rem;
   }
@@ -78,6 +83,6 @@ const GlobalStyle = styled.div`
       flex-grow: 1;
     }
   }
-`
+`;
 
-export default GlobalStyle
+export default GlobalStyle;

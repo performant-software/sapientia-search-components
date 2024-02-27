@@ -16,11 +16,17 @@ jobs:
           persist-credentials: false
       - name: Install and Build 🔧
         env:
-          meili_key: ${{ secrets.VITE_APP_MEILI_KEY }}
-          meili_url: ${{ secrets.VITE_APP_MEILI_URL }}
+          typesense_host: ${{ secrets.VITE_APP_TYPESENSE_HOST }}
+          typesense_port: ${{ secrets.VITE_APP_TYPESENSE_PORT }}
+          typesense_protocol: ${{ secrets.VITE_APP_TYPESENSE_PROTOCOL }}
+          typesense_search_key: ${{ secrets.VITE_APP_TYPESENSE_SEARCH_KEY }}
+          typesense_bischoff_index: ${{ secrets.VITE_APP_TYPESENSE_BISCHOFF_INDEX_NAME }}
+          typesense_rumpf_index: ${{ secrets.VITE_APP_TYPESENSE_RUMPF_INDEX_NAME }}
+          typesense_supplique_index: ${{ secrets.VITE_APP_TYPESENSE_SUPPLIQUE_INDEX_NAME }}
         run: | # Install npm packages and build the Storybook files
           npm install
-          echo -e "VITE_APP_MEILI_KEY=${meili_key}\nVITE_APP_MEILI_URL=${meili_url}" >> .env
+          echo -e "VITE_APP_TYPESENSE_HOST=${typesense_host}\nVITE_APP_TYPESENSE_PORT=${typesense_port}\nVITE_APP_TYPESENSE_PROTOCOL=${typesense_protocol}\nVITE_APP_TYPESENSE_SEARCH_KEY=${typesense_search_key}\nVITE_APP_TYPESENSE_BISCHOFF_INDEX_NAME=${typesense_bischoff_index}\nVITE_APP_TYPESENSE_RUMPF_INDEX_NAME=${typesense_rumpf_index}\nVITE_APP_TYPESENSE_SUPPLIQUE_INDEX_NAME=${typesense_supplique_index}" >> .env
+
           echo "Using env:"
           cat .env
           npm run build-storybook
