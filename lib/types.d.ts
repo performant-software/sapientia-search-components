@@ -33,12 +33,6 @@ export interface HitField {
     isUserDefined?: boolean;
     show?: boolean;
     snippet?: number;
-    render?: (hit: any) => string;
+    render?: (hit: any) => string | null;
     type?: "identifier" | "showcase";
-    uuid?: string;
-    value?: string;
-}
-export interface SortField {
-    label: string;
-    value: string;
 }
