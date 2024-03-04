@@ -25,7 +25,29 @@ const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick, hitW
           project='supplique'
           hitWrapperComponent={hitWrapperComponent}
           getHitWrapperProps={getHitWrapperProps}
-        />
+        >
+          <></>
+          {/* <Panel header={localizations.date[locale]}>
+            <div className='dateSlider'>
+              <p className='header'>{localizations.year[locale]}</p>
+              <CustomRangeSlider
+                attribute={`${import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_YEAR_UUID}_facet`}
+              />
+            </div>
+            <div className='dateSlider'>
+              <p className='header'>{localizations.month[locale]}</p>
+              <CustomRangeSlider
+                attribute={`${import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_MONTH_UUID}_facet`}
+              />
+            </div>
+            <div className='dateSlider'>
+              <p className='header'>{localizations.day[locale]}</p>
+              <CustomRangeSlider
+                attribute={`${import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_DAY_UUID}_facet`}
+              />
+            </div>
+          </Panel> */}
+        </Search>
       </InstantSearch>
     </GlobalStyle>
   )

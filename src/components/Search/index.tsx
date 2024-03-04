@@ -4,7 +4,7 @@ import {
   RefinementList
 } from 'react-instantsearch'
 import CustomInfiniteHits from './Hits'
-import { useMemo } from 'react'
+import { ReactElement, useMemo } from 'react'
 import Panel from './Panel'
 import { SearchDiv } from './Search.styled'
 import localizations from '../../lib/localizations'
@@ -16,8 +16,9 @@ interface SearchProps {
   locale: 'en' | 'fr',
   onHitClick?: (arg: any) => void,
   hitWrapperComponent?: React.FC,
-  project: 'bischoff' | 'rumpf' | 'supplique'
-  getHitWrapperProps?: (...args: any) => any
+  project: 'bischoff' | 'rumpf' | 'supplique',
+  getHitWrapperProps?: (...args: any) => any,
+  children?: ReactElement<any, string>
 }
 
 const Search: React.FC<SearchProps> = (props) => {
@@ -49,6 +50,7 @@ const Search: React.FC<SearchProps> = (props) => {
                 translations={{ submitButtonTitle: localizations.searchHere[props.locale] }}
               />
             </Panel>
+            {props.children}
             {refinementLists}
           </div>
           <div className='mainPanel'>

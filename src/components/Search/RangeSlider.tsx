@@ -41,6 +41,8 @@ const CustomRangeSlider = (props: Props) => {
     max: range.max
   });
 
+  console.log(range)
+
   useEffect(() => {
     if (value) {
       refine([value.min, value.max]);

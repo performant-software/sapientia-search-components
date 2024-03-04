@@ -10,6 +10,7 @@ import {
   GeoAlt,
   Person,
   Pin,
+  Tag,
 } from "react-bootstrap-icons";
 import localizations from "./localizations";
 import { HitField } from "./types";
@@ -23,6 +24,8 @@ const fields: { [key: string]: { [key: string]: HitField } } = {
     [import.meta.env.VITE_APP_TYPESENSE_BISCHOFF_ORIGINAL_DATE_UUID]: {
       caption: localizations.origDate,
       icon: Calendar,
+      // TODO: Not facetable yet!
+      // facet: true
     },
     [import.meta.env.VITE_APP_TYPESENSE_BISCHOFF_TEXT_UUID]: {
       type: "showcase",
@@ -53,11 +56,17 @@ const fields: { [key: string]: { [key: string]: HitField } } = {
     [import.meta.env.VITE_APP_TYPESENSE_RUMPF_PUBLICATION_DATE_UUID]: {
       icon: Calendar,
       caption: localizations.publicationDate,
+      facet: true,
     },
     [import.meta.env.VITE_APP_TYPESENSE_RUMPF_LINE_UUID]: {
       icon: FileEarmarkTextFill,
       facet: true,
       caption: localizations.line,
+    },
+    [import.meta.env.VITE_APP_TYPESENSE_RUMPF_TYPE_UUID]: {
+      icon: Tag,
+      facet: true,
+      caption: localizations.type,
     },
     [import.meta.env.VITE_APP_TYPESENSE_RUMPF_FORMAT_UUID]: {
       icon: Folder,
