@@ -26,7 +26,7 @@ const CustomCurrentRefinements: React.FC<Props> = (props) => {
 
   // Format refinement names and values for display
   const getValues = (item: CurrentRefinementsConnectorParamsItem) => {
-    const label = fields[item.attribute]?.displayLabel
+    const label = fields[item.attribute.replace('_facet', '')]?.caption
     let values: Array<string | number>
 
     if (isNumberRefinement(item)) {
@@ -45,7 +45,7 @@ const CustomCurrentRefinements: React.FC<Props> = (props) => {
     }
 
     return {
-      label: label ? label : item.attribute,
+      label: label ? label[props.locale] : item.attribute,
       values
     }
   }
@@ -65,6 +65,8 @@ const CustomCurrentRefinements: React.FC<Props> = (props) => {
   const removeRefinement = (original: CurrentRefinementsConnectorParamsItem) => {
     refine(original.refinements[0])
   }
+
+  console.log(displayItems)
 
   return (
     <ul className='currentRefinementList'>

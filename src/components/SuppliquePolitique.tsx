@@ -1,12 +1,9 @@
 import Search from "./Search"
 import GlobalStyle from "./global.styled"
 import { InstantSearch } from "react-instantsearch"
-import localizations from "../lib/localizations"
 import 'instantsearch.css/themes/reset.css'
 import 'instantsearch.css/themes/satellite.css'
 import searchClient from "../lib/searchClient"
-import { useMemo } from "react"
-import { SortField } from "../lib/types"
 
 export interface SuppliqueProps {
   locale: 'fr' | 'en',
@@ -16,14 +13,6 @@ export interface SuppliqueProps {
 }
 
 const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick, hitWrapperComponent, getHitWrapperProps }) => {
-  const sortFields: SortField[] = useMemo(() => ([
-    { value: 'supplique', label: localizations.relevance[locale] },
-    { value: 'supplique/sort/year:asc', label: localizations.chronologicalAsc[locale] },
-    { value: 'supplique/sort/year:desc', label: localizations.chronologicalDesc[locale] },
-    { value: 'supplique/sort/numberOrder:asc', label: localizations.numberOrderAsc[locale] },
-    { value: 'supplique/sort/numberOrder:desc', label: localizations.numberOrderDesc[locale] }
-  ]), [locale])
-
   return (
     <GlobalStyle>
       <InstantSearch
@@ -34,7 +23,6 @@ const SuppliquePolitique: React.FC<SuppliqueProps> = ({ locale, onHitClick, hitW
           locale={locale}
           onHitClick={onHitClick}
           project='supplique'
-          sortFields={sortFields}
           hitWrapperComponent={hitWrapperComponent}
           getHitWrapperProps={getHitWrapperProps}
         />

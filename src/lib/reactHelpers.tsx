@@ -1,40 +1,27 @@
 // For helpers that return React elements
 
-import { Highlight } from "react-instantsearch"
 import localizations from "./localizations"
 
 export const handleDate = (hit: any): string => {
-  if (hit.year && hit.month && hit.day) {
-    return new Date(hit.year, hit.month - 1, hit.day).toISOString().slice(0, 10)
+  const day = hit[import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_DAY_UUID]
+  const month = hit[import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_MONTH_UUID]
+  const year = hit[import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_YEAR_UUID]
+
+  if (year && month && day) {
+    return new Date(year, month - 1, day).toISOString().slice(0, 10)
   } else {
     return '?'
   }
 }
 
-export const displayNestedAttribute = (hit: any, name: string, locale: 'en' | 'fr') => {
-  const splitName = name.split('.')
-
-  let item = hit
-  while (splitName.length > 0) {
-    if (item[splitName[0]]) {
-      item = item[splitName[0]]
-      splitName.shift()
-    } else {
-      item = null
-      break
-    }
+// Returns the first related name from the given relation UUID
+export const displayRelation = (hit: any, uuid: string) => {
+  const relatedItem = hit[uuid] ? hit[uuid][0] : null
+  if (relatedItem) {
+    return hit[uuid][0].name
   }
 
-  if (item) {
-    return (
-      <Highlight
-        attribute={[name]}
-        hit={hit}
-      />
-    )
-  } else {
-    return <span><em>{localizations.emptyField[locale]}</em></span>
-  }
+  return null
 }
 
 export const displayAttribute = (value: string | undefined, locale: 'en' | 'fr') => (

@@ -28,6 +28,8 @@ const LinkWrapper: React.FC<{
 )
 
 const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale }: Props) => {
+  const { fields } = useContext(SearchContext)
+
   const Wrapper = hitWrapperComponent || LinkWrapper
 
   const wrapperProps = useMemo(() => {
@@ -38,32 +40,40 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
     return { hit, onHitClick }
   }, [getHitWrapperProps, hit, onHitClick])
 
-  const { fields } = useContext(SearchContext);
+  const showcaseField = useMemo(() => Object.entries(fields).find(f => f[1].type === 'showcase'), [fields])
 
-  const showcaseField = useMemo(() => Object.values(fields).find(f => f.type === 'showcase'), [fields])
+  const ShowcaseComponent = useMemo(() => {
+    if (showcaseField && showcaseField[1]?.snippet) {
+      return Snippet
+    }
 
-  const ShowcaseComponent = useMemo(() => showcaseField?.snippet ? Snippet : Highlight, [showcaseField])
+    return Highlight
+  }, [showcaseField])
 
-  const identifierField = useMemo(() => Object.values(fields).find(f => f.type === 'identifier'), [fields])
+  const identifierField = useMemo(() => Object.entries(fields).find(f => f[1].type === 'identifier'), [fields])
 
   const regularFields = useMemo(() =>
-    Object.values(fields)
-      .filter(f => f.uuid && !f.type && hit[f.value as string])
-      .map(field => (
-        <p
-          className='hitData'
-          key={field.uuid}
-        >
-          {field.icon
-            ? <span title={field?.caption ? field.caption[locale] : undefined}>
-              <field.icon />
-            </span>
-            : <></>}
-          <strong>
-            {hit[field.value as string]}
-          </strong>
-        </p>
-      )), [fields, hit, locale])
+    Object.entries(fields)
+      .filter(f => !f[1].type && hit[f[0]])
+      .map(field => {
+        const IconComponent = field[1].icon;
+
+        return (
+          <p
+            className='hitData'
+            key={field[0]}
+          >
+            {IconComponent
+              ? <span title={field[1]?.caption ? field[1].caption[locale] : undefined}>
+                <IconComponent />
+              </span>
+              : <></>}
+            <strong>
+              {hit[field[0]]}
+            </strong>
+          </p>
+        )
+      }), [fields, hit, locale])
 
   const renderedFields = useMemo(() =>
     Object.values(fields)
@@ -94,14 +104,14 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
     <Wrapper {...wrapperProps} className='hitLink'>
       <li className='hit'>
         <div className='left'>
-          {identifierField?.value
-            && hit[identifierField.value]
+          {identifierField
+            && hit[identifierField[0]]
             ? (
               <h2 className='headline'>
                 <span>
                   #
                   <Highlight
-                    attribute={[identifierField.value]}
+                    attribute={[identifierField[0]]}
                     hit={hit}
                     highlightedTagName='mark'
                   />
@@ -115,15 +125,15 @@ const Hit = ({ hit, onHitClick, hitWrapperComponent, getHitWrapperProps, locale 
         </div>
         <div className='right'>
           <div className='summary'>
-            {showcaseField?.caption
-              ? <h3>{showcaseField?.caption[locale]}</h3>
+            {showcaseField && showcaseField[1]?.caption
+              ? <h3>{showcaseField[1]?.caption[locale]}</h3>
               : null}
-            {showcaseField?.value
-              && hit[showcaseField.value]
+            {showcaseField
+              && hit[showcaseField[0]]
               ?
               (<p>
                 <ShowcaseComponent
-                  attribute={[showcaseField.value]}
+                  attribute={[showcaseField[0]]}
                   hit={hit}
                   highlightedTagName='mark'
                 />

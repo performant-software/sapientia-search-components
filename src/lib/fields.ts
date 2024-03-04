@@ -8,121 +8,116 @@ import {
   FileEarmarkTextFill,
   Folder,
   GeoAlt,
-  MapFill,
   Person,
   Pin,
 } from "react-bootstrap-icons";
 import localizations from "./localizations";
 import { HitField } from "./types";
-import { handleDate } from "./reactHelpers";
+import { displayRelation, handleDate } from "./reactHelpers";
 
 const fields: { [key: string]: { [key: string]: HitField } } = {
   bischoff: {
-    catalogNumber: {
-      uuid: "e839b342-d5d9-4142-8310-697525d18229",
+    [import.meta.env.VITE_APP_TYPESENSE_BISCHOFF_CATALOG_NUMBER_UUID]: {
       type: "identifier",
     },
-    originalDate: {
-      uuid: "7836b04d-b7a8-443a-a920-1cc76f30e6ea",
+    [import.meta.env.VITE_APP_TYPESENSE_BISCHOFF_ORIGINAL_DATE_UUID]: {
       caption: localizations.origDate,
       icon: Calendar,
     },
-    text: {
-      uuid: "e40c024a-9859-405f-86b9-308e893faa37",
+    [import.meta.env.VITE_APP_TYPESENSE_BISCHOFF_TEXT_UUID]: {
       type: "showcase",
       caption: localizations.text,
     },
-    "related_organizations.names": {
+    [`${import.meta.env.VITE_APP_TYPESENSE_BISCHOFF_ARCHIVES_UUID}.names`]: {
       icon: Building,
       caption: localizations.archive,
       facet: true,
-      render: (item: any) =>
-        item?.related_organizations.find((o: any) => o.type === "Archives")
-          ?.name,
+      render: (hit: any) =>
+        displayRelation(
+          hit,
+          import.meta.env.VITE_APP_TYPESENSE_BISCHOFF_ARCHIVES_UUID
+        ),
     },
-    archiveLocation: {
-      icon: MapFill,
-      caption: localizations.archiveLocation,
-      // Uh oh. Only one layer of relations is indexed and archive location requires two layers.
-      render: () => "TODO",
-    },
-    "related_works.names": {
+    [`${import.meta.env.VITE_APP_TYPESENSE_BISCHOFF_WORKS_UUID}.names`]: {
       icon: Book,
       facet: true,
       caption: localizations.works,
-      render: (item: any) =>
-        item?.related_works?.length ? item.related_works[0].name : null,
+      render: (hit: any) =>
+        displayRelation(
+          hit,
+          import.meta.env.VITE_APP_TYPESENSE_BISCHOFF_WORKS_UUID
+        ),
     },
   },
   rumpf: {
-    publicationDate: {
-      uuid: "fda80804-8753-4b15-8e11-3d291585cc79",
+    [import.meta.env.VITE_APP_TYPESENSE_RUMPF_PUBLICATION_DATE_UUID]: {
       icon: Calendar,
       caption: localizations.publicationDate,
     },
-    line: {
-      uuid: "8412f5df-4d50-42ab-bf04-4ddddc32217f",
+    [import.meta.env.VITE_APP_TYPESENSE_RUMPF_LINE_UUID]: {
       icon: FileEarmarkTextFill,
       facet: true,
       caption: localizations.line,
     },
-    format: {
-      uuid: "4de71c17-308a-41ed-bc0e-19f4f7aee55c",
+    [import.meta.env.VITE_APP_TYPESENSE_RUMPF_FORMAT_UUID]: {
       icon: Folder,
       caption: localizations.format,
       facet: true,
     },
-    "related_places.names": {
+    [`${
+      import.meta.env.VITE_APP_TYPESENSE_RUMPF_PUBLICATION_LOCATION_UUID
+    }.names`]: {
       icon: Pin,
       caption: localizations.publicationLocation,
       facet: true,
-      render: (item: any) =>
-        item?.related_places?.find(
-          (pl: { type: string }) => pl.type === "Publication Location"
-        )?.name,
+      render: (hit: any) =>
+        displayRelation(
+          hit,
+          import.meta.env.VITE_APP_TYPESENSE_RUMPF_PUBLICATION_LOCATION_UUID
+        ),
     },
-    "related_items.names": {
+    [`${import.meta.env.VITE_APP_TYPESENSE_RUMPF_PARENT_EDITION_UUID}.names`]: {
       icon: ArrowBarUp,
       caption: localizations.parentEdition,
       facet: true,
-      render: (item: any) =>
-        item?.related_items?.find(
-          (item: { type: string }) => item.type === "Parent Edition"
-        )?.name,
+      render: (hit: any) =>
+        displayRelation(
+          hit,
+          import.meta.env.VITE_APP_TYPESENSE_RUMPF_PARENT_EDITION_UUID
+        ),
     },
-    "related_people.names": {
+    [`${import.meta.env.VITE_APP_TYPESENSE_RUMPF_AUTHORS_UUID}.names`]: {
       icon: Person,
       facet: true,
       caption: localizations.author,
-      render: (item: any) =>
-        item?.related_people?.find(
-          (p: { type: string }) => p.type === "Authors"
-        )?.name,
+      render: (hit: any) =>
+        displayRelation(
+          hit,
+          import.meta.env.VITE_APP_TYPESENSE_RUMPF_AUTHORS_UUID
+        ),
     },
-    "related_organizations.names": {
+    [`${import.meta.env.VITE_APP_TYPESENSE_RUMPF_ARCHIVES_UUID}.names`]: {
       icon: Bank,
       caption: localizations.archive,
       facet: true,
-      render: (item: any) =>
-        item?.related_organizations?.find(
-          (p: { type: string }) => p.type === "Archives"
-        )?.name,
+      render: (hit: any) =>
+        displayRelation(
+          hit,
+          import.meta.env.VITE_APP_TYPESENSE_RUMPF_ARCHIVES_UUID
+        ),
     },
     name: {
       caption: localizations.title,
       type: "showcase",
-      value: "name",
     },
   },
   supplique: {
-    text: {
-      uuid: "0ce611e4-4622-4160-8857-28ee7c915a8e",
+    [import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_TEXT_UUID]: {
       type: "showcase",
       caption: localizations.text,
       snippet: 75,
     },
-    numberOrder: {
-      uuid: "e247c848-08af-4bbd-bdd1-eed94b776c12",
+    [import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_NUMBER_ORDER_UUID]: {
       type: "identifier",
       caption: localizations.number_of_order,
     },
@@ -131,37 +126,52 @@ const fields: { [key: string]: { [key: string]: HitField } } = {
       caption: localizations.date,
       render: (item) => handleDate(item),
     },
-    city: {
+    [`${import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_CITY_UUID}.names`]: {
       icon: Building,
       caption: localizations.city,
-      render: (item: any) =>
-        item?.related_places?.find(
-          (pl: { type: string }) => pl.type === "Ville"
-        )?.name,
+      facet: true,
+      render: (hit: any) =>
+        displayRelation(
+          hit,
+          import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_CITY_UUID
+        ),
     },
-    dateOfPlace: {
+    [`${
+      import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_DATE_OF_PLACE_UUID
+    }.names`]: {
       icon: GeoAlt,
       caption: localizations.place_given,
-      render: (item: any) =>
-        item?.related_places?.find(
-          (pl: { type: string }) => pl.type === "Date de place"
-        )?.name,
+      facet: true,
+      render: (hit: any) =>
+        displayRelation(
+          hit,
+          import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_DATE_OF_PLACE_UUID
+        ),
     },
-    titulature: {
+    [`${import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_TITULATURE_UUID}.names`]: {
       icon: Bank,
       caption: localizations.titulature,
-      render: (item: any) =>
-        item?.related_people?.find(
-          (p: { type: string }) => p.type === "Titulature"
-        )?.name,
+      facet: true,
+      render: (hit: any) =>
+        displayRelation(
+          hit,
+          import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_TITULATURE_UUID
+        ),
     },
-    commandement: {
-      icon: Person,
-      caption: localizations.commandement,
-      render: (item: any) =>
-        item?.related_people?.find(
-          (p: { type: string }) => p.type === "Commandement"
-        )?.name,
+    [`${import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_COMMANDEMENT_UUID}.names`]:
+      {
+        icon: Person,
+        caption: localizations.commandement,
+        facet: true,
+        render: (hit: any) =>
+          displayRelation(
+            hit,
+            import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_COMMANDEMENT_UUID
+          ),
+      },
+    [`${import.meta.env.VITE_APP_TYPESENSE_SUPPLIQUE_KEYWORDS_UUID}.name`]: {
+      caption: localizations.keywords,
+      facet: true,
     },
   },
 };
