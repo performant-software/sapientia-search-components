@@ -1,6 +1,6 @@
 # All projects
 
-* I've changed the functionality for empty fields. In the old version of the site, an empty field would still display the icon, with localized text that says "This field is empty". The new version skips displaying the field entirely if there's no value for it. I did this because the localization logic
+* I've changed the functionality for empty fields. In the old version of the site, an empty field would still display the icon, with localized text that says "This field is empty". The new version skips displaying the field entirely if there's no value for it. I originally did this because the added complexity of the JWT-based search system made it a lot more complex to calculate values for fields, so the i18n logic for the "This field is empty" notice would have needed to be in several places. It's probably simpler now that we've switched to the UUID-based search structure, but I'll hold off on spending time with this unless we're certain we need to bring back the placeholder text.
 
 # La Supplique
 
